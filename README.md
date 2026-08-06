@@ -200,8 +200,14 @@ Automated lead extraction with multi-layer NLP role detection and DNS MX-validat
 
 <br/>
 
-<!-- Contribution snake — appears after the GitHub Action in .github/workflows/snake.yml runs once -->
+<!--
+  Contribution snake — currently disabled.
+  Re-enable by uncommenting the <img> below AFTER pushing
+  .github/workflows/snake.yml and running it once (it creates the `output` branch).
+  Left commented out so the profile never shows a broken image.
+
 <img src="https://raw.githubusercontent.com/JoelDlima/JoelDlima/output/snake.svg" alt="Contribution snake" width="98%"/>
+-->
 
 </div>
 
