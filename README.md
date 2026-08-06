@@ -107,11 +107,13 @@ Third-year **Electronics & Computer Engineering** student at Agnel Institute of 
 
 ## 🚀 Featured Work
 
+<sub>🔒 = private repo (available on request)</sub>
+
 <table>
 <tr>
 <td width="50%" valign="top">
 
-### 🌾 AgroProfit
+### 🌾 AgroProfit 🔒
 **AI Agricultural Market Platform**
 
 Aggregates real-time government *mandi* price data through automated sync pipelines, with a Gemini-powered advisory layer for contextual crop recommendations — so farmers know both the price and what to do about it.
@@ -123,7 +125,7 @@ Aggregates real-time government *mandi* price data through automated sync pipeli
 </td>
 <td width="50%" valign="top">
 
-### 💧 Smart Eco-Well
+### 💧 Smart Eco-Well 🔒
 **IoT Water Quality Monitoring**
 
 TDS, turbidity, and pH sensors interfaced to an ESP32, streaming live readings over WiFi to a cloud database and a monitoring dashboard — remote water safety without a site visit.
@@ -135,7 +137,7 @@ TDS, turbidity, and pH sensors interfaced to an ESP32, streaming live readings o
 <tr>
 <td width="50%" valign="top">
 
-### 🩺 Palliative Care
+### 🩺 Palliative Care 🔒
 **Remote Patient Monitoring**
 
 SpO₂, heart-rate, ECG, and fall-detection sensors feeding continuous vitals to a cloud dashboard with role-based access, threshold-triggered emergency alerts, geospatial tracking, and an AI caregiver assistant.
@@ -145,7 +147,7 @@ SpO₂, heart-rate, ECG, and fall-detection sensors feeding continuous vitals to
 </td>
 <td width="50%" valign="top">
 
-### 🎯 Lead Genius
+### 🎯 Lead Genius 🔒
 **Lead Generation Pipeline**
 
 Automated lead extraction with multi-layer NLP role detection and DNS MX-validated email pattern generation, exporting clean structured CSV/JSON — verified contacts, not guesses.
@@ -165,6 +167,29 @@ Automated lead extraction with multi-layer NLP role detection and DNS MX-validat
 - **AccessMate** — accessibility app, built at GDG Goa's *Build for All*
 
 </details>
+
+<br/>
+
+<!-- ══════════════════════════ PUBLIC REPOS ══════════════════════════ -->
+
+## 📂 Browse the Code
+
+The four systems above are in private repos (client, coursework, and competition constraints). These are public and open to poke at:
+
+<div align="center">
+
+| Repo | What it is | Live |
+|:--|:--|:--|
+| [**Road_SOS**](https://github.com/JoelDlima/Road_SOS) | Roadside emergency assistance app | [demo ↗](https://road-sos-sepia.vercel.app) |
+| [**CropGuardv2**](https://github.com/JoelDlima/CropGuardv2) | Crop health / advisory tool | [demo ↗](https://crop-guardv2.vercel.app) |
+| [**BharatVanni-AI**](https://github.com/JoelDlima/BharatVanni-AI) | Indian-language AI project | — |
+| [**Nexus-AI**](https://github.com/JoelDlima/Nexus-AI) | Python AI project | — |
+| [**esp32_project**](https://github.com/JoelDlima/esp32_project) | ESP32 embedded experiments in C++ | — |
+| [**Portfolio**](https://github.com/JoelDlima/joeldlima-portfolio) | Personal site | [live ↗](https://joeldlima-portfolio.vercel.app) |
+
+</div>
+
+<p align="center"><sub>Happy to walk through the private repos on request — just reach out.</sub></p>
 
 <br/>
 
