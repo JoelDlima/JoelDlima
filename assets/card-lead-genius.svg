@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 210" width="420" height="210"
+     role="img" aria-label="Lead Genius — automated lead-generation pipeline with NLP role detection and DNS MX email validation">
+  <!-- Card 04: Lead Genius · Green (#3FCF8E) -->
+
+  <rect width="420" height="210" fill="#0d1117" rx="6"/>
+  <rect width="420" height="210" fill="none" stroke="#21262d" stroke-width="1" rx="6"/>
+  <rect x="0" y="0" width="3" height="210" fill="#3FCF8E" rx="1.5"/>
+
+  <!-- Top row -->
+  <circle cx="20" cy="20" r="3.5" fill="#3FCF8E" opacity="0.9"/>
+  <text x="30" y="24"
+        font-family="'JetBrains Mono','Cascadia Code','Fira Code',Consolas,monospace"
+        font-size="9" fill="#3FCF8E" letter-spacing="1.5" font-weight="700">MISSION 04 · AUTOMATION</text>
+
+  <rect x="330" y="11" width="76" height="17" rx="3" fill="#0e2a1e" stroke="#3FCF8E" stroke-width="0.8"/>
+  <text x="368" y="23" text-anchor="middle"
+        font-family="'JetBrains Mono','Cascadia Code',Consolas,monospace"
+        font-size="8" fill="#3FCF8E" letter-spacing="1" font-weight="700">COMPLETE</text>
+
+  <line x1="14" y1="34" x2="406" y2="34" stroke="#21262d" stroke-width="0.8"/>
+
+  <text x="18" y="57"
+        font-family="'JetBrains Mono','Cascadia Code','Fira Code',Consolas,monospace"
+        font-size="18" fill="#e6edf3" font-weight="700" letter-spacing="1">LEAD GENIUS</text>
+
+  <text x="18" y="71"
+        font-family="'JetBrains Mono','Cascadia Code',Consolas,monospace"
+        font-size="9.5" fill="#6e7681" font-weight="400">Automated Lead-Generation Pipeline  ·  Nov 2025 – Jan 2026</text>
+
+  <line x1="14" y1="81" x2="406" y2="81" stroke="#21262d" stroke-width="0.8"/>
+
+  <text x="18" y="97"
+        font-family="'JetBrains Mono','Cascadia Code',Consolas,monospace"
+        font-size="9.5" fill="#cdd9e5" font-weight="400">Web search → multi-layer NLP role detection → email pattern gen</text>
+  <text x="18" y="112"
+        font-family="'JetBrains Mono','Cascadia Code',Consolas,monospace"
+        font-size="9.5" fill="#cdd9e5" font-weight="400">DNS MX validation → clean CSV/JSON export. Verified contacts.</text>
+
+  <text x="18" y="129"
+        font-family="'JetBrains Mono','Cascadia Code',Consolas,monospace"
+        font-size="8.5" fill="#484f58" font-weight="400">↳ hard: ambiguous titles need multi-pass NLP before email pattern choice</text>
+
+  <line x1="14" y1="141" x2="406" y2="141" stroke="#21262d" stroke-width="0.8"/>
+
+  <!-- Node.js -->
+  <rect x="18"  y="153" width="52" height="17" rx="3" fill="#1c1f24" stroke="#5FA04E" stroke-width="0.8"/>
+  <text x="44"  y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#5FA04E" font-weight="700">Node.js</text>
+  <!-- NLP -->
+  <rect x="76"  y="153" width="32" height="17" rx="3" fill="#1c1f24" stroke="#6366F1" stroke-width="0.8"/>
+  <text x="92"  y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#818cf8" font-weight="700">NLP</text>
+  <!-- Serper -->
+  <rect x="114" y="153" width="50" height="17" rx="3" fill="#1c1f24" stroke="#4B5563" stroke-width="0.8"/>
+  <text x="139" y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#9ca3af" font-weight="700">Serper</text>
+  <!-- DNS MX -->
+  <rect x="170" y="153" width="50" height="17" rx="3" fill="#1c1f24" stroke="#4B5563" stroke-width="0.8"/>
+  <text x="195" y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#9ca3af" font-weight="700">DNS·MX</text>
+  <!-- CSV/JSON -->
+  <rect x="226" y="153" width="56" height="17" rx="3" fill="#1c1f24" stroke="#3FCF8E" stroke-width="0.8"/>
+  <text x="254" y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#3FCF8E" font-weight="700">CSV/JSON</text>
+
+  <!-- Corner decoration: terminal cursor lines -->
+  <text x="374" y="162"
+        font-family="'JetBrains Mono',Consolas,monospace"
+        font-size="8" fill="#3FCF8E" opacity="0.22">$ run</text>
+  <rect x="401" y="153" width="5" height="10" fill="#3FCF8E" opacity="0.18"/>
+
+  <text x="18" y="200"
+        font-family="'JetBrains Mono',Consolas,monospace"
+        font-size="7.5" fill="#2d333b" letter-spacing="0.5">AITD · GOA · INDIA</text>
+  <text x="380" y="200" text-anchor="end"
+        font-family="'JetBrains Mono',Consolas,monospace"
+        font-size="7.5" fill="#2d333b" letter-spacing="0.5">ECE · 2027</text>
+</svg>

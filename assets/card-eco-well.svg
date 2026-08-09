@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 210" width="420" height="210"
+     role="img" aria-label="Smart Eco-Well — IoT water quality monitoring system using ESP32 and multi-sensor array">
+  <!-- Card 01: Smart Eco-Well · Amber (#f6bd60) -->
+
+  <!-- Background -->
+  <rect width="420" height="210" fill="#0d1117" rx="6"/>
+  <!-- Outer border -->
+  <rect width="420" height="210" fill="none" stroke="#21262d" stroke-width="1" rx="6"/>
+  <!-- Left accent strip -->
+  <rect x="0" y="0" width="3" height="210" fill="#f6bd60" rx="1.5"/>
+
+  <!-- Top row: mission label + status badge -->
+  <circle cx="20" cy="20" r="3.5" fill="#f6bd60" opacity="0.9"/>
+  <text x="30" y="24"
+        font-family="'JetBrains Mono','Cascadia Code','Fira Code',Consolas,monospace"
+        font-size="9" fill="#f6bd60" letter-spacing="1.5" font-weight="700">MISSION 01 · HARDWARE</text>
+
+  <rect x="340" y="11" width="66" height="17" rx="3" fill="#1e2d12" stroke="#f6bd60" stroke-width="0.8"/>
+  <text x="373" y="23" text-anchor="middle"
+        font-family="'JetBrains Mono','Cascadia Code',Consolas,monospace"
+        font-size="8" fill="#f6bd60" letter-spacing="1" font-weight="700">COMPLETE</text>
+
+  <!-- Divider 1 -->
+  <line x1="14" y1="34" x2="406" y2="34" stroke="#21262d" stroke-width="0.8"/>
+
+  <!-- Project name -->
+  <text x="18" y="57"
+        font-family="'JetBrains Mono','Cascadia Code','Fira Code',Consolas,monospace"
+        font-size="18" fill="#e6edf3" font-weight="700" letter-spacing="1">SMART ECO-WELL</text>
+
+  <!-- Subtitle -->
+  <text x="18" y="71"
+        font-family="'JetBrains Mono','Cascadia Code',Consolas,monospace"
+        font-size="9.5" fill="#6e7681" font-weight="400">IoT Water Quality Monitoring  ·  Oct – Nov 2025</text>
+
+  <!-- Divider 2 -->
+  <line x1="14" y1="81" x2="406" y2="81" stroke="#21262d" stroke-width="0.8"/>
+
+  <!-- Description -->
+  <text x="18" y="97"
+        font-family="'JetBrains Mono','Cascadia Code',Consolas,monospace"
+        font-size="9.5" fill="#cdd9e5" font-weight="400">TDS · turbidity · pH sensors → ESP32 → Wi-Fi → cloud database</text>
+  <text x="18" y="112"
+        font-family="'JetBrains Mono','Cascadia Code',Consolas,monospace"
+        font-size="9.5" fill="#cdd9e5" font-weight="400">Remote water-safety monitoring without a site visit.</text>
+
+  <!-- Hard part -->
+  <text x="18" y="129"
+        font-family="'JetBrains Mono','Cascadia Code',Consolas,monospace"
+        font-size="8.5" fill="#484f58" font-weight="400">↳ hard: multi-protocol reads on one MCU — no timing conflicts</text>
+
+  <!-- Divider 3 -->
+  <line x1="14" y1="141" x2="406" y2="141" stroke="#21262d" stroke-width="0.8"/>
+
+  <!-- Tech badges -->
+  <!-- ESP32 -->
+  <rect x="18"  y="153" width="43" height="17" rx="3" fill="#1c1f24" stroke="#E7352C" stroke-width="0.8"/>
+  <text x="39"  y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#E7352C" font-weight="700">ESP32</text>
+  <!-- C++ -->
+  <rect x="67"  y="153" width="32" height="17" rx="3" fill="#1c1f24" stroke="#00599C" stroke-width="0.8"/>
+  <text x="83"  y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#6baee0" font-weight="700">C++</text>
+  <!-- I2C/SPI -->
+  <rect x="105" y="153" width="54" height="17" rx="3" fill="#1c1f24" stroke="#4B5563" stroke-width="0.8"/>
+  <text x="132" y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#9ca3af" font-weight="700">I2C/SPI</text>
+  <!-- UART -->
+  <rect x="165" y="153" width="38" height="17" rx="3" fill="#1c1f24" stroke="#4B5563" stroke-width="0.8"/>
+  <text x="184" y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#9ca3af" font-weight="700">UART</text>
+  <!-- Wi-Fi -->
+  <rect x="209" y="153" width="40" height="17" rx="3" fill="#1c1f24" stroke="#0ea5e9" stroke-width="0.8"/>
+  <text x="229" y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#38bdf8" font-weight="700">Wi-Fi</text>
+  <!-- Cloud -->
+  <rect x="255" y="153" width="44" height="17" rx="3" fill="#1c1f24" stroke="#8ecae6" stroke-width="0.8"/>
+  <text x="277" y="165" text-anchor="middle" font-family="'JetBrains Mono',Consolas,monospace" font-size="8" fill="#8ecae6" font-weight="700">Cloud</text>
+
+  <!-- Corner decoration: circuit trace -->
+  <path d="M 382 150 L 400 150 L 400 168" stroke="#f6bd60" stroke-width="0.8" fill="none" opacity="0.22"/>
+  <circle cx="382" cy="150" r="2" fill="#f6bd60" opacity="0.3"/>
+  <circle cx="400" cy="168" r="2" fill="#f6bd60" opacity="0.3"/>
+
+  <!-- Bottom coordinate label -->
+  <text x="18" y="200"
+        font-family="'JetBrains Mono',Consolas,monospace"
+        font-size="7.5" fill="#2d333b" letter-spacing="0.5">AITD · GOA · INDIA</text>
+  <text x="380" y="200" text-anchor="end"
+        font-family="'JetBrains Mono',Consolas,monospace"
+        font-size="7.5" fill="#2d333b" letter-spacing="0.5">ECE · 2027</text>
+</svg>
