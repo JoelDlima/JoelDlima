@@ -232,6 +232,9 @@ The four systems above live in private repos (client, coursework, and competitio
 
 ## 📊 Activity
 
+<!--START_SECTION:activity-->
+<!--END_SECTION:activity-->
+
 <div align="center">
 
 <img src="https://streak-stats.demolab.com?user=JoelDlima&hide_border=true&background=0D1117&stroke=21262D&ring=6366F1&fire=22D3EE&currStreakLabel=6366F1&sideLabels=C9D1D9&currStreakNum=C9D1D9&sideNums=C9D1D9&dates=8B949E" alt="Contribution streak"/>
@@ -239,6 +242,10 @@ The four systems above live in private repos (client, coursework, and competitio
 <br/><br/>
 
 <img src="https://github-readme-activity-graph.vercel.app/graph?username=JoelDlima&bg_color=0D1117&color=C9D1D9&line=6366F1&point=22D3EE&area=true&area_color=6366F1&hide_border=true&custom_title=Contribution%20Activity" alt="Contribution activity graph" width="98%"/>
+
+<br/><br/>
+
+<img src="https://cdn.jsdelivr.net/gh/JoelDlima/JoelDlima@output/snake.svg" alt="Animated snake eating contributions" width="90%"/>
 
 </div>
 
