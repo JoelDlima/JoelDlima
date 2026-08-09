@@ -26,7 +26,7 @@ CropGuardv2, esp32_project. Contact: joeldlima123@gmail.com
 <p align="center">
   <a href="https://linkedin.com/in/joel-dlima"><img src="https://img.shields.io/badge/LinkedIn-6366F1?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
   <a href="mailto:joeldlima123@gmail.com"><img src="https://img.shields.io/badge/Email-22D3EE?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/></a>
-  <a href="https://joeldlima-portfolio.vercel.app"><img src="https://img.shields.io/badge/Portfolio-0D1117?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio"/></a>
+  <a href="https://portfolio-v1-seven-nu.vercel.app"><img src="https://img.shields.io/badge/Portfolio-0D1117?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio"/></a>
   <a href="https://github.com/JoelDlima"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/></a>
 </p>
 
@@ -194,7 +194,7 @@ The four systems above live in private repos (client, coursework, and competitio
 | [**BharatVanni-AI**](https://github.com/JoelDlima/BharatVanni-AI) | Indian-language AI project | `JavaScript` | — |
 | [**Nexus-AI**](https://github.com/JoelDlima/Nexus-AI) | Python AI project | `Python` | — |
 | [**esp32_project**](https://github.com/JoelDlima/esp32_project) | ESP32 embedded experiments in C++ | `C++` | — |
-| [**joeldlima-portfolio**](https://github.com/JoelDlima/joeldlima-portfolio) | Personal site | `HTML` | [live ↗](https://joeldlima-portfolio.vercel.app) |
+| [**joeldlima-portfolio**](https://github.com/JoelDlima/joeldlima-portfolio) | Personal site | `HTML` | [live ↗](https://portfolio-v1-seven-nu.vercel.app) |
 
 </div>
 
