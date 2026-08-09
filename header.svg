@@ -9,6 +9,11 @@
       <stop offset="0" stop-color="#6366F1"/>
       <stop offset="1" stop-color="#22D3EE"/>
     </linearGradient>
+    <linearGradient id="nameGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.5" stop-color="#E0E7FF"/>
+      <stop offset="1" stop-color="#C7D2FE"/>
+    </linearGradient>
     <radialGradient id="glow" cx="0.5" cy="0.12" r="0.85">
       <stop offset="0" stop-color="#6366F1" stop-opacity="0.28"/>
       <stop offset="0.6" stop-color="#22D3EE" stop-opacity="0.08"/>
@@ -16,8 +21,35 @@
     </radialGradient>
   </defs>
 
+  <style>
+    @keyframes pulse {
+      0%, 100% { opacity: 0.35; }
+      50%      { opacity: 0.9; }
+    }
+    @keyframes sweep {
+      0%   { transform: translateX(-340px); opacity: 0; }
+      15%  { opacity: 1; }
+      85%  { opacity: 1; }
+      100% { transform: translateX(340px); opacity: 0; }
+    }
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.55; }
+      50%      { opacity: 1; }
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0); opacity: 0; }
+      15%  { opacity: 0.7; }
+      85%  { opacity: 0.7; }
+      100% { transform: translateY(-26px); opacity: 0; }
+    }
+    .pulse { animation: pulse 4.5s ease-in-out infinite; }
+    .glow  { animation: glowPulse 6s ease-in-out infinite; }
+    .chip  { transition: all .25s ease; }
+    .chip:hover { stroke-width: 1.6; }
+  </style>
+
   <rect width="1200" height="320" fill="url(#bg)"/>
-  <rect width="1200" height="320" fill="url(#glow)"/>
+  <g class="glow"><rect width="1200" height="320" fill="url(#glow)"/></g>
 
   <g stroke="#FFFFFF" stroke-opacity="0.035">
     <line x1="0" y1="80" x2="1200" y2="80"/>
@@ -30,22 +62,29 @@
     <line x1="1000" y1="0" x2="1000" y2="320"/>
   </g>
 
-  <rect x="564" y="96" width="72" height="5" rx="2.5" fill="url(#accent)">
-    <animate attributeName="opacity" values="1;0.5;1" dur="4.5s" repeatCount="indefinite"/>
+  <g fill="#A5B4FC">
+    <circle cx="180" cy="210" r="2"><animate attributeName="opacity" values="0;0.8;0" dur="5s" repeatCount="indefinite"/><animate attributeName="cy" values="225;170;225" dur="5s" repeatCount="indefinite"/></circle>
+    <circle cx="980" cy="150" r="2.5"><animate attributeName="opacity" values="0;0.8;0" dur="6s" repeatCount="indefinite" begin="1s"/><animate attributeName="cy" values="170;115;170" dur="6s" repeatCount="indefinite" begin="1s"/></circle>
+    <circle cx="1120" cy="220" r="1.5"><animate attributeName="opacity" values="0;0.7;0" dur="7s" repeatCount="indefinite" begin="2s"/><animate attributeName="cy" values="235;185;235" dur="7s" repeatCount="indefinite" begin="2s"/></circle>
+    <circle cx="90" cy="120" r="1.5"><animate attributeName="opacity" values="0;0.6;0" dur="6.5s" repeatCount="indefinite" begin="0.5s"/><animate attributeName="cy" values="135;90;135" dur="6.5s" repeatCount="indefinite" begin="0.5s"/></circle>
+  </g>
+
+  <rect x="564" y="96" width="72" height="5" rx="2.5" fill="url(#accent)" class="pulse">
+    <animate attributeName="width" values="72;92;72" dur="4.5s" repeatCount="indefinite"/>
   </rect>
 
-  <text x="600" y="172" text-anchor="middle" fill="#FFFFFF" font-family="Inter, 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="68" font-weight="700">Joel Dlima</text>
+  <text x="600" y="172" text-anchor="middle" fill="url(#nameGrad)" font-family="Inter, 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="68" font-weight="700">Joel Dlima</text>
   <text x="600" y="218" text-anchor="middle" fill="#22D3EE" font-family="Inter, 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="24" font-weight="600">Electronics &amp; Computer Engineering · Embedded × Full-Stack</text>
   <text x="600" y="252" text-anchor="middle" fill="#8B93A7" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="18">ESP32 &#8594; sensors &#8594; WiFi &#8594; cloud dashboard</text>
 
   <g font-family="Inter, 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="13">
-    <rect x="387" y="264" width="118" height="28" rx="14" fill="#1A2138" stroke="#6366F1" stroke-opacity="0.55"/>
+    <rect class="chip" x="387" y="264" width="118" height="28" rx="14" fill="#1A2138" stroke="#6366F1" stroke-opacity="0.55"/>
     <text x="446" y="282" text-anchor="middle" fill="#C9D1D9">Mapusa, Goa</text>
 
-    <rect x="521" y="264" width="180" height="28" rx="14" fill="#1A2138" stroke="#22D3EE" stroke-opacity="0.55"/>
+    <rect class="chip" x="521" y="264" width="180" height="28" rx="14" fill="#1A2138" stroke="#22D3EE" stroke-opacity="0.55"/>
     <text x="611" y="282" text-anchor="middle" fill="#C9D1D9">SWE Intern @ Visteon</text>
 
-    <rect x="717" y="264" width="96" height="28" rx="14" fill="#1A2138" stroke="#6366F1" stroke-opacity="0.55"/>
+    <rect class="chip" x="717" y="264" width="96" height="28" rx="14" fill="#1A2138" stroke="#6366F1" stroke-opacity="0.55"/>
     <text x="765" y="282" text-anchor="middle" fill="#C9D1D9">CGPA 9.7</text>
   </g>
 </svg>
