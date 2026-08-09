@@ -5,6 +5,7 @@ CGPA 9.7, graduating 2027. SWE intern at Visteon (Jul-Oct 2026, PPO track).
 Previously 4 months React at EpicForce (InnerVerse). Domains: embedded IoT (ESP32),
 full-stack (React/TS/Node), AI tooling (Gemini API). Best public repos: Road_SOS,
 CropGuardv2, esp32_project. Contact: joeldlima123@gmail.com
+Portfolio: https://portfolio-v1-seven-nu.vercel.app
 -->
 
 <!-- ══════════════════════════ HEADER ══════════════════════════ -->
@@ -18,7 +19,7 @@ CropGuardv2, esp32_project. Contact: joeldlima123@gmail.com
 
 <p align="center">
   <img
-    src="https://readme-typing-svg.demolab.com?font=Inter&weight=600&size=22&pause=1100&color=6366F1&center=true&vCenter=true&width=760&lines=Electronics+%26+Computer+Engineering+%7C+CGPA+9.7;SWE+Intern+%40+Visteon+%E2%80%94+automotive+electronics;Embedded+IoT+%C2%B7+React+%C2%B7+TypeScript+%C2%B7+Node.js;Sensor+pin+%E2%86%92+cloud+dashboard"
+    src="https://readme-typing-svg.demolab.com?font=Inter&weight=600&size=22&pause=1100&color=22D3EE&center=true&vCenter=true&width=820&lines=Electronics+%26+Computer+Engineering+%7C+CGPA+9.7;SWE+Intern+%40+Visteon+%E2%80%94+automotive+electronics;Embedded+IoT+%C2%B7+React+%C2%B7+TypeScript+%C2%B7+Node.js;Sensor+pin+%E2%86%92+cloud+dashboard"
     alt="Animated intro: role, company, stack, and tagline"
   />
 </p>
@@ -29,6 +30,13 @@ CropGuardv2, esp32_project. Contact: joeldlima123@gmail.com
   <a href="https://portfolio-v1-seven-nu.vercel.app"><img src="https://img.shields.io/badge/Portfolio-0D1117?style=for-the-badge&logo=vercel&logoColor=white" alt="Portfolio"/></a>
   <a href="https://github.com/JoelDlima"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/></a>
 </p>
+
+<br/>
+
+<!-- ══════════════════════════ QUOTE ══════════════════════════ -->
+<div align="center">
+  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=dark&border=0&quoteCategory=programming" alt="Random dev quote"/>
+</div>
 
 <br/>
 
@@ -234,6 +242,8 @@ The four systems above live in private repos (client, coursework, and competitio
 
 </div>
 
+<br/>
+
 <!--
   OPTIONAL: language / commit stat cards (github-readme-stats)
   The public instance at github-readme-stats.vercel.app is rate-limited
@@ -248,8 +258,6 @@ The four systems above live in private repos (client, coursework, and competitio
 <img height="165" src="https://YOUR-INSTANCE.vercel.app/api/top-langs/?username=JoelDlima&layout=compact&hide_border=true&langs_count=8&bg_color=0D1117&title_color=6366F1&text_color=C9D1D9" alt="Top languages"/>
 </div>
 -->
-
-<br/>
 
 <!-- ══════════════════════════ FOOTER ══════════════════════════ -->
 
