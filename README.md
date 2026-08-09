@@ -10,7 +10,7 @@ CropGuardv2, esp32_project. Contact: joeldlima123@gmail.com
 <!-- ══════════════════════════ HEADER ══════════════════════════ -->
 <p align="center">
   <img
-    src="header.svg"
+    src="header.png"
     alt="Joel Dlima — Electronics & Computer Engineering · Embedded × Full-Stack · SWE intern at Visteon"
     width="100%"
   />

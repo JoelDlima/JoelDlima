@@ -36,7 +36,7 @@
 
   <text x="600" y="172" text-anchor="middle" fill="#FFFFFF" font-family="Inter, 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="68" font-weight="700">Joel Dlima</text>
   <text x="600" y="218" text-anchor="middle" fill="#22D3EE" font-family="Inter, 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="24" font-weight="600">Electronics &amp; Computer Engineering · Embedded × Full-Stack</text>
-  <text x="600" y="252" text-anchor="middle" fill="#8B93A7" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="18">ESP32 &rarr; sensors &rarr; WiFi &rarr; cloud dashboard</text>
+  <text x="600" y="252" text-anchor="middle" fill="#8B93A7" font-family="'JetBrains Mono', 'Cascadia Code', Consolas, monospace" font-size="18">ESP32 &#8594; sensors &#8594; WiFi &#8594; cloud dashboard</text>
 
   <g font-family="Inter, 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="13">
     <rect x="387" y="264" width="118" height="28" rx="14" fill="#1A2138" stroke="#6366F1" stroke-opacity="0.55"/>
