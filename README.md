@@ -33,13 +33,6 @@ Portfolio: https://portfolio-v1-seven-nu.vercel.app
 
 <br/>
 
-<!-- ══════════════════════════ QUOTE ══════════════════════════ -->
-<div align="center">
-  <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=dark&border=0&quoteCategory=programming" alt="Random dev quote"/>
-</div>
-
-<br/>
-
 <!-- ══════════════════════════ ABOUT ══════════════════════════ -->
 
 ## 🧠 About
