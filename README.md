@@ -11,7 +11,7 @@ Portfolio: https://portfolio-v1-seven-nu.vercel.app
 <!-- ══════════════════════════ HEADER ══════════════════════════ -->
 <p align="center">
   <img
-    src="https://cdn.jsdelivr.net/gh/JoelDlima/JoelDlima@main/header.svg"
+    src="https://cdn.jsdelivr.net/gh/JoelDlima/JoelDlima@a9b4ef8/header.svg"
     alt="Joel Dlima — Electronics & Computer Engineering · Embedded × Full-Stack · SWE intern at Visteon"
     width="100%"
   />
