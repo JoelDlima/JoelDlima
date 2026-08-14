@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="900" height="300"
+     role="img" aria-labelledby="heroTitle heroDesc">
+  <title id="heroTitle">Joel D'Lima — Electronics and Computer Engineering</title>
+  <desc id="heroDesc">Animated banner showing a data pipeline from sensors through an ESP32 edge device to the cloud and a React interface.</desc>
+
+  <defs>
+    <!-- Fonts are NOT imported: external resources never load inside an img-referenced SVG.
+         Everything below resolves against fonts already on the viewer's machine. -->
+    <style><![CDATA[
+      .mono  { font-family: 'JetBrains Mono','Cascadia Code','Fira Code','SF Mono',
+                            'Roboto Mono',Consolas,'Liberation Mono',monospace; }
+      .name  { font-size: 42px; font-weight: 700; letter-spacing: 7px; }
+      .type  { font-size: 13px; letter-spacing: 1.6px; }
+      .kick  { font-size: 10px; letter-spacing: 3.4px; font-weight: 700; }
+      .meta  { font-size: 8px;  letter-spacing: 1.4px; fill: #4a5563; }
+      .node  { font-size: 8.5px; letter-spacing: 1.1px; font-weight: 700; }
+
+      .breathe { animation: breathe 4s ease-in-out infinite; }
+      @keyframes breathe { 0%,100% { opacity: .22 } 50% { opacity: .55 } }
+
+      .blink { animation: blink 1.1s steps(1) infinite; }
+      @keyframes blink { 0%,49% { opacity: 1 } 50%,100% { opacity: 0 } }
+
+      @media (prefers-reduced-motion: reduce) {
+        .breathe, .blink { animation: none; opacity: .4 }
+      }
+    ]]></style>
+
+    <clipPath id="frame"><rect x="0" y="0" width="900" height="300" rx="8"/></clipPath>
+
+    <!-- Highlight band that travels across the name -->
+    <linearGradient id="sweep" gradientUnits="userSpaceOnUse" x1="-280" y1="0" x2="40" y2="0">
+      <stop offset="0"    stop-color="#e6edf3"/>
+      <stop offset="0.42" stop-color="#e6edf3"/>
+      <stop offset="0.50" stop-color="#ffffff"/>
+      <stop offset="0.58" stop-color="#8ecae6"/>
+      <stop offset="1"    stop-color="#e6edf3"/>
+      <animate attributeName="x1" values="-280;900" dur="5.5s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="40;1220"  dur="5.5s" repeatCount="indefinite"/>
+    </linearGradient>
+
+    <linearGradient id="scan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#8ecae6" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#8ecae6" stop-opacity="0.07"/>
+      <stop offset="1"   stop-color="#8ecae6" stop-opacity="0"/>
+    </linearGradient>
+
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Typing masks: one per phrase, width driven over a shared 13.5s cycle -->
+    <clipPath id="t1">
+      <rect x="276" y="144" width="0" height="20">
+        <animate attributeName="width" dur="13.5s" repeatCount="indefinite" calcMode="linear"
+                 keyTimes="0;0.0889;0.311;0.3333;1" values="0;358;358;0;0"/>
+      </rect>
+    </clipPath>
+    <clipPath id="t2">
+      <rect x="243" y="144" width="0" height="20">
+        <animate attributeName="width" dur="13.5s" repeatCount="indefinite" calcMode="linear"
+                 keyTimes="0;0.3333;0.4222;0.6444;0.6667;1" values="0;0;414;414;0;0"/>
+      </rect>
+    </clipPath>
+    <clipPath id="t3">
+      <rect x="272" y="144" width="0" height="20">
+        <animate attributeName="width" dur="13.5s" repeatCount="indefinite" calcMode="linear"
+                 keyTimes="0;0.6667;0.7556;0.9778;1" values="0;0;357;357;0"/>
+      </rect>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+
+    <!-- Ground -->
+    <rect width="900" height="300" fill="#0d1117"/>
+
+    <!-- Faint engineering grid -->
+    <g stroke="#8ecae6" stroke-width="0.3" opacity="0.06">
+      <path d="M0 40H900M0 80H900M0 120H900M0 160H900M0 200H900M0 240H900M0 280H900"/>
+      <path d="M60 0V300M150 0V300M240 0V300M330 0V300M420 0V300M510 0V300M600 0V300M690 0V300M780 0V300M870 0V300"/>
+    </g>
+
+    <!-- Scanline sweep -->
+    <rect x="0" width="900" height="70" fill="url(#scan)">
+      <animate attributeName="y" values="-70;300" dur="7s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- Corner brackets -->
+    <g stroke="#8ecae6" stroke-width="1" fill="none" class="breathe">
+      <path d="M10 26V10h16"/>
+      <path d="M874 10h16v16"/>
+      <path d="M890 274v16h-16"/>
+      <path d="M26 290H10v-16"/>
+    </g>
+
+    <!-- Header meta -->
+    <text x="26"  y="22" class="mono meta">MAPUSA · GOA · 15°29'N 73°49'E</text>
+    <text x="874" y="22" class="mono meta" text-anchor="end">B.E. ECE · AITD · CLASS OF 2027</text>
+    <line x1="26" y1="32" x2="874" y2="32" stroke="#1b2531" stroke-width="0.8"/>
+
+    <!-- Kicker -->
+    <text x="450" y="74" text-anchor="middle" class="mono kick" fill="#f6bd60">
+      ELECTRONICS &amp; COMPUTER ENGINEERING
+    </text>
+
+    <!-- Name with travelling highlight -->
+    <text x="450" y="126" text-anchor="middle" class="mono name" fill="url(#sweep)">JOEL D'LIMA</text>
+
+    <!-- Typed subtitle: three phrases on one 13.5s loop -->
+    <g class="mono type" fill="#8ecae6">
+      <g clip-path="url(#t1)"><text x="276" y="158">sensor -&gt; esp32 -&gt; cloud -&gt; interface</text></g>
+      <g clip-path="url(#t2)"><text x="243" y="158">react · typescript · node · supabase · flask</text></g>
+      <g clip-path="url(#t3)"><text x="272" y="158">gemini api · ollama · tensorflow · nlp</text></g>
+    </g>
+
+    <!-- Caret tracking the typing edge -->
+    <rect y="146" width="8" height="15" fill="#f6bd60" class="blink">
+      <animate attributeName="x" dur="13.5s" repeatCount="indefinite" calcMode="linear"
+               keyTimes="0;0.0889;0.3100;0.3130;0.4222;0.6444;0.6474;0.7556;0.9778;0.9800;1"
+               values="276;634;634;243;657;657;272;629;629;276;276"/>
+    </rect>
+
+    <!-- ══ PIPELINE ══ -->
+    <g>
+      <!-- Connector runs -->
+      <g stroke="#2d333b" stroke-width="1" stroke-dasharray="3 4">
+        <path d="M183 228H273M405 228H495M627 228H717"/>
+      </g>
+
+      <!-- Stage 1 · SENSORS -->
+      <rect x="51" y="213" width="132" height="30" rx="4" fill="#12180f" stroke="#f6bd60" stroke-width="0.9" opacity="0.95"/>
+      <circle cx="63" cy="228" r="2.5" fill="#f6bd60" filter="url(#soft)">
+        <animate attributeName="r" dur="4.8s" repeatCount="indefinite" keyTimes="0;0.09;1" values="5;2.5;2.5"/>
+      </circle>
+      <text x="123" y="231" text-anchor="middle" class="mono node" fill="#f6bd60">SENSORS · I2C/SPI</text>
+
+      <!-- Stage 2 · EDGE -->
+      <rect x="273" y="213" width="132" height="30" rx="4" fill="#12180f" stroke="#f6bd60" stroke-width="0.9" opacity="0.95"/>
+      <circle cx="285" cy="228" r="2.5" fill="#f6bd60" filter="url(#soft)">
+        <animate attributeName="r" dur="4.8s" repeatCount="indefinite" keyTimes="0;0.25;0.34;1" values="2.5;5;2.5;2.5"/>
+      </circle>
+      <text x="345" y="231" text-anchor="middle" class="mono node" fill="#f6bd60">ESP32 · C/C++</text>
+
+      <!-- Stage 3 · CLOUD -->
+      <rect x="495" y="213" width="132" height="30" rx="4" fill="#0f1a22" stroke="#8ecae6" stroke-width="0.9" opacity="0.95"/>
+      <circle cx="507" cy="228" r="2.5" fill="#8ecae6" filter="url(#soft)">
+        <animate attributeName="r" dur="4.8s" repeatCount="indefinite" keyTimes="0;0.5625;0.65;1" values="2.5;5;2.5;2.5"/>
+      </circle>
+      <text x="567" y="231" text-anchor="middle" class="mono node" fill="#8ecae6">CLOUD · REST API</text>
+
+      <!-- Stage 4 · INTERFACE -->
+      <rect x="717" y="213" width="132" height="30" rx="4" fill="#171426" stroke="#b8a1ff" stroke-width="0.9" opacity="0.95"/>
+      <circle cx="729" cy="228" r="2.5" fill="#b8a1ff" filter="url(#soft)">
+        <animate attributeName="r" dur="4.8s" repeatCount="indefinite" keyTimes="0;0.875;0.96;1" values="2.5;5;2.5;2.5"/>
+      </circle>
+      <text x="789" y="231" text-anchor="middle" class="mono node" fill="#b8a1ff">REACT · GEMINI</text>
+
+      <!-- Packets relaying stage to stage -->
+      <circle cy="228" r="3.4" fill="#f6bd60" opacity="0" filter="url(#soft)">
+        <animate attributeName="cx" dur="4.8s" repeatCount="indefinite" calcMode="linear"
+                 keyTimes="0;0.0625;0.25;1" values="183;183;273;273"/>
+        <animate attributeName="opacity" dur="4.8s" repeatCount="indefinite"
+                 keyTimes="0;0.06;0.0625;0.23;0.25;1" values="0;0;1;1;0;0"/>
+      </circle>
+      <circle cy="228" r="3.4" fill="#8ecae6" opacity="0" filter="url(#soft)">
+        <animate attributeName="cx" dur="4.8s" repeatCount="indefinite" calcMode="linear"
+                 keyTimes="0;0.375;0.5625;1" values="405;405;495;495"/>
+        <animate attributeName="opacity" dur="4.8s" repeatCount="indefinite"
+                 keyTimes="0;0.37;0.375;0.545;0.5625;1" values="0;0;1;1;0;0"/>
+      </circle>
+      <circle cy="228" r="3.4" fill="#b8a1ff" opacity="0" filter="url(#soft)">
+        <animate attributeName="cx" dur="4.8s" repeatCount="indefinite" calcMode="linear"
+                 keyTimes="0;0.6875;0.875;1" values="627;627;717;717"/>
+        <animate attributeName="opacity" dur="4.8s" repeatCount="indefinite"
+                 keyTimes="0;0.685;0.6875;0.855;0.875;1" values="0;0;1;1;0;0"/>
+      </circle>
+
+      <!-- Arrival rings — expand from each stage's LED, never over the label -->
+      <circle cx="285" cy="228" r="0" fill="none" stroke="#f6bd60" stroke-width="1" opacity="0">
+        <animate attributeName="r"       dur="4.8s" repeatCount="indefinite" keyTimes="0;0.25;0.44;1" values="3;3;17;17"/>
+        <animate attributeName="opacity" dur="4.8s" repeatCount="indefinite" keyTimes="0;0.245;0.25;0.44;1" values="0;0;0.6;0;0"/>
+      </circle>
+      <circle cx="507" cy="228" r="0" fill="none" stroke="#8ecae6" stroke-width="1" opacity="0">
+        <animate attributeName="r"       dur="4.8s" repeatCount="indefinite" keyTimes="0;0.5625;0.75;1" values="3;3;17;17"/>
+        <animate attributeName="opacity" dur="4.8s" repeatCount="indefinite" keyTimes="0;0.557;0.5625;0.75;1" values="0;0;0.6;0;0"/>
+      </circle>
+      <circle cx="729" cy="228" r="0" fill="none" stroke="#b8a1ff" stroke-width="1" opacity="0">
+        <animate attributeName="r"       dur="4.8s" repeatCount="indefinite" keyTimes="0;0.875;1" values="3;3;17"/>
+        <animate attributeName="opacity" dur="4.8s" repeatCount="indefinite" keyTimes="0;0.87;0.875;1" values="0;0;0.6;0"/>
+      </circle>
+    </g>
+
+    <!-- Footer meta -->
+    <line x1="26" y1="268" x2="874" y2="268" stroke="#1b2531" stroke-width="0.8"/>
+    <text x="26"  y="284" class="mono meta">CGPA 9.70 · SEM I–III 10.0 · SEM IV 9.81 · SEM V 9.41</text>
+    <text x="874" y="284" class="mono meta" text-anchor="end">VISTEON · SWE INTERN · JUL–OCT 2026</text>
+
+    <!-- Frame -->
+    <rect x="0.5" y="0.5" width="899" height="299" rx="8" fill="none" stroke="#21262d"/>
+  </g>
+</svg>
