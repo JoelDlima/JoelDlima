@@ -1,5 +1,11 @@
 # Remote Job Sites, Rated From India
 
+> **If your goal is freelance/contract work building sites for founders rather
+> than full-time employment, read
+> [freelance-client-acquisition-from-india.md](./freelance-client-acquisition-from-india.md)
+> instead.** This document rates five full-time job boards. That one covers
+> client acquisition, pricing, and getting paid in USD from India.
+
 **Question asked:** as an Indian applying for software roles or freelancing, how good are these five sites?
 
 1. SkipTheDrive — https://www.skipthedrive.com/
