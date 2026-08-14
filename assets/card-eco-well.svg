@@ -1,5 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 210" width="420" height="210"
      role="img" aria-label="Smart Eco-Well — IoT water quality monitoring system using ESP32 and multi-sensor array">
+  <defs>
+    <clipPath id="cardClip"><rect x="0" y="0" width="420" height="210" rx="6"/></clipPath>
+    <linearGradient id="stripLight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#f6bd60" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#f6bd60" stop-opacity="1"/>
+      <stop offset="1"   stop-color="#f6bd60" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cardScan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#f6bd60" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#f6bd60" stop-opacity="0.055"/>
+      <stop offset="1"   stop-color="#f6bd60" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
   <!-- Card 01: Smart Eco-Well · Amber (#f6bd60) -->
 
   <!-- Background -->
@@ -7,10 +21,19 @@
   <!-- Outer border -->
   <rect width="420" height="210" fill="none" stroke="#21262d" stroke-width="1" rx="6"/>
   <!-- Left accent strip -->
-  <rect x="0" y="0" width="3" height="210" fill="#f6bd60" rx="1.5"/>
+  <rect x="0" y="0" width="3" height="210" fill="#f6bd60" rx="1.5" opacity="0.3"/>
+  <rect x="0" width="3" height="56" fill="url(#stripLight)" rx="1.5">
+    <animate attributeName="y" values="-56;210" dur="4.5s" repeatCount="indefinite"/>
+  </rect>
 
   <!-- Top row: mission label + status badge -->
-  <circle cx="20" cy="20" r="3.5" fill="#f6bd60" opacity="0.9"/>
+  <circle cx="20" cy="20" r="3.5" fill="#f6bd60" opacity="0.9">
+    <animate attributeName="opacity" values="0.55;1;0.55" dur="2.4s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="20" cy="20" r="3.5" fill="none" stroke="#f6bd60" stroke-width="0.9">
+    <animate attributeName="r"       values="3.5;11;11" dur="2.4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0;0"   dur="2.4s" repeatCount="indefinite"/>
+  </circle>
   <text x="30" y="24"
         font-family="'JetBrains Mono','Cascadia Code','Fira Code',Consolas,monospace"
         font-size="9" fill="#f6bd60" letter-spacing="1.5" font-weight="700">MISSION 01 · HARDWARE</text>
@@ -84,4 +107,15 @@
   <text x="380" y="200" text-anchor="end"
         font-family="'JetBrains Mono',Consolas,monospace"
         font-size="7.5" fill="#2d333b" letter-spacing="0.5">ECE · 2027</text>
+
+  <!-- Ambient motion layer -->
+  <g clip-path="url(#cardClip)">
+    <rect x="0" width="420" height="50" fill="url(#cardScan)">
+      <animate attributeName="y" values="-50;210" dur="6s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  <rect x="0.5" y="0.5" width="419" height="209" rx="6" fill="none"
+        stroke="#f6bd60" stroke-width="1" opacity="0">
+    <animate attributeName="opacity" values="0;0.2;0" dur="4.5s" repeatCount="indefinite"/>
+  </rect>
 </svg>
