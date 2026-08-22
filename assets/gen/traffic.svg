@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 260" width="900" height="260"
      role="img" aria-labelledby="obsTitle obsDesc">
-  <title id="obsTitle">Repository Traffic</title>
-  <desc id="obsDesc">AWAITING FIRST COLLECTION Rendered on the first workflow run.</desc>
+  <title id="obsTitle">Repository traffic</title>
+  <desc id="obsDesc">164 page views from 27 unique visitors and 171 clones across 23 days on record.</desc>
   <defs>
     <style><![CDATA[
       .m { font-family: 'JetBrains Mono','Cascadia Code','Fira Code','SF Mono','Roboto Mono',Consolas,'Liberation Mono',monospace; }
@@ -15,7 +15,7 @@
       @keyframes rise { from { opacity: 0 } to { opacity: 1 } }
       @media (prefers-reduced-motion: reduce) { .rise { animation: none } }
     ]]></style>
-    
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ecae6" stop-opacity="0.30"/><stop offset="1" stop-color="#8ecae6" stop-opacity="0"/></linearGradient>
     <clipPath id="frame"><rect width="900" height="260" rx="8"/></clipPath>
   </defs>
   <g clip-path="url(#frame)">
@@ -26,9 +26,42 @@
       <path d="M890 238v12h-12"/><path d="M22 250H10v-12"/>
     </g>
     <text class="m cap" x="24" y="34">REPOSITORY TRAFFIC</text>
+    <text class="m sub" x="876" y="34" text-anchor="end">11 OF 11 REPOSITORIES REPORTING &#183; SINCE Jul 31, 2026</text>
     <path d="M24 46H876" stroke="#8ecae6" stroke-opacity="0.14"/>
-    <text class="m sub" x="450" y="130" text-anchor="middle">AWAITING FIRST COLLECTION</text>
-    <text class="m tiny" x="450" y="146" text-anchor="middle" font-size="8" fill="#4a5563">RENDERED ON THE FIRST WORKFLOW RUN</text>
+    <g class="rise" style="animation-delay:0.00s">
+      <text class="m val" x="24" y="88" fill="#8ecae6">164</text>
+      <text class="m lbl" x="24" y="101">PAGE VIEWS</text>
+    </g>
+    <g class="rise" style="animation-delay:0.06s">
+      <text class="m val" x="174" y="88" fill="#3FCF8E">27</text>
+      <text class="m lbl" x="174" y="101">UNIQUE VISITORS</text>
+    </g>
+    <g class="rise" style="animation-delay:0.12s">
+      <text class="m val" x="324" y="88" fill="#f6bd60">171</text>
+      <text class="m lbl" x="324" y="101">CLONES</text>
+    </g>
+    <g class="rise" style="animation-delay:0.18s">
+      <text class="m val" x="474" y="88" fill="#b8a1ff">23</text>
+      <text class="m lbl" x="474" y="101">DAYS RECORDED</text>
+    </g>
+    <g stroke="#8ecae6" stroke-width="0.3" opacity="0.10"><path d="M24 130 H876"/><path d="M24 154 H876"/><path d="M24 178 H876"/><path d="M24 202 H876"/><path d="M24 226 H876"/></g>
+    <polygon points="24.0,226.0 24.0,226.0 62.7,226.0 101.5,226.0 140.2,226.0 178.9,226.0 217.6,226.0 256.4,226.0 295.1,226.0 333.8,202.7 372.5,142.0 411.3,210.4 450.0,202.7 488.7,215.1 527.5,213.6 566.2,156.0 604.9,212.0 643.6,226.0 682.4,226.0 721.1,224.4 759.8,226.0 798.5,226.0 837.3,226.0 876.0,226.0 876.0,226.0" fill="url(#fade)" opacity="0">
+      <animate attributeName="opacity" to="1" dur="0.9s" begin="0.2s" fill="freeze"/>
+    </polygon>
+    <polyline points="24.0,226.0 62.7,226.0 101.5,226.0 140.2,226.0 178.9,226.0 217.6,226.0 256.4,226.0 295.1,226.0 333.8,202.7 372.5,142.0 411.3,210.4 450.0,202.7 488.7,215.1 527.5,213.6 566.2,156.0 604.9,212.0 643.6,226.0 682.4,226.0 721.1,224.4 759.8,226.0 798.5,226.0 837.3,226.0 876.0,226.0" fill="none" stroke="#8ecae6" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1">
+      <animate attributeName="stroke-dashoffset" to="0" dur="1.2s" begin="0.1s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.3 1"/>
+    </polyline>
+    <polyline points="24.0,226.0 62.7,226.0 101.5,226.0 140.2,226.0 178.9,226.0 217.6,226.0 256.4,226.0 295.1,226.0 333.8,221.3 372.5,219.8 411.3,222.9 450.0,219.8 488.7,222.9 527.5,224.4 566.2,213.6 604.9,222.9 643.6,226.0 682.4,226.0 721.1,224.4 759.8,226.0 798.5,226.0 837.3,226.0 876.0,226.0" fill="none" stroke="#3FCF8E" stroke-width="1.1" stroke-dasharray="3 3" opacity="0">
+      <animate attributeName="opacity" to="0.85" dur="0.6s" begin="0.9s" fill="freeze"/>
+    </polyline>
+    <circle cx="372.5" cy="142.0" r="2.6" fill="#f6bd60"/>
+    <text class="m tiny" x="372.5" y="134.0" text-anchor="middle" fill="#f6bd60">54</text>
+    <text class="m tiny" x="24" y="240">Jul 31, 2026</text>
+    <text class="m tiny" x="876" y="240" text-anchor="end">Aug 22, 2026</text>
+    <g transform="translate(400,240)">
+      <rect width="8" height="2" y="-3" fill="#8ecae6"/><text class="m tiny" x="13" y="0">VIEWS</text>
+      <rect width="8" height="2" x="58" y="-3" fill="#3FCF8E"/><text class="m tiny" x="71" y="0">UNIQUE</text>
+    </g>
 
   </g>
   <rect width="899" height="259" x="0.5" y="0.5" rx="8" fill="none"

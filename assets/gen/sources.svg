@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 236" width="440" height="236"
      role="img" aria-labelledby="obsTitle obsDesc">
-  <title id="obsTitle">Arrival Paths</title>
-  <desc id="obsDesc">AWAITING FIRST COLLECTION Rendered on the first workflow run.</desc>
+  <title id="obsTitle">Arrival paths</title>
+  <desc id="obsDesc">Where visitors came from over the last 14 days: github.com 10 unique, linkedin.com 2 unique, com.linkedin.android 1 unique, instagram.com 1 unique.</desc>
   <defs>
     <style><![CDATA[
       .m { font-family: 'JetBrains Mono','Cascadia Code','Fira Code','SF Mono','Roboto Mono',Consolas,'Liberation Mono',monospace; }
@@ -26,9 +26,33 @@
       <path d="M430 214v12h-12"/><path d="M22 226H10v-12"/>
     </g>
     <text class="m cap" x="24" y="34">ARRIVAL PATHS</text>
+    <text class="m sub" x="416" y="34" text-anchor="end">ROLLING 14 DAYS</text>
     <path d="M24 46H416" stroke="#8ecae6" stroke-opacity="0.14"/>
-    <text class="m sub" x="220" y="118" text-anchor="middle">AWAITING FIRST COLLECTION</text>
-    <text class="m tiny" x="220" y="134" text-anchor="middle" font-size="8" fill="#4a5563">RENDERED ON THE FIRST WORKFLOW RUN</text>
+    <g class="rise" style="animation-delay:0.00s">
+      <text class="m row" x="24" y="72">github.com</text>
+      <text class="m tiny" x="416" y="72" text-anchor="end">10 / 109</text>
+      <rect x="24" y="78" width="250.0" height="3" rx="1.5" fill="#8ecae6" opacity="0.75"/>
+      <rect x="24" y="78" width="250" height="3" rx="1.5" fill="#8ecae6" opacity="0.10"/>
+    </g>
+    <g class="rise" style="animation-delay:0.05s">
+      <text class="m row" x="24" y="100">linkedin.com</text>
+      <text class="m tiny" x="416" y="100" text-anchor="end">2 / 2</text>
+      <rect x="24" y="106" width="50.0" height="3" rx="1.5" fill="#8ecae6" opacity="0.75"/>
+      <rect x="24" y="106" width="250" height="3" rx="1.5" fill="#8ecae6" opacity="0.10"/>
+    </g>
+    <g class="rise" style="animation-delay:0.10s">
+      <text class="m row" x="24" y="128">com.linkedin.android</text>
+      <text class="m tiny" x="416" y="128" text-anchor="end">1 / 1</text>
+      <rect x="24" y="134" width="25.0" height="3" rx="1.5" fill="#8ecae6" opacity="0.75"/>
+      <rect x="24" y="134" width="250" height="3" rx="1.5" fill="#8ecae6" opacity="0.10"/>
+    </g>
+    <g class="rise" style="animation-delay:0.15s">
+      <text class="m row" x="24" y="156">instagram.com</text>
+      <text class="m tiny" x="416" y="156" text-anchor="end">1 / 1</text>
+      <rect x="24" y="162" width="25.0" height="3" rx="1.5" fill="#8ecae6" opacity="0.75"/>
+      <rect x="24" y="162" width="250" height="3" rx="1.5" fill="#8ecae6" opacity="0.10"/>
+    </g>
+    <text class="m tiny" x="416" y="60" text-anchor="end">UNIQUE / TOTAL</text>
 
   </g>
   <rect width="439" height="235" x="0.5" y="0.5" rx="8" fill="none"

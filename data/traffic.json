@@ -1,8 +1,315 @@
 {
-  "daily": {},
-  "paths_14d": {},
-  "per_repo": {},
-  "referrers_14d": {},
-  "tracked_since": null,
-  "updated": "2026-08-22T18:34:04+00:00"
+  "daily": {
+    "2026-07-31": {
+      "clone_uniques": 1,
+      "clones": 1,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-01": {
+      "clone_uniques": 0,
+      "clones": 0,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-02": {
+      "clone_uniques": 0,
+      "clones": 0,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-03": {
+      "clone_uniques": 0,
+      "clones": 0,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-04": {
+      "clone_uniques": 0,
+      "clones": 0,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-05": {
+      "clone_uniques": 0,
+      "clones": 0,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-06": {
+      "clone_uniques": 0,
+      "clones": 0,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-07": {
+      "clone_uniques": 0,
+      "clones": 0,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-08": {
+      "clone_uniques": 2,
+      "clones": 2,
+      "uniques": 3,
+      "views": 15
+    },
+    "2026-08-09": {
+      "clone_uniques": 49,
+      "clones": 89,
+      "uniques": 4,
+      "views": 54
+    },
+    "2026-08-10": {
+      "clone_uniques": 4,
+      "clones": 4,
+      "uniques": 2,
+      "views": 10
+    },
+    "2026-08-11": {
+      "clone_uniques": 7,
+      "clones": 7,
+      "uniques": 4,
+      "views": 15
+    },
+    "2026-08-12": {
+      "clone_uniques": 2,
+      "clones": 2,
+      "uniques": 2,
+      "views": 7
+    },
+    "2026-08-13": {
+      "clone_uniques": 2,
+      "clones": 2,
+      "uniques": 1,
+      "views": 8
+    },
+    "2026-08-14": {
+      "clone_uniques": 16,
+      "clones": 25,
+      "uniques": 8,
+      "views": 45
+    },
+    "2026-08-15": {
+      "clone_uniques": 8,
+      "clones": 14,
+      "uniques": 2,
+      "views": 9
+    },
+    "2026-08-16": {
+      "clone_uniques": 2,
+      "clones": 5,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-17": {
+      "clone_uniques": 2,
+      "clones": 5,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-18": {
+      "clone_uniques": 1,
+      "clones": 1,
+      "uniques": 1,
+      "views": 1
+    },
+    "2026-08-19": {
+      "clone_uniques": 4,
+      "clones": 7,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-20": {
+      "clone_uniques": 2,
+      "clones": 2,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-21": {
+      "clone_uniques": 2,
+      "clones": 5,
+      "uniques": 0,
+      "views": 0
+    },
+    "2026-08-22": {
+      "clone_uniques": 0,
+      "clones": 0,
+      "uniques": 0,
+      "views": 0
+    }
+  },
+  "paths_14d": {
+    "/JoelDlima/BharatVanni-AI": {
+      "count": 1,
+      "title": "Overview",
+      "uniques": 1
+    },
+    "/JoelDlima/JoelDlima": {
+      "count": 40,
+      "title": "Overview",
+      "uniques": 3
+    },
+    "/JoelDlima/JoelDlima/blob/main/assets/card-lead-genius.svg": {
+      "count": 3,
+      "title": "/blob/main/assets/card-lead-genius.svg",
+      "uniques": 3
+    },
+    "/JoelDlima/JoelDlima/blob/main/assets/joel-orbit-header.svg": {
+      "count": 1,
+      "title": "/blob/main/assets/joel-orbit-header.svg",
+      "uniques": 1
+    },
+    "/JoelDlima/JoelDlima/blob/main/header.svg": {
+      "count": 1,
+      "title": "/blob/main/header.svg",
+      "uniques": 1
+    },
+    "/JoelDlima/JoelDlima/commit/1c44c85a3cb48f1e7bc72865b70a4b46ef005832": {
+      "count": 1,
+      "title": "/commit/1c44c85a3cb48f1e7bc72865b70a4b46ef005832",
+      "uniques": 1
+    },
+    "/JoelDlima/JoelDlima/commits/main": {
+      "count": 1,
+      "title": "/commits/main",
+      "uniques": 1
+    },
+    "/JoelDlima/JoelDlima/compare/claude/github-profile-readme-enhance-jd7lem": {
+      "count": 1,
+      "title": "/compare/claude/github-profile-readme-enhance-jd7lem",
+      "uniques": 1
+    },
+    "/JoelDlima/JoelDlima/edit/main/README.md": {
+      "count": 4,
+      "title": "/edit/main/README.md",
+      "uniques": 1
+    },
+    "/JoelDlima/JoelDlima/pull/1": {
+      "count": 5,
+      "title": "/pull/1",
+      "uniques": 4
+    },
+    "/JoelDlima/JoelDlima/tree/claude/github-profile-readme-enhance-jd7lem": {
+      "count": 3,
+      "title": "/tree/claude/github-profile-readme-enhance-jd7lem",
+      "uniques": 1
+    },
+    "/JoelDlima/joeldlima-portfolio": {
+      "count": 2,
+      "title": "Overview",
+      "uniques": 2
+    },
+    "/JoelDlima/joeldlima-portfolio/actions": {
+      "count": 1,
+      "title": "/actions",
+      "uniques": 1
+    },
+    "/JoelDlima/joeldlima-portfolio/agents": {
+      "count": 1,
+      "title": "/agents",
+      "uniques": 1
+    },
+    "/JoelDlima/joeldlima-portfolio/commits": {
+      "count": 1,
+      "title": "/commits",
+      "uniques": 1
+    },
+    "/JoelDlima/joeldlima-portfolio/issues": {
+      "count": 1,
+      "title": "/issues",
+      "uniques": 1
+    },
+    "/JoelDlima/joeldlima-portfolio/projects": {
+      "count": 1,
+      "title": "/projects",
+      "uniques": 1
+    },
+    "/JoelDlima/joeldlima-portfolio/pulls": {
+      "count": 1,
+      "title": "/pulls",
+      "uniques": 1
+    },
+    "/JoelDlima/yt-cli": {
+      "count": 77,
+      "title": "Overview",
+      "uniques": 8
+    },
+    "/JoelDlima/yt-cli/blob/main/README.md": {
+      "count": 2,
+      "title": "/blob/main/README.md",
+      "uniques": 1
+    },
+    "/JoelDlima/yt-cli/tree/main/tests": {
+      "count": 1,
+      "title": "/tree/main/tests",
+      "uniques": 1
+    }
+  },
+  "per_repo": {
+    "BharatVanni-AI": {
+      "uniques": 1,
+      "views": 1
+    },
+    "Chat-Bot": {
+      "uniques": 0,
+      "views": 0
+    },
+    "CropGuardv2": {
+      "uniques": 0,
+      "views": 0
+    },
+    "JoelDlima": {
+      "uniques": 5,
+      "views": 74
+    },
+    "Linear-Regression": {
+      "uniques": 0,
+      "views": 0
+    },
+    "MindCare_TeamNexus": {
+      "uniques": 0,
+      "views": 0
+    },
+    "Nexus-AI": {
+      "uniques": 0,
+      "views": 0
+    },
+    "esp32_project": {
+      "uniques": 0,
+      "views": 0
+    },
+    "joeldlima-portfolio": {
+      "uniques": 2,
+      "views": 8
+    },
+    "medieval-translator-app": {
+      "uniques": 0,
+      "views": 0
+    },
+    "yt-cli": {
+      "uniques": 8,
+      "views": 81
+    }
+  },
+  "referrers_14d": {
+    "com.linkedin.android": {
+      "count": 1,
+      "uniques": 1
+    },
+    "github.com": {
+      "count": 109,
+      "uniques": 10
+    },
+    "instagram.com": {
+      "count": 1,
+      "uniques": 1
+    },
+    "linkedin.com": {
+      "count": 2,
+      "uniques": 2
+    }
+  },
+  "tracked_since": "2026-07-31",
+  "updated": "2026-08-22T19:47:46+00:00"
 }
