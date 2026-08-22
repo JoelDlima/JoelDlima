@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 260" width="900" height="260"
+     role="img" aria-labelledby="obsTitle obsDesc">
+  <title id="obsTitle">Repository Traffic</title>
+  <desc id="obsDesc">AWAITING FIRST COLLECTION Rendered on the first workflow run.</desc>
+  <defs>
+    <style><![CDATA[
+      .m { font-family: 'JetBrains Mono','Cascadia Code','Fira Code','SF Mono','Roboto Mono',Consolas,'Liberation Mono',monospace; }
+      .cap { font-size: 8px; letter-spacing: 2.4px; font-weight: 700; fill: #4a5563; }
+      .val { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+      .lbl { font-size: 7px; letter-spacing: 1.5px; font-weight: 700; fill: #8b949e; }
+      .sub { font-size: 8px; letter-spacing: 0.8px; fill: #4a5563; }
+      .row { font-size: 10px; fill: #e6edf3; }
+      .tiny { font-size: 8px; fill: #4a5563; }
+      .rise { animation: rise .7s cubic-bezier(.2,.8,.3,1) both; }
+      @keyframes rise { from { opacity: 0 } to { opacity: 1 } }
+      @media (prefers-reduced-motion: reduce) { .rise { animation: none } }
+    ]]></style>
+    
+    <clipPath id="frame"><rect width="900" height="260" rx="8"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="900" height="260" fill="#0d1117"/>
+    <g stroke="#8ecae6" stroke-width="0.3" opacity="0.06"><path d="M0 30 H900"/><path d="M0 60 H900"/><path d="M0 90 H900"/><path d="M0 120 H900"/><path d="M0 150 H900"/><path d="M0 180 H900"/><path d="M0 210 H900"/><path d="M0 240 H900"/><path d="M40 0 V260"/><path d="M80 0 V260"/><path d="M120 0 V260"/><path d="M160 0 V260"/><path d="M200 0 V260"/><path d="M240 0 V260"/><path d="M280 0 V260"/><path d="M320 0 V260"/><path d="M360 0 V260"/><path d="M400 0 V260"/><path d="M440 0 V260"/><path d="M480 0 V260"/><path d="M520 0 V260"/><path d="M560 0 V260"/><path d="M600 0 V260"/><path d="M640 0 V260"/><path d="M680 0 V260"/><path d="M720 0 V260"/><path d="M760 0 V260"/><path d="M800 0 V260"/><path d="M840 0 V260"/><path d="M880 0 V260"/></g>
+    <g stroke="#8ecae6" stroke-width="1" fill="none" opacity="0.45">
+      <path d="M10 22V10h12"/><path d="M878 10h12v12"/>
+      <path d="M890 238v12h-12"/><path d="M22 250H10v-12"/>
+    </g>
+    <text class="m cap" x="24" y="34">REPOSITORY TRAFFIC</text>
+    <path d="M24 46H876" stroke="#8ecae6" stroke-opacity="0.14"/>
+    <text class="m sub" x="450" y="130" text-anchor="middle">AWAITING FIRST COLLECTION</text>
+    <text class="m tiny" x="450" y="146" text-anchor="middle" font-size="8" fill="#4a5563">RENDERED ON THE FIRST WORKFLOW RUN</text>
+
+  </g>
+  <rect width="899" height="259" x="0.5" y="0.5" rx="8" fill="none"
+        stroke="#8ecae6" stroke-opacity="0.18"/>
+</svg>

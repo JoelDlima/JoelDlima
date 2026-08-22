@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 200" width="460" height="200"
+     role="img" aria-labelledby="cardTitle cardDesc">
+  <title id="cardTitle">Contribution index</title>
+  <desc id="cardDesc">70 commits, 11 repositories, 4 stars, 8 followers.</desc>
+  <defs>
+    <style><![CDATA[
+      .m { font-family: 'JetBrains Mono','Cascadia Code','Fira Code','SF Mono','Roboto Mono',Consolas,'Liberation Mono',monospace; }
+      .cap { font-size: 8px; letter-spacing: 2.4px; font-weight: 700; fill: #4a5563; }
+      .val { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+      .lbl { font-size: 7px; letter-spacing: 1.5px; font-weight: 700; fill: #8b949e; }
+      .sub { font-size: 8px; letter-spacing: 0.8px; fill: #4a5563; }
+      .rise { animation: rise .7s cubic-bezier(.2,.8,.3,1) both; }
+      @keyframes rise { from { opacity: 0 } to { opacity: 1 } }
+      @media (prefers-reduced-motion: reduce) { .rise { animation: none } }
+    ]]></style>
+    
+    <clipPath id="frame"><rect width="460" height="200" rx="8"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="460" height="200" fill="#0d1117"/>
+    <g stroke="#8ecae6" stroke-width="0.3" opacity="0.06"><path d="M0 30 H460"/><path d="M0 60 H460"/><path d="M0 90 H460"/><path d="M0 120 H460"/><path d="M0 150 H460"/><path d="M0 180 H460"/><path d="M40 0 V200"/><path d="M80 0 V200"/><path d="M120 0 V200"/><path d="M160 0 V200"/><path d="M200 0 V200"/><path d="M240 0 V200"/><path d="M280 0 V200"/><path d="M320 0 V200"/><path d="M360 0 V200"/><path d="M400 0 V200"/><path d="M440 0 V200"/></g>
+    <g stroke="#8ecae6" stroke-width="1" fill="none" opacity="0.45">
+      <path d="M10 22V10h12"/><path d="M438 10h12v12"/>
+      <path d="M450 178v12h-12"/><path d="M22 190H10v-12"/>
+    </g>
+    <text class="m cap" x="24" y="34">CONTRIBUTION INDEX</text>
+    <text class="m sub" x="24" y="48">@JoelDlima &#183; account opened Jan 2, 2025</text>
+    <path d="M24 60H436" stroke="#8ecae6" stroke-opacity="0.14"/>
+    <g class="rise" style="animation-delay:0.00s">
+      <text class="m val" x="24" y="100" fill="#8ecae6">70</text>
+      <text class="m lbl" x="24" y="113">COMMITS</text>
+    </g>
+    <g class="rise" style="animation-delay:0.05s">
+      <text class="m val" x="132" y="100" fill="#f6bd60">11</text>
+      <text class="m lbl" x="132" y="113">REPOSITORIES</text>
+    </g>
+    <g class="rise" style="animation-delay:0.10s">
+      <text class="m val" x="240" y="100" fill="#f6bd60">4</text>
+      <text class="m lbl" x="240" y="113">STARS EARNED</text>
+    </g>
+    <g class="rise" style="animation-delay:0.15s">
+      <text class="m val" x="348" y="100" fill="#b8a1ff">1</text>
+      <text class="m lbl" x="348" y="113">PULL REQUESTS</text>
+    </g>
+    <g class="rise" style="animation-delay:0.20s">
+      <text class="m val" x="24" y="156" fill="#b8a1ff">4</text>
+      <text class="m lbl" x="24" y="169">ISSUES</text>
+    </g>
+    <g class="rise" style="animation-delay:0.25s">
+      <text class="m val" x="132" y="156" fill="#3FCF8E">8</text>
+      <text class="m lbl" x="132" y="169">FOLLOWERS</text>
+    </g>
+    <g class="rise" style="animation-delay:0.30s">
+      <text class="m val" x="240" y="156" fill="#3FCF8E">1</text>
+      <text class="m lbl" x="240" y="169">FORKS</text>
+    </g>
+    <g class="rise" style="animation-delay:0.35s">
+      <text class="m val" x="348" y="156" fill="#8ecae6">0</text>
+      <text class="m lbl" x="348" y="169">REVIEWS</text>
+    </g>
+
+  </g>
+  <rect width="459" height="199" x="0.5" y="0.5" rx="8" fill="none"
+        stroke="#8ecae6" stroke-opacity="0.18"/>
+</svg>

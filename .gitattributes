@@ -1,0 +1,7 @@
+# Workflow run: blocks are bash; CRLF committed from Windows breaks them.
+* text=auto eol=lf
+*.svg  text eol=lf
+*.py   text eol=lf
+*.yml  text eol=lf
+*.md   text eol=lf
+*.json text eol=lf

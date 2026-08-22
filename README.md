@@ -10,6 +10,9 @@
      All animation in ./assets is hand-authored SMIL + inline CSS. Do NOT add
      @import or any external URL inside those SVGs — an <img>-referenced SVG
      cannot load external resources, so imported fonts silently fall back.
+
+     Everything in ./assets/gen is GENERATED. Do not hand-edit it; edit
+     scripts/build_stats.py or scripts/build_observatory.py instead. See SETUP.md.
 -->
 
 <!-- ══════════════════════════ HERO ══════════════════════════ -->
@@ -29,11 +32,36 @@
   <a href="https://github.com/JoelDlima?tab=repositories"><img src="https://img.shields.io/badge/Repositories-181717?style=for-the-badge&logo=github&logoColor=white" alt="Repositories"/></a>
 </p>
 
+<p align="center">
+  <img src="https://komarev.com/ghpvc/?username=JoelDlima&style=flat-square&color=8ecae6&label=PROFILE+VIEWS" alt="Profile views"/>
+  <img src="https://img.shields.io/github/followers/JoelDlima?style=flat-square&color=3FCF8E&labelColor=0d1117&logo=github&logoColor=white&label=FOLLOWERS" alt="Followers"/>
+  <img src="https://img.shields.io/github/stars/JoelDlima?affiliations=OWNER&style=flat-square&color=f6bd60&labelColor=0d1117&logo=github&logoColor=white&label=STARS" alt="Total stars"/>
+  <img src="https://img.shields.io/github/last-commit/JoelDlima/JoelDlima?style=flat-square&color=b8a1ff&labelColor=0d1117&label=LAST+PUSH" alt="Last commit"/>
+</p>
+
+<p align="center">
+  <sub>
+    <a href="#01--signal">01 Signal</a> &nbsp;·&nbsp;
+    <a href="#02--trajectory">02 Trajectory</a> &nbsp;·&nbsp;
+    <a href="#03--instruments">03 Instruments</a> &nbsp;·&nbsp;
+    <a href="#04--systems">04 Systems</a> &nbsp;·&nbsp;
+    <a href="#05--flight-log">05 Flight log</a> &nbsp;·&nbsp;
+    <a href="#06--selected-missions">06 Missions</a> &nbsp;·&nbsp;
+    <a href="#07--open-source">07 Open source</a>
+    <br/>
+    <a href="#08--telemetry">08 Telemetry</a> &nbsp;·&nbsp;
+    <a href="#09--observatory">09 Observatory</a> &nbsp;·&nbsp;
+    <a href="#10--signals-received">10 Signals received</a> &nbsp;·&nbsp;
+    <a href="#11--current-experiments">11 Experiments</a> &nbsp;·&nbsp;
+    <a href="#12--contact">12 Contact</a>
+  </sub>
+</p>
+
 ---
 
-<!-- ══════════════════════════ SIGNAL ══════════════════════════ -->
+<!-- ══════════════════════════ 01 SIGNAL ══════════════════════════ -->
 
-## Signal
+## 01 · Signal
 
 I build systems that connect the physical world to useful software — ESP32 sensor arrays to cloud pipelines to AI-assisted interfaces. Most of my projects run the full path from bare pin to user screen.
 
@@ -46,9 +74,9 @@ I build systems that connect the physical world to useful software — ESP32 sen
 
 ---
 
-<!-- ══════════════════════════ TRAJECTORY ══════════════════════════ -->
+<!-- ══════════════════════════ 02 TRAJECTORY ══════════════════════════ -->
 
-## Trajectory
+## 02 · Trajectory
 
 <p align="center">
   <img
@@ -60,9 +88,9 @@ I build systems that connect the physical world to useful software — ESP32 sen
 
 ---
 
-<!-- ══════════════════════════ STACK ══════════════════════════ -->
+<!-- ══════════════════════════ 03 INSTRUMENTS ══════════════════════════ -->
 
-## Technical constellation
+## 03 · Instruments
 
 <p align="center">
   <img src="./assets/stack.svg" alt="Stack: C++, C, Python, TypeScript, JavaScript, Verilog, React, Node.js, Tailwind, Flask, ESP32, ESP32-CAM, I2C, SPI, UART, GPIO, Supabase, Google Cloud, Vercel, Gemini API, Ollama, TensorFlow, REST APIs, Git." width="100%"/>
@@ -83,9 +111,9 @@ I build systems that connect the physical world to useful software — ESP32 sen
 
 ---
 
-<!-- ══════════════════════════ SYSTEMS MAP ══════════════════════════ -->
+<!-- ══════════════════════════ 04 SYSTEMS ══════════════════════════ -->
 
-## Systems I work across
+## 04 · Systems
 
 <p align="center">
   <img
@@ -97,9 +125,9 @@ I build systems that connect the physical world to useful software — ESP32 sen
 
 ---
 
-<!-- ══════════════════════════ FLIGHT LOG ══════════════════════════ -->
+<!-- ══════════════════════════ 05 FLIGHT LOG ══════════════════════════ -->
 
-## Flight log
+## 05 · Flight log
 
 ### Visteon Corporation
 **Software Engineering Intern · Jul 2026–Oct 2026 · Panjim, Goa**
@@ -133,9 +161,9 @@ Early-stage startup building [InnerVerse](https://myinnerverse.in) — a self-aw
 
 ---
 
-<!-- ══════════════════════════ SELECTED MISSIONS ══════════════════════════ -->
+<!-- ══════════════════════════ 06 SELECTED MISSIONS ══════════════════════════ -->
 
-## Selected missions
+## 06 · Selected missions
 
 > All four live in private repositories — walk-through available on request.
 
@@ -269,9 +297,9 @@ Accessibility-focused app built at GDG Goa's *Build for All* hackathon.
 
 ---
 
-<!-- ══════════════════════════ OPEN SOURCE ══════════════════════════ -->
+<!-- ══════════════════════════ 07 OPEN SOURCE ══════════════════════════ -->
 
-## Open source
+## 07 · Open source
 
 | Repo | What it is | Stack | Live |
 |:--|:--|:--|:--|
@@ -287,9 +315,22 @@ Accessibility-focused app built at GDG Goa's *Build for All* hackathon.
 
 ---
 
-<!-- ══════════════════════════ TELEMETRY ══════════════════════════ -->
+<!-- ══════════════════════════ 08 TELEMETRY ══════════════════════════ -->
 
-## Telemetry
+## 08 · Telemetry
+
+<!-- Everything under ./assets/gen is rendered by .github/workflows/stats.yml
+     and committed into this repo. Nothing here depends on a third-party
+     renderer staying online. See SETUP.md. -->
+
+<p align="center">
+  <img src="./assets/gen/stats.svg" alt="Contribution index: commits, repositories, stars, pull requests, issues, followers, forks and reviews." width="49%"/>
+  <img src="./assets/gen/streak.svg" alt="Contribution streaks: total contributions, current streak and longest streak." width="49%"/>
+</p>
+
+<p align="center">
+  <img src="./assets/gen/languages.svg" alt="Language distribution by bytes across public source repositories." width="100%"/>
+</p>
 
 <p align="center">
   <img
@@ -311,9 +352,52 @@ Accessibility-focused app built at GDG Goa's *Build for All* hackathon.
 
 ---
 
-<!-- ══════════════════════════ SIGNALS RECEIVED ══════════════════════════ -->
+<!-- ══════════════════════════ 09 OBSERVATORY ══════════════════════════ -->
 
-## Signals received
+## 09 · Observatory
+
+Who reaches these repositories, and how they got here. Collected daily by
+[`observatory.yml`](.github/workflows/observatory.yml) straight from the GitHub
+traffic API, then committed into [`data/traffic.json`](data/traffic.json) —
+GitHub itself discards traffic after 14 days, so the history below outlives it.
+
+<p align="center">
+  <img src="./assets/gen/traffic.svg" alt="Repository traffic: page views, unique visitors, clones and days recorded, with a daily view chart." width="100%"/>
+</p>
+
+<p align="center">
+  <img src="./assets/gen/sources.svg" alt="Arrival paths: which referrers sent visitors over the last 14 days." width="49%"/>
+  <img src="./assets/gen/audience.svg" alt="Named audience: the most recent people to star, fork or follow." width="49%"/>
+</p>
+
+<details>
+<summary><b>Why the left panel counts people and the right panel names them</b></summary>
+
+<br/>
+
+GitHub draws a hard line between the two, and it is worth being precise about
+where that line falls.
+
+| | Visible | Not visible |
+|:--|:--|:--|
+| **Traffic** | Views, unique visitor counts, clones, referrers, popular paths | Any identity — no username, no address, no session |
+| **Stars, forks, follows** | Account, avatar, timestamp, which repo | — these are public events |
+
+A tracking pixel in a README does not get around this. GitHub proxies every
+externally hosted image through `camo.githubusercontent.com`, so the only
+address such a pixel ever records is GitHub's own proxy, in GitHub's
+datacenter, with GitHub's user agent. The visitor never touches it.
+
+So the honest split is the one above: the left panel is a count, the right
+panel is a guest list, and nothing here pretends to be the other.
+
+</details>
+
+---
+
+<!-- ══════════════════════════ 10 SIGNALS RECEIVED ══════════════════════════ -->
+
+## 10 · Signals received
 
 - **Top 25, state level** — HackIndia, Goa · 2nd year
 - **3rd place, Software Track** — Smart India Hackathon, college level
@@ -324,9 +408,9 @@ Accessibility-focused app built at GDG Goa's *Build for All* hackathon.
 
 ---
 
-<!-- ══════════════════════════ CURRENT EXPERIMENTS ══════════════════════════ -->
+<!-- ══════════════════════════ 11 CURRENT EXPERIMENTS ══════════════════════════ -->
 
-## Current experiments
+## 11 · Current experiments
 
 - Automotive software workflows and embedded engineering practice at Visteon
 - Edge-side filtering and multi-protocol telemetry reliability
@@ -336,9 +420,9 @@ Accessibility-focused app built at GDG Goa's *Build for All* hackathon.
 
 ---
 
-<!-- ══════════════════════════ CONTACT ══════════════════════════ -->
+<!-- ══════════════════════════ 12 CONTACT ══════════════════════════ -->
 
-## Contact
+## 12 · Contact
 
 Open to conversations about embedded systems, software engineering, and AI projects.
 
