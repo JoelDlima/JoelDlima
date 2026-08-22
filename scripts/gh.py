@@ -57,6 +57,14 @@ def _request(url, data=None, tries=4, accept="application/vnd.github+json"):
             if e.code in (500, 502, 503, 504):
                 time.sleep(2 ** attempt)
                 continue
+            if e.code == 401:
+                # Almost always a revoked or expired token still sitting in the
+                # repository secret. Say that instead of unwinding a traceback.
+                raise RuntimeError(
+                    "HTTP 401 Unauthorized - the token is revoked, expired, or "
+                    "mistyped.\nUpdate the repository secret named in the "
+                    "workflow's GH_TOKEN. See SETUP.md, step 2."
+                ) from None
             if e.code in (403, 404):
                 # GitHub names the permission it wanted; repeat it verbatim so a
                 # scope problem does not turn into a guessing game.
