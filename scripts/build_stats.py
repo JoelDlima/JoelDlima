@@ -28,6 +28,9 @@ GREEN = "#3FCF8E"
 MONO = ("'JetBrains Mono','Cascadia Code','Fira Code','SF Mono',"
         "'Roboto Mono',Consolas,'Liberation Mono',monospace")
 
+SANS = ("Inter,'Inter Tight','SF Pro Text','Segoe UI Variable Text','Segoe UI',"
+        "Roboto,'Helvetica Neue',Arial,sans-serif")
+
 # Fallback for languages GitHub does not hand us a colour for.
 LANG_FALLBACK = "#7d8590"
 
@@ -49,7 +52,7 @@ def shell(w, h, title, desc, body, defs=""):
       .cap { font-size: 8px; letter-spacing: 2.4px; font-weight: 700; fill: %(muted)s; }
       .val { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
       .lbl { font-size: 7px; letter-spacing: 1.5px; font-weight: 700; fill: %(dim)s; }
-      .sub { font-size: 8px; letter-spacing: 0.8px; fill: %(muted)s; }
+      .sub { font-family: %(sans)s; font-size: 8.5px; letter-spacing: 0.2px; fill: %(muted)s; }
       .rise { animation: rise .7s cubic-bezier(.2,.8,.3,1) both; }
       @keyframes rise { from { opacity: 0 } to { opacity: 1 } }
       @media (prefers-reduced-motion: reduce) { .rise { animation: none } }
@@ -73,7 +76,7 @@ def shell(w, h, title, desc, body, defs=""):
         "w": w, "h": h, "w1": w - 1, "h1": h - 1,
         "r1": w - 22, "r2": w - 10, "b1": h - 22, "b2": h - 10,
         "title": esc(title), "desc": esc(desc), "body": body, "defs": defs,
-        "mono": MONO, "bg": BG, "line": LINE, "muted": MUTED, "dim": DIM,
+        "mono": MONO, "sans": SANS, "bg": BG, "line": LINE, "muted": MUTED, "dim": DIM,
         "hl": hlines, "vl": vlines,
     }
 
@@ -89,6 +92,10 @@ def metric(x, y, value, label, colour, delay):
 
 # --------------------------------------------------------------- queries
 
+# privacy:PUBLIC is deliberate. This card renders onto a public profile, and
+# without it the totals swing with whatever scope the token happens to have —
+# a repo-scoped PAT would publish how many private repositories exist, while a
+# public-only token would not. Pinning it keeps the output the same either way.
 PROFILE_Q = """
 query($login:String!){
   user(login:$login){
@@ -97,7 +104,7 @@ query($login:String!){
     following{totalCount}
     pullRequests{totalCount}
     issues{totalCount}
-    repositories(first:100, ownerAffiliations:OWNER, isFork:false,
+    repositories(first:100, ownerAffiliations:OWNER, isFork:false, privacy:PUBLIC,
                  orderBy:{field:PUSHED_AT,direction:DESC}){
       totalCount
       nodes{

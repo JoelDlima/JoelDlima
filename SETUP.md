@@ -181,7 +181,40 @@ hand-authored SVGs in `assets/`:
 `shell()` in each builder draws the frame — ground, grid, corner brackets,
 border — so a change there lands on every card at once.
 
-One constraint worth keeping: an SVG loaded through `<img>` cannot fetch
-external resources. No `@import`, no remote fonts, no hotlinked images. That is
-why avatars in `audience.svg` are downloaded and inlined as base64 data URIs,
-and why the font stacks name only faces already on the reader's machine.
+### The one constraint that shapes everything
+
+GitHub serves these SVGs with:
+
+```
+Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox
+```
+
+Read it carefully, because it decides what is possible:
+
+| Directive | Consequence |
+|:--|:--|
+| `style-src 'unsafe-inline'` | Inline CSS works — hence the animations and the whole look |
+| no `img-src` | Falls back to `none`. **Every image is blocked, `data:` URIs included** |
+| no `font-src` | Falls back to `none`. **Webfonts cannot be embedded, even as `data:`** |
+
+GitHub allowlists `data:` in its main page CSP but deliberately leaves it out
+for raw files, so nested images are a dead end no matter how they are encoded.
+An early version of `audience.svg` inlined real avatars as base64 PNGs; they
+would never have rendered. Rows now draw monogram discs from shapes and text,
+which are always permitted — and the file went from 17.7 KB to 5.2 KB.
+
+The same rule kills embedded fonts. `@font-face` with a `data:` URI is blocked
+just as an external URL is, so the only typefaces available are the ones
+already installed on the reader's machine. Both stacks are ordered accordingly:
+
+```
+MONO  JetBrains Mono -> Cascadia Code -> Fira Code -> SF Mono -> ... -> monospace
+SANS  Inter -> Inter Tight -> SF Pro Text -> Segoe UI Variable -> ... -> sans-serif
+```
+
+Numbers and technical labels are mono; names and prose are sans. Readers with
+JetBrains Mono or Inter installed see exactly that, and everyone else lands on
+a close relative.
+
+Two further things follow from the same constraint: no `@import`, and no
+hotlinked images anywhere in `assets/`.

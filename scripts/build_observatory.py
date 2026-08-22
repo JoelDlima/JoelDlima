@@ -15,14 +15,13 @@ Two honest halves, because GitHub draws a hard line between them:
 GitHub keeps traffic for 14 days only, so each run merges the fresh window
 into data/traffic.json and the history accumulates past that limit.
 """
-import base64
 import datetime as dt
 import json
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from gh import TOKEN, USER, esc, fetch_bytes, human, rest, rest_all  # noqa: E402
+from gh import TOKEN, USER, esc, human, rest, rest_all  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "assets", "gen")
@@ -40,6 +39,9 @@ GREEN = "#3FCF8E"
 
 MONO = ("'JetBrains Mono','Cascadia Code','Fira Code','SF Mono',"
         "'Roboto Mono',Consolas,'Liberation Mono',monospace")
+
+SANS = ("Inter,'Inter Tight','SF Pro Text','Segoe UI Variable Text','Segoe UI',"
+        "Roboto,'Helvetica Neue',Arial,sans-serif")
 
 CHART_DAYS = 60
 STAR_JSON = "application/vnd.github.star+json"
@@ -60,8 +62,8 @@ def shell(w, h, title, desc, body, defs=""):
       .cap { font-size: 8px; letter-spacing: 2.4px; font-weight: 700; fill: %(muted)s; }
       .val { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
       .lbl { font-size: 7px; letter-spacing: 1.5px; font-weight: 700; fill: %(dim)s; }
-      .sub { font-size: 8px; letter-spacing: 0.8px; fill: %(muted)s; }
-      .row { font-size: 10px; fill: %(text)s; }
+      .sub { font-family: %(sans)s; font-size: 8.5px; letter-spacing: 0.2px; fill: %(muted)s; }
+      .row { font-family: %(sans)s; font-size: 10.5px; font-weight: 600; fill: %(text)s; }
       .tiny { font-size: 8px; fill: %(muted)s; }
       .rise { animation: rise .7s cubic-bezier(.2,.8,.3,1) both; }
       @keyframes rise { from { opacity: 0 } to { opacity: 1 } }
@@ -86,7 +88,7 @@ def shell(w, h, title, desc, body, defs=""):
         "w": w, "h": h, "w1": w - 1, "h1": h - 1,
         "r1": w - 22, "r2": w - 10, "b1": h - 22, "b2": h - 10,
         "title": esc(title), "desc": esc(desc), "body": body, "defs": defs,
-        "mono": MONO, "bg": BG, "line": LINE, "muted": MUTED, "dim": DIM,
+        "mono": MONO, "sans": SANS, "bg": BG, "line": LINE, "muted": MUTED, "dim": DIM,
         "text": TEXT, "hl": hlines, "vl": vlines,
     }
 
@@ -257,22 +259,23 @@ def collect_audience(repos):
     return stars, forks, followers
 
 
-def avatar_uri(url, size=44):
-    """Inline an avatar as a data URI — external URLs never load in an
-    <img>-referenced SVG, so the bytes have to live in the file."""
-    sep = "&" if "?" in url else "?"
-    raw = fetch_bytes("%s%ss=%d" % (url, sep, size))
-    if not raw:
-        return None
-    if raw[:8] == b"\x89PNG\r\n\x1a\n":
-        mime = "image/png"
-    elif raw[:3] == b"\xff\xd8\xff":
-        mime = "image/jpeg"
-    elif raw[:4] == b"GIF8":
-        mime = "image/gif"
-    else:
-        return None
-    return "data:%s;base64,%s" % (mime, base64.b64encode(raw).decode())
+def monogram(login):
+    """Initials for the avatar disc.
+
+    Raster avatars are not an option. GitHub serves these SVGs with
+    `Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'`,
+    and with no img-src of its own that falls back to 'none' — which blocks
+    data: URIs as well as remote ones. Inline CSS survives, so shapes and text
+    render and images do not. Letters drawn as text always show up.
+    """
+    cleaned = [c for c in login if c.isalnum()]
+    if not cleaned:
+        return "?"
+    if len(cleaned) == 1:
+        return cleaned[0].upper()
+    # A digit as the second glyph reads as noise; prefer a letter when there is one.
+    tail = next((c for c in cleaned[1:] if c.isalpha()), cleaned[1])
+    return (cleaned[0] + tail).upper()
 
 
 # --------------------------------------------------------------- cards
@@ -433,34 +436,30 @@ def card_audience(stars, forks, followers):
         % (w - 24, human(len(stars)), human(len(followers))),
         '    <path d="M24 46H%d" stroke="%s" stroke-opacity="0.14"/>\n' % (w - 24, LINE),
     ]
-    defs = []
 
     if not events:
         parts.append(
             '    <text class="m sub" x="%d" y="130" text-anchor="middle">'
             'NO STARS, FORKS OR FOLLOWS YET</text>\n' % (w // 2))
     else:
-        for i, (kind, login, avatar, when, repo, colour) in enumerate(events):
+        for i, (kind, login, _avatar, when, repo, colour) in enumerate(events):
             y = 68 + i * 34
-            uri = avatar_uri(avatar)
-            defs.append('<clipPath id="av%d"><circle cx="%d" cy="%d" r="11"/></clipPath>' % (i, 35, y + 3))
-            if uri:
-                parts.append(
-                    '    <image href="%s" x="24" y="%d" width="22" height="22" '
-                    'clip-path="url(#av%d)" preserveAspectRatio="xMidYMid slice"/>\n'
-                    % (uri, y - 8, i))
-            else:
-                parts.append(
-                    '    <circle cx="35" cy="%d" r="11" fill="%s" opacity="0.18"/>\n'
-                    '    <text class="m" x="35" y="%d" text-anchor="middle" font-size="10" '
-                    'fill="%s">%s</text>\n'
-                    % (y + 3, colour, y + 7, colour, esc(login[:1].upper())))
+            initials = monogram(login)
             parts.append(
-                '    <circle cx="35" cy="%d" r="11" fill="none" stroke="%s" stroke-opacity="0.45"/>\n'
-                '    <text class="m row" x="56" y="%d">%s</text>\n'
-                '    <text class="m tiny" x="56" y="%d" fill="%s">%s%s</text>\n'
-                '    <text class="m tiny" x="%d" y="%d" text-anchor="end">%s</text>\n'
-                % (y + 3, colour, y + 1, esc("@" + login),
+                '    <g class="rise" style="animation-delay:%.2fs">\n'
+                '      <circle cx="35" cy="%d" r="11" fill="%s" opacity="0.16"/>\n'
+                '      <circle cx="35" cy="%d" r="11" fill="none" stroke="%s" stroke-opacity="0.45"/>\n'
+                '      <text class="m" x="35" y="%d" text-anchor="middle" font-size="%d"\n'
+                '            font-weight="700" fill="%s">%s</text>\n'
+                '      <text class="m row" x="56" y="%d">%s</text>\n'
+                '      <text class="m tiny" x="56" y="%d" fill="%s">%s%s</text>\n'
+                '      <text class="m tiny" x="%d" y="%d" text-anchor="end">%s</text>\n'
+                '    </g>\n'
+                % (0.06 * i,
+                   y + 3, colour,
+                   y + 3, colour,
+                   y + 7, 9 if len(initials) > 1 else 11, colour, esc(initials),
+                   y + 1, esc("@" + login),
                    y + 12, colour, esc(kind.upper()), esc(" " + repo if repo else ""),
                    w - 24, y + 1, esc(pretty(when))))
 
@@ -471,7 +470,7 @@ def card_audience(stars, forks, followers):
     return shell(w, h, "Named audience",
                  "Most recent public interactions: "
                  + (", ".join("%s %s" % (e[1], e[0]) for e in events) or "none yet") + ".",
-                 "".join(parts), "".join(defs))
+                 "".join(parts))
 
 
 def pretty(iso):
