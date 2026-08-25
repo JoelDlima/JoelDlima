@@ -86,12 +86,18 @@ than glow.
 
 ## Typography
 
-Two faces, split strictly by role. **Bodoni Moda** carries identity, section
-titles and headline figures; **JetBrains Mono** carries anything with a data
-texture — chips, labels, descriptions, dates, percentages. Nothing sits in
-between. The contrast between a high-contrast didone and a monospace is the
-poster's main typographic idea; Bodoni's thick/thin strokes are also what make
-the gradient read as light moving across the letters rather than a flat wash.
+One family only: **JetBrains Mono**, in three weights (Regular, Bold, ExtraBold).
+There used to be a second, serif display face for headlines — dropped in favour
+of a single bold-mono register closer to a terminal or a dev-tool UI (Vercel,
+GitHub itself). It also removed an entire class of bug: the old display face had
+a different units-per-em from the mono face, and a size/em mismatch there showed
+up as wrong letter-spacing rather than an obviously wrong size. One family means
+one fixed 0.6em advance for every weight, so all layout math is exact arithmetic
+with no font-specific cases.
+
+`Display` still exists as its own component — sections read better calling
+something named for what it does — but it is a thin wrapper over `Mono` with a
+bolder default weight. See `src/design/text.tsx`.
 
 ## What cannot go in the SVG
 
@@ -114,10 +120,36 @@ by the sanitiser.
 converted to outlines at build time. Nothing to verify, no `font-display` race
 when the SVG is rasterised, and no fallback to get wrong.
 
-Both faces go through one glyph registry: each unique glyph is emitted once into
-`<defs>` and placed with `<use>`, with kerning applied to the cursor. The current
-poster is 181 defs serving 2,743 references. Emitting a merged `<path>` per
-string instead took the two files from 158 KB to 458 KB.
+Every unique glyph is emitted once into `<defs>` and placed with `<use>`.
+Emitting a merged `<path>` per string instead is simpler but repeats the same
+outlines hundreds of times across the poster — it cost roughly 300 KB across the
+two theme files before the registry existed.
+
+## The telemetry section: streaks, grid, and a snake
+
+Current streak, longest streak, and a real contribution grid, built from the
+daily calendar `data/github.json` already stores (368 days, fetched once via
+GraphQL — nothing here is refetched). A three-segment marker travels the actual
+route through the days that had commits, via `<animateMotion>` along a path
+built from those days' cell centres in chronological order.
+
+**The snake is three offset copies of the same motion, not one.** Trailing is
+done with negative `begin` values (`-0.55s`, `-1.1s`) on duplicate
+`<animateMotion>` elements sharing one `dur` and one `path` — a negative begin
+means the animation is treated as already partway through when the document
+starts, which is what makes segment 2 and 3 appear to be following segment 1
+rather than all three moving in lockstep.
+
+**Verifying SMIL motion cannot go through `element.transform.animVal`** — that
+stays empty for `<animateMotion>` in every browser tested. `element.getCTM()`
+does reflect it; sample that at a few `svg.setCurrentTime(t)` points to confirm
+motion is actually wired up before trusting it.
+
+If the account's contribution history is sparse (this one currently shows 12
+active days across 368), the route will visibly jump between distant cells
+rather than crawl continuously — that is the real gap between commits, not a
+bug. A denser history renders as a denser, smoother route automatically; nothing
+here is tuned to today's specific data.
 
 ## Two traps worth remembering
 
@@ -127,26 +159,20 @@ string. Outside that namespace React treats `linearGradient`, `radialGradient`
 and `clipPath` as unknown HTML elements and lowercases them, which silently kills
 every gradient and clip in the file — it still renders, it just renders wrong.
 
-**Glyph outlines are normalised to a 1000-unit em, which is not every font's own
-`unitsPerEm`.** JetBrains Mono is 1000; Bodoni Moda is 2000. Scaling a normalised
-outline by `size / unitsPerEm` renders Bodoni at half size while still advancing
-the cursor by the full width. It does not look like a scaling bug — it looks like
-wildly loose letter-spacing.
-
-One more, smaller: `opentype.js` cannot shape Bodoni Moda through `font.getPath`
-(`lookupType: 6 substFormat: 2 is not yet supported`). Glyphs are walked directly
-instead, which sidesteps the feature tables and still applies pair kerning — the
-only shaping a Latin display line needs.
+**Glyph outlines are normalised to a 1000-unit em.** This matches JetBrains
+Mono's own `unitsPerEm` today, but if a future face uses a different one, scaling
+a normalised outline by `size / unitsPerEm` instead of the registry's fixed
+constant renders it at the wrong size while still advancing the cursor by the
+font's own width — it does not look like a scaling bug, it looks like wrong
+letter-spacing.
 
 ## Rendering is deterministic
 
-The waveform in the masthead disc comes from fixed harmonics, not `Math.random`.
-Random values would rewrite both SVGs on every run and make the daily workflow
-commit pure noise.
-
 Both theme files are rendered from **one** component tree; colour resolves
 through React context at render time, so the light and dark layouts cannot drift
-apart.
+apart. Nothing in the poster depends on `Math.random` — the snake's route comes
+straight from the calendar dates, in order, so a rebuild with unchanged data
+produces byte-identical output.
 
 ## Nothing is hidden by an attribute
 
@@ -166,34 +192,15 @@ design, not decoration, and removing it would leave the poster looking broken.
 
 | Field | How it is computed |
 |---|---|
-| source written | Language bytes across owned, non-fork repos, markup and build config excluded |
-| languages | Count of real languages after that same exclusion — **not** the number of segments in the band, which only matches when nothing spilled into "other" |
+| current / longest streak | Computed once in `src/data/github.ts`, from the full daily calendar — longest run of consecutive active days across the whole fetched history; current run ending today **or** yesterday, so a day with no commits yet does not read as a broken streak |
+| contributions · 12mo | GraphQL `contributionCalendar.totalContributions` |
 | repositories | Owned, non-fork, non-archived |
-| recent pushes | Four most recently pushed owned repos |
 
-Excluded as markup or build config: HTML, CSS, SCSS, Sass, Less, MDX, TeX, Roff,
-CMake, Makefile, Dockerfile, Batchfile, Procfile, Nix, Jupyter Notebook, EJS,
-Handlebars, Pug, Blade, Mustache, Vim Script, Gnuplot, RTF, Shell, PowerShell.
-Counting HTML and CSS as "languages written" flatters everyone equally and tells
-a reader nothing.
-
-### Why there is no contribution heatmap or streak
-
-The obvious things to put in a telemetry section are a 12-month contribution grid
-and a streak counter. Measured, they are actively misleading here: the account
-shows **12 active days across 368** with a longest streak of **2**, because work
-happens in bursts and most of it sits in private repos. A grid of that renders as
-a near-empty field and reads as inactivity rather than as the missing data it
-actually is.
-
-Volume of code, language mix and recent pushes are all measurable, all honest,
-and all point the right way.
-
-If contribution volume rises later — or if **Settings → Profile → Include private
-contributions on my profile** is enabled, which publishes the counts without
-exposing the repos — a heatmap becomes worth adding. `data/github.json` already
-carries the full daily calendar and computed streaks, so nothing needs
-re-fetching.
+Language-mix percentages and recent-push lists were both cut. Byte totals and a
+follower count sat in an earlier version of this section and are gone too —
+GitHub's own profile page already shows contribution activity, and a README
+that recreates it in miniature is competing with GitHub rather than adding to
+it.
 
 ## Refresh
 
@@ -208,6 +215,7 @@ and language data only.
 
 - GitHub's image proxy caches SVGs, so a fresh commit can take a few minutes to
   appear on the profile.
-- `resvg` (used by `npm run bands`) renders a static frame at t=0, so animation
-  never shows there. To check motion, open `.cache/preview.html` in a browser.
+- `resvg` (used by `npm run bands`) renders a static frame at t=0, so the snake
+  and the spectrum both appear frozen there. To check motion, open
+  `.cache/preview.html` in a real browser.
 - JetBrains Mono has no `★` glyph; it renders as `.notdef`. Avoid it in labels.

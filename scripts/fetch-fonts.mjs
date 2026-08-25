@@ -1,19 +1,14 @@
 /**
- * Downloads the two faces the poster is set in.
+ * Downloads the one face the poster is set in: JetBrains Mono, three weights.
  *
- * They are committed to build/fonts so a build never depends on the network,
- * and so CI renders byte-identically to a local run. Both are SIL OFL 1.1,
- * which permits redistribution and embedding.
+ * Committed to build/fonts so a build never depends on the network, and so CI
+ * renders byte-identically to a local run. SIL OFL 1.1, which permits
+ * redistribution and embedding.
  */
 import fs from 'node:fs'
 import path from 'node:path'
 
 const FONTS = [
-  // Display — high-contrast didone. Its thick/thin strokes are what make the
-  // spectrum gradient read as a sheen rather than a flat colour wash.
-  ['BodoniModa.ttf', 'https://github.com/google/fonts/raw/main/ofl/bodonimoda/BodoniModa%5Bopsz,wght%5D.ttf'],
-  ['BodoniModa-Italic.ttf', 'https://github.com/google/fonts/raw/main/ofl/bodonimoda/BodoniModa-Italic%5Bopsz,wght%5D.ttf'],
-  // Data — everything with a table, figure or handle texture.
   ['JetBrainsMono-Regular.ttf', 'https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-Regular.ttf'],
   ['JetBrainsMono-Bold.ttf', 'https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-Bold.ttf'],
   ['JetBrainsMono-ExtraBold.ttf', 'https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-ExtraBold.ttf'],

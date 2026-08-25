@@ -73,7 +73,7 @@ function Capability({
   return (
     <>
       <g className="fade" style={{ animationDelay: `${delay}ms` }}>
-        <SectionHead y={y} label="capability" meta={`${domains.length} domains`} index={index} />
+        <SectionHead y={y} label="capability" index={index} />
       </g>
       {rows.map((row, i) => (
         <React.Fragment key={row.domain.key}>

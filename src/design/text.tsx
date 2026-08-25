@@ -2,16 +2,20 @@
  * Text rendering.
  *
  * Every glyph is converted to outlines at build time, so a viewer's installed
- * fonts never affect the result. The reference implementation this poster's
- * architecture is modelled on inlines a subsetted woff2 as a data URI instead;
- * outlining avoids that entirely — no @font-face to verify, no `font-display`
- * race when the SVG is rasterised, and nothing to fall back to.
+ * fonts never affect the result — no @font-face to verify, no `font-display`
+ * race when the SVG is rasterised, nothing to fall back to.
  *
- * Both faces go through one glyph registry: each unique glyph is emitted once
- * into <defs>, normalised to a 1000-unit em, then placed with <use> and a scale
- * transform. Kerning is applied to the cursor at placement time. Emitting a
- * merged <path> per string is simpler but repeats the same outlines hundreds of
- * times across the poster — it took the two theme files from 158 KB to 458 KB.
+ * One family only: JetBrains Mono, in three weights. Headline and body text
+ * both go through the exact same glyph registry and the exact same fixed
+ * 0.6em advance — there is no separate "display face" any more, which removes
+ * an entire class of bug (a previous serif display face used a different
+ * units-per-em from the mono face, and kerning made width non-arithmetic).
+ * A merged monospace headline is also what gives the poster its terminal/
+ * dev-tool register rather than an editorial one.
+ *
+ * `Display` stays as its own component because sections read better calling
+ * a name that means "headline" — but it is a thin wrapper: same registry,
+ * same fixed-advance math, just a bolder default weight.
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -20,20 +24,16 @@ import * as React from 'react'
 import { FONT_DIR } from '../paths'
 
 const FILES = {
-  display: 'BodoniModa.ttf',
-  displayItalic: 'BodoniModa-Italic.ttf',
   mono: 'JetBrainsMono-Regular.ttf',
   monoBold: 'JetBrainsMono-Bold.ttf',
   monoXBold: 'JetBrainsMono-ExtraBold.ttf',
 } as const
 
-export type FontKey = keyof typeof FILES
-export type MonoWeight = 'mono' | 'monoBold' | 'monoXBold'
-export type DisplayWeight = 'display' | 'displayItalic'
+export type MonoWeight = keyof typeof FILES
 
-const cache = new Map<FontKey, Font>()
+const cache = new Map<MonoWeight, Font>()
 
-function load(key: FontKey): Font {
+function load(key: MonoWeight): Font {
   const hit = cache.get(key)
   if (hit) return hit
   const file = path.join(FONT_DIR, FILES[key])
@@ -45,80 +45,34 @@ function load(key: FontKey): Font {
   return font
 }
 
-/** JetBrains Mono advances every glyph at exactly 0.6em — layout is arithmetic. */
+/**
+ * JetBrains Mono advances every glyph at exactly 0.6em, verified identical
+ * across all three weights — layout is arithmetic, no per-glyph measurement.
+ */
 export const MONO_ADVANCE = 0.6
 
-/**
- * Registry outlines are normalised to this em, so one def serves every size.
- *
- * It is NOT each font's own unitsPerEm: JetBrains Mono is 1000 but Bodoni Moda
- * is 2000. Scaling a normalised path by `size / unitsPerEm` renders Bodoni at
- * half size while still advancing the cursor by the full width, which shows up
- * as wildly loose letter-spacing rather than as an obviously wrong size.
- */
+/** Registry outlines are normalised to this em; one def serves every size. */
 const NORMALISED_EM = 1000
-
-// ---------------------------------------------------------------------------
-// Display composition
-// ---------------------------------------------------------------------------
-
-/**
- * Note on shaping: glyphs are walked directly rather than via `font.getPath`.
- * getPath runs opentype's full feature/Bidi pipeline, which throws outright on
- * Bodoni Moda (`lookupType: 6 substFormat: 2 is not yet supported`). Walking
- * glyphs sidesteps the feature tables and still applies pair kerning — the only
- * shaping a Latin display line actually needs.
- */
-
-export function measureDisplay(
-  text: string,
-  size: number,
-  track = 0,
-  weight: DisplayWeight = 'display',
-): number {
-  if (!text) return 0
-  const font = load(weight)
-  const scale = size / font.unitsPerEm
-  let w = 0
-  const glyphs = [...text].map((ch) => font.charToGlyph(ch))
-  glyphs.forEach((glyph, i) => {
-    w += (glyph.advanceWidth ?? 0) * scale
-    const next = glyphs[i + 1]
-    if (next) w += font.getKerningValue(glyph, next) * scale + track
-  })
-  return w
-}
-
-/**
- * Largest display size at which every line still fits `maxWidth`.
- * Lets the masthead fill its column instead of being tuned to a magic number.
- */
-export function fitDisplay(lines: string[], maxWidth: number, maxSize: number, track = 0): number {
-  const at100 = Math.max(...lines.map((l) => measureDisplay(l, 100, (track * 100) / maxSize)))
-  return Math.min(maxSize, Math.floor((maxWidth / at100) * 100))
-}
 
 // ---------------------------------------------------------------------------
 // Glyph registry
 // ---------------------------------------------------------------------------
 
 /**
- * Collects unique mono glyphs while a tree renders. renderToStaticMarkup is
+ * Collects unique glyphs while a tree renders. renderToStaticMarkup is
  * synchronous, so the registry is complete by the time the string comes back
  * and the caller can emit <defs> ahead of it.
  */
-const ID_PREFIX: Record<FontKey, string> = {
+const ID_PREFIX: Record<MonoWeight, string> = {
   mono: 'r',
   monoBold: 'b',
   monoXBold: 'x',
-  display: 'd',
-  displayItalic: 'i',
 }
 
 export class GlyphRegistry {
   private defs = new Map<string, string>()
 
-  id(key: FontKey, ch: string): string {
+  id(key: MonoWeight, ch: string): string {
     const code = ch.codePointAt(0)!.toString(36)
     const id = `${ID_PREFIX[key]}${code}`
     if (!this.defs.has(id)) {
@@ -156,7 +110,7 @@ function registry(): GlyphRegistry {
 }
 
 // ---------------------------------------------------------------------------
-// Measurement helpers
+// Measurement
 // ---------------------------------------------------------------------------
 
 export function measureMono(text: string, size: number, track = 0): number {
@@ -165,42 +119,23 @@ export function measureMono(text: string, size: number, track = 0): number {
 }
 
 /** Cap height as a fraction of size — used to optically centre text in a box. */
-export const CAP = { mono: 0.73, display: 0.7 } as const
+export const CAP_HEIGHT = 0.73
 
-export function centerBaseline(
-  top: number,
-  h: number,
-  size: number,
-  family: 'mono' | 'display' = 'mono',
-) {
-  return top + h / 2 + (size * CAP[family]) / 2
+export function centerBaseline(top: number, h: number, size: number) {
+  return top + h / 2 + (size * CAP_HEIGHT) / 2
 }
 
 export function round(n: number): number {
   return Math.round(n * 100) / 100
 }
 
-/** Greedy word wrap for the display face, on real kerned widths. */
-export function wrapDisplay(
-  text: string,
-  size: number,
-  maxWidth: number,
-  weight: DisplayWeight = 'display',
-  track = 0,
-): string[] {
-  const words = text.split(/\s+/).filter(Boolean)
-  const lines: string[] = []
-  let line = ''
-  for (const word of words) {
-    const next = line ? `${line} ${word}` : word
-    if (measureDisplay(next, size, track, weight) <= maxWidth || !line) line = next
-    else {
-      lines.push(line)
-      line = word
-    }
-  }
-  if (line) lines.push(line)
-  return lines
+/**
+ * Largest size at which every line still fits `maxWidth`.
+ * Lets the masthead fill its column instead of being tuned to a magic number.
+ */
+export function fitMono(lines: string[], maxWidth: number, maxSize: number, track = 0): number {
+  const at100 = Math.max(...lines.map((l) => measureMono(l, 100, (track * 100) / maxSize)))
+  return Math.min(maxSize, Math.floor((maxWidth / at100) * 100))
 }
 
 /** Greedy word wrap on measured widths. The caller decides leading. */
@@ -286,73 +221,15 @@ export function Mono({
   )
 }
 
-export interface DisplayProps {
-  x: number
-  y: number
-  children: string
-  size?: number
-  fill?: string
-  track?: number
-  anchor?: Anchor
-  weight?: DisplayWeight
-  opacity?: number
-  className?: string
-  style?: React.CSSProperties
+export interface DisplayProps extends Omit<MonoProps, 'weight'> {
+  weight?: MonoWeight
 }
 
-/**
- * A display line, placed glyph by glyph from the shared registry with pair
- * kerning applied to the cursor.
- *
- * Emitting one merged <path> per string is simpler, but Bodoni's outlines are
- * dense and the poster repeats the same letters hundreds of times across titles,
- * labels and figures — merging took the two files to 458 KB. Referencing one def
- * per unique glyph brings that down by roughly three quarters.
- */
-export function Display({
-  x,
-  y,
-  children,
-  size = 40,
-  fill = 'currentColor',
-  track = 0,
-  anchor = 'start',
-  weight = 'display',
-  opacity,
-  className,
-  style,
-}: DisplayProps) {
-  const reg = registry()
-  const font = load(weight)
-  const text = String(children)
-  // Two different scales, deliberately: outlines are normalised to
-  // NORMALISED_EM, advances come from the font's own em.
-  const renderScale = (size / NORMALISED_EM).toFixed(5)
-  const advanceScale = size / font.unitsPerEm
-  let cursor = x + offsetFor(anchor, measureDisplay(text, size, track, weight))
-
-  const glyphs = [...text].map((ch) => ({ ch, glyph: font.charToGlyph(ch) }))
-  const nodes: React.ReactNode[] = []
-
-  glyphs.forEach(({ ch, glyph }, i) => {
-    if (glyph.advanceWidth === undefined) return
-    if (ch !== ' ') {
-      nodes.push(
-        <use
-          key={nodes.length}
-          href={`#${reg.id(weight, ch)}`}
-          transform={`translate(${round(cursor)} ${round(y)}) scale(${renderScale})`}
-        />,
-      )
-    }
-    cursor += glyph.advanceWidth * advanceScale + track
-    const next = glyphs[i + 1]
-    if (next) cursor += font.getKerningValue(glyph, next.glyph) * advanceScale
-  })
-
-  return (
-    <g fill={fill} opacity={opacity} className={className} style={style}>
-      {nodes}
-    </g>
-  )
+/** Headline text. Identical to Mono, just bolder by default — see file header. */
+export function Display({ weight = 'monoXBold', ...rest }: DisplayProps) {
+  return <Mono weight={weight} {...rest} />
 }
+
+export const measureDisplay = measureMono
+export const fitDisplay = fitMono
+export const wrapDisplay = wrapMono

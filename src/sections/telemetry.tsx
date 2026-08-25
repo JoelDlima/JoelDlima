@@ -1,77 +1,34 @@
-import * as React from 'react'
 import { MARGIN, W, CONTENT, type as t, tracking } from '../design/tokens'
 import { Mono, round } from '../design/text'
-import { SectionHead, HEAD_H, Figure, SpectralBand, spectralBandHeight, Rule } from '../design/primitives'
+import { SectionHead, HEAD_H, Figure } from '../design/primitives'
 import { useTheme, SPECTRUM } from '../design/render'
 import type { Snapshot } from '../data/github'
 import type { Section } from './types'
 
 const AFTER_HEAD = 34
-const BAND_H = 13
-const TOP_LANGS = 6
+const CELL = 8
+const GAP = 2.5
+const STEP = CELL + GAP
+const ROWS = 7
 
 /**
- * Language mix, weighted by bytes, excluding markup and build config.
+ * Telemetry: streaks, the contribution calendar, and a route drawn through the
+ * days that actually had commits.
  *
- * Counting HTML and CSS as "languages written" flatters everyone equally and
- * tells a reader nothing about what someone actually programs in.
- */
-const NOT_A_LANGUAGE = new Set([
-  'HTML', 'CSS', 'SCSS', 'Sass', 'Less', 'MDX', 'TeX', 'Roff', 'CMake', 'Makefile',
-  'Dockerfile', 'Batchfile', 'Procfile', 'Nix', 'Jupyter Notebook', 'EJS', 'Handlebars',
-  'Pug', 'Blade', 'Mustache', 'Vim Script', 'Gnuplot', 'RTF', 'Shell', 'PowerShell',
-])
-
-export function languageMix(snap: Snapshot) {
-  const entries = Object.entries(snap.languages)
-    .filter(([name]) => !NOT_A_LANGUAGE.has(name))
-    .sort((a, b) => b[1] - a[1])
-  const total = entries.reduce((sum, [, bytes]) => sum + bytes, 0) || 1
-  const top = entries.slice(0, TOP_LANGS)
-  const rest = total - top.reduce((sum, [, bytes]) => sum + bytes, 0)
-  const segments = top.map(([name, bytes]) => ({
-    label: name.toLowerCase(),
-    pct: bytes / total,
-    value: `${((bytes / total) * 100).toFixed(0)}%`,
-  }))
-  if (rest > 0) {
-    segments.push({ label: 'other', pct: rest / total, value: `${((rest / total) * 100).toFixed(0)}%` })
-  }
-  // `count` is the real number of languages, which is not segments.length —
-  // that only equals it when nothing spilled into an "other" bucket.
-  return { segments, total, count: entries.length }
-}
-
-/**
- * Telemetry, read straight from the GitHub API.
- *
- * Contribution streaks and a heatmap are the obvious things to put here and are
- * deliberately absent: Joel commits in bursts and most of his work sits in
- * private repos, so a 12-month grid renders as a near-empty field and reads as
- * inactivity rather than as the missing data it actually is. Volume of code,
- * language mix and recent pushes are all measurable and all honest.
+ * An earlier version of this section led with language-mix percentages and
+ * byte counts instead of the calendar — measurable, but not what anyone asked
+ * for. This is the grid and the streak figures GitHub's own profile shows,
+ * rebuilt from the same daily data already sitting in data/github.json.
  */
 export const telemetry: Section = ({ y, snap, delay, index }) => {
-  const { segments } = languageMix(snap)
-  // Clears the figure captions above. At +78 the band's own label collided
-  // with them, which only shows up once a caption is long enough to reach it.
-  const bandTop = y + HEAD_H + AFTER_HEAD + 112
-  const bandH = spectralBandHeight(segments.length, BAND_H)
-  const pushesTop = bandTop + bandH + 34
-  const height = pushesTop + 4 * 19 + 6 - y
+  const figTop = y + HEAD_H + AFTER_HEAD + 30
+  const gridY = figTop + 40
+  const gridH = ROWS * STEP - GAP
+  const legendY = gridY + gridH + 22
+  const height = legendY + 14 - y
 
   return {
-    node: (
-      <Telemetry
-        y={y}
-        snap={snap}
-        delay={delay}
-        index={index}
-        segments={segments}
-        bandTop={bandTop}
-        pushesTop={pushesTop}
-      />
-    ),
+    node: <Telemetry y={y} snap={snap} delay={delay} index={index} figTop={figTop} gridY={gridY} legendY={legendY} />,
     height,
   }
 }
@@ -81,63 +38,44 @@ function Telemetry({
   snap,
   delay,
   index,
-  segments,
-  bandTop,
-  pushesTop,
+  figTop,
+  gridY,
+  legendY,
 }: {
   y: number
   snap: Snapshot
   delay: number
   index: string
-  segments: { label: string; pct: number; value: string }[]
-  bandTop: number
-  pushesTop: number
+  figTop: number
+  gridY: number
+  legendY: number
 }) {
   const theme = useTheme()
-  const { total, count } = languageMix(snap)
   const own = snap.repos.filter((r) => !r.isFork)
 
   const figures = [
-    { value: formatBytes(total), caption: 'source written' },
+    { value: String(snap.totals.contributionsYear), caption: 'contributions · 12mo' },
+    { value: String(snap.totals.longestStreak), unit: 'd', caption: 'longest streak' },
+    { value: String(snap.totals.currentStreak), unit: 'd', caption: 'current streak' },
     { value: String(own.length), caption: 'repositories' },
-    { value: String(count), caption: 'languages' },
-    { value: String(snap.user.followers), caption: 'followers' },
   ]
-
-  const recent = [...own]
-    .sort((a, b) => Date.parse(b.pushedAt) - Date.parse(a.pushedAt))
-    .slice(0, 4)
-
-  const figTop = y + HEAD_H + AFTER_HEAD + 34
   const colW = CONTENT / figures.length
 
   return (
     <>
       <g className="fade" style={{ animationDelay: `${delay}ms` }}>
-        <SectionHead
-          y={y}
-          label="telemetry"
-          meta={`generated ${snap.generatedAt.slice(0, 10)}`}
-          index={index}
-        />
+        <SectionHead y={y} label="telemetry" index={index} />
       </g>
 
-      {/* Headline figures */}
       {figures.map((fig, i) => (
-        <g key={fig.caption} className="rise" style={{ animationDelay: `${delay + 70 + i * 60}ms` }}>
-          <Figure
-            x={MARGIN + i * colW}
-            y={figTop}
-            value={fig.value}
-            caption={fig.caption}
-            size={t.figureL}
-          />
+        <g key={fig.caption} className="rise" style={{ animationDelay: `${delay + 60 + i * 55}ms` }}>
+          <Figure x={MARGIN + i * colW} y={figTop} value={fig.value} unit={fig.unit} caption={fig.caption} size={t.figureL} />
           {i > 0 && (
             <rect
               x={round(MARGIN + i * colW - 20)}
-              y={figTop - 30}
+              y={figTop - 26}
               width={1}
-              height={44}
+              height={40}
               fill={theme.line}
               opacity={theme.lineOpacity}
             />
@@ -145,93 +83,111 @@ function Telemetry({
         </g>
       ))}
 
-      {/* Language mix as one band being split, not as separate bars */}
-      <g className="fade" style={{ animationDelay: `${delay + 260}ms` }}>
-        <Mono
-          x={MARGIN}
-          y={bandTop - 14}
-          size={t.tiny}
-          weight="monoBold"
-          fill={theme.inkFaint}
-          track={tracking.label}
-        >
-          LANGUAGE MIX · BY BYTES
-        </Mono>
-        <Mono
-          x={W - MARGIN}
-          y={bandTop - 14}
-          size={t.tiny}
-          fill={theme.inkFaint}
-          anchor="end"
-          track={tracking.micro}
-        >
-          markup and build config excluded
-        </Mono>
-      </g>
-      <SpectralBand
-        x={MARGIN}
-        y={bandTop}
-        w={CONTENT}
-        h={BAND_H}
-        segments={segments}
-        delay={delay + 300}
-      />
+      <ContributionGrid snap={snap} x={MARGIN} y={gridY} delay={delay + 260} />
 
-      {/* Recent pushes */}
-      <g className="fade" style={{ animationDelay: `${delay + 380}ms` }}>
-        <Rule y={pushesTop - 22} opacity={theme.lineOpacity * 0.7} />
-        <Mono
-          x={MARGIN}
-          y={pushesTop - 4}
-          size={t.tiny}
-          weight="monoBold"
-          fill={theme.inkFaint}
-          track={tracking.label}
-        >
-          RECENT PUSHES
-        </Mono>
-        {recent.map((repo, i) => {
-          const ry = pushesTop + 18 + i * 19
-          return (
-            <React.Fragment key={repo.name}>
-              <rect x={MARGIN} y={ry - 5} width={4} height={4} rx={1} fill={SPECTRUM} opacity={0.9} />
-              <Mono x={MARGIN + 14} y={ry} size={t.bodyS} fill={theme.inkMuted}>
-                {repo.name.toLowerCase()}
-              </Mono>
-              <Mono x={MARGIN + 250} y={ry} size={t.tiny} fill={theme.inkFaint}>
-                {(repo.language ?? '—').toLowerCase()}
-              </Mono>
-              <Mono
-                x={W - MARGIN}
-                y={ry}
-                size={t.tiny}
-                fill={theme.inkFaint}
-                anchor="end"
-                track={tracking.micro}
-              >
-                {relativeDate(repo.pushedAt, snap.generatedAt)}
-              </Mono>
-            </React.Fragment>
-          )
-        })}
-      </g>
+      <Legend x={MARGIN} y={legendY} />
+      <Mono x={W - MARGIN} y={legendY + 4} size={t.tiny} fill={theme.inkFaint} anchor="end" track={tracking.micro}>
+        {`${snap.calendar.length} days`}
+      </Mono>
     </>
   )
 }
 
-function formatBytes(bytes: number): string {
-  if (bytes >= 1_000_000) return `${(bytes / 1_000_000).toFixed(1)}MB`
-  if (bytes >= 1_000) return `${Math.round(bytes / 1_000)}KB`
-  return String(bytes)
+// ---------------------------------------------------------------------------
+// Grid + route
+// ---------------------------------------------------------------------------
+
+function bandOf(count: number, max: number): number {
+  if (count <= 0) return 0
+  if (max <= 0) return 1
+  return Math.min(4, 1 + Math.floor((count / max) * 3))
 }
 
-function relativeDate(iso: string, nowIso: string): string {
-  const days = Math.floor((Date.parse(nowIso) - Date.parse(iso)) / 86_400_000)
-  if (days <= 0) return 'today'
-  if (days === 1) return 'yesterday'
-  if (days < 30) return `${days} days ago`
-  const months = Math.floor(days / 30)
-  if (months < 12) return `${months} month${months === 1 ? '' : 's'} ago`
-  const years = Math.floor(days / 365)
-  return `${years} year${years === 1 ? '' : 's'} ago`
+function ContributionGrid({
+  snap,
+  x,
+  y,
+  delay,
+}: {
+  snap: Snapshot
+  x: number
+  y: number
+  delay: number
+}) {
+  const theme = useTheme()
+  const max = Math.max(1, ...snap.calendar.map((d) => d.count))
+
+  const cells = snap.calendar.map((day, i) => {
+    const col = Math.floor(i / ROWS)
+    const row = i % ROWS
+    return { ...day, col, row, cx: x + col * STEP + CELL / 2, cy: y + row * STEP + CELL / 2 }
+  })
+
+  const lit = cells.filter((c) => c.count > 0)
+  const routeD = lit.length >= 2 ? `M${lit.map((c) => `${round(c.cx)} ${round(c.cy)}`).join('L')}` : null
+
+  return (
+    <g className="fade" style={{ animationDelay: `${delay}ms` }}>
+      {cells.map((c, i) => (
+        <rect
+          key={c.date}
+          x={round(x + c.col * STEP)}
+          y={round(y + c.row * STEP)}
+          width={CELL}
+          height={CELL}
+          rx={1.5}
+          fill={c.count > 0 ? SPECTRUM : theme.ink}
+          fillOpacity={c.count > 0 ? [0, 0.32, 0.52, 0.74, 1][bandOf(c.count, max)] : 0.08}
+          className={c.count > 0 ? 'ignite' : undefined}
+          style={c.count > 0 ? { animationDelay: `${delay + Math.min(i, 120) * 4}ms` } : undefined}
+        />
+      ))}
+
+      {routeD && (
+        <>
+          {/* The static route: every commit day this year, connected in order. */}
+          <path d={routeD} fill="none" stroke={SPECTRUM} strokeWidth={1} strokeOpacity={0.35} strokeDasharray="1 3" strokeLinecap="round" />
+          {/* A three-segment snake travelling that same route, trailing itself
+              via negative `begin` offsets on duplicate motion paths. */}
+          <Snake pathD={routeD} />
+        </>
+      )}
+    </g>
+  )
+}
+
+/** Three trailing segments on one motion path — reads as a body, not a dot. */
+function Snake({ pathD }: { pathD: string }) {
+  const segments = [
+    { begin: '0s', size: 4.5, opacity: 1 },
+    { begin: '-0.55s', size: 3.6, opacity: 0.7 },
+    { begin: '-1.1s', size: 2.8, opacity: 0.42 },
+  ]
+  return (
+    <>
+      {segments.map((seg, i) => (
+        <rect key={i} x={-seg.size / 2} y={-seg.size / 2} width={seg.size} height={seg.size} rx={1} fill={SPECTRUM} opacity={seg.opacity}>
+          <animateMotion dur="17s" begin={seg.begin} repeatCount="indefinite" rotate="auto" path={pathD} />
+        </rect>
+      ))}
+    </>
+  )
+}
+
+function Legend({ x, y }: { x: number; y: number }) {
+  const theme = useTheme()
+  const swatchOpacity = [0.08, 0.32, 0.52, 0.74, 1]
+  return (
+    <g>
+      <Mono x={x} y={y + 4} size={t.tiny} fill={theme.inkFaint}>
+        less
+      </Mono>
+      {swatchOpacity.map((o, i) => (
+        <rect key={i} x={x + 26 + i * 12} y={y - 6} width={8} height={8} rx={1.5} fill={i === 0 ? theme.ink : SPECTRUM} fillOpacity={o} />
+      ))}
+      <Mono x={x + 26 + swatchOpacity.length * 12 + 6} y={y + 4} size={t.tiny} fill={theme.inkFaint}>
+        more
+      </Mono>
+    </g>
+  )
 }

@@ -219,6 +219,7 @@ export function Figure({
   x,
   y,
   value,
+  unit,
   caption,
   size = t.figureXL,
   anchor = 'start',
@@ -227,17 +228,30 @@ export function Figure({
   x: number
   y: number
   value: string
+  /** Short suffix drawn smaller beside the value, e.g. "d" for days. */
+  unit?: string
   caption: string
   size?: number
   anchor?: 'start' | 'end'
   spectrum?: boolean
 }) {
   const theme = useTheme()
+  const hue = spectrum ? SPECTRUM : theme.ink
+  const valueW = measureMono(value, size, -0.5)
+  // The value's right edge sits at x+valueW when left-anchored, or at x itself
+  // when right-anchored (anchor="end" means the text ENDS at x). The unit
+  // always sits just past that right edge, growing further right either way.
+  const unitX = (anchor === 'end' ? x : x + valueW) + 4
   return (
     <>
-      <Display x={x} y={y} size={size} fill={spectrum ? SPECTRUM : theme.ink} anchor={anchor}>
+      <Display x={x} y={y} size={size} fill={hue} track={-0.5} anchor={anchor}>
         {value}
       </Display>
+      {unit && (
+        <Mono x={unitX} y={y} size={t.label} weight="monoBold" fill={hue} opacity={0.7}>
+          {unit}
+        </Mono>
+      )}
       <Mono
         x={x}
         y={y + 21}
