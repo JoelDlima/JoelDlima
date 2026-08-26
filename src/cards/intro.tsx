@@ -31,37 +31,88 @@ export function IntroCard() {
 
   return (
     <>
-      {/* ── Dither background ─────────────────────────────────────────── */}
+      {/* ── Dither background — animated wave motion via SMIL ────────── */}
       <defs>
-        <filter id="dither" x="0" y="0" width="100%" height="100%">
+        {/* Layer 1: base dithered noise, waveSpeed 0.05 → ~20s cycle */}
+        <filter id="dither1" x="0" y="0" width="100%" height="100%">
           <feTurbulence
             type="fractalNoise"
             baseFrequency="0.65"
             numOctaves="3"
             seed="2"
             result="noise"
-          />
+          >
+            {/* waveFrequency=3 → 3 cycles in baseFrequency range */}
+            <animate
+              attributeName="baseFrequency"
+              values="0.62;0.68;0.62"
+              dur="20s"
+              repeatCount="indefinite"
+            />
+            {/* waveSpeed=0.05 → seed shifts slowly for organic drift */}
+            <animate
+              attributeName="seed"
+              values="2;5;3;6;2"
+              dur="40s"
+              repeatCount="indefinite"
+            />
+          </feTurbulence>
           <feComponentTransfer in="noise" result="quantized">
-            <feFuncR type="discrete" tableValues="0 0.15 0.3 0.45" />
-            <feFuncG type="discrete" tableValues="0 0.15 0.3 0.45" />
-            <feFuncB type="discrete" tableValues="0 0.15 0.3 0.45" />
+            <feFuncR type="discrete" tableValues="0 0.12 0.25 0.4" />
+            <feFuncG type="discrete" tableValues="0 0.12 0.25 0.4" />
+            <feFuncB type="discrete" tableValues="0 0.12 0.25 0.4" />
           </feComponentTransfer>
-          <feColorMatrix
-            type="saturate"
-            values="0"
-            in="quantized"
-            result="greyNoise"
-          />
+          <feColorMatrix type="saturate" values="0" in="quantized" result="grey1" />
+        </filter>
+
+        {/* Layer 2: finer grain, offset phase for depth */}
+        <filter id="dither2" x="0" y="0" width="100%" height="100%">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="1.2"
+            numOctaves="2"
+            seed="7"
+            result="fine"
+          >
+            <animate
+              attributeName="baseFrequency"
+              values="1.15;1.25;1.15"
+              dur="15s"
+              repeatCount="indefinite"
+            />
+            <animate
+              attributeName="seed"
+              values="7;11;7"
+              dur="30s"
+              repeatCount="indefinite"
+            />
+          </feTurbulence>
+          <feComponentTransfer in="fine" result="qFine">
+            <feFuncR type="discrete" tableValues="0 0.2 0.5" />
+            <feFuncG type="discrete" tableValues="0 0.2 0.5" />
+            <feFuncB type="discrete" tableValues="0 0.2 0.5" />
+          </feComponentTransfer>
+          <feColorMatrix type="saturate" values="0" in="qFine" result="grey2" />
         </filter>
       </defs>
 
+      {/* Base wave layer */}
       <rect
         x="0"
         y="0"
         width={W}
         height={INTRO_H}
-        filter="url(#dither)"
-        opacity="0.12"
+        filter="url(#dither1)"
+        opacity="0.14"
+      />
+      {/* Fine grain overlay — adds texture depth */}
+      <rect
+        x="0"
+        y="0"
+        width={W}
+        height={INTRO_H}
+        filter="url(#dither2)"
+        opacity="0.06"
       />
 
       {/* ── DepthText — 3D layered name ────────────────────────────────── */}
