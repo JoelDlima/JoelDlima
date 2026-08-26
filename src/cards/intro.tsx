@@ -11,7 +11,7 @@ import { Mono, Display, fitDisplay } from '../design/text'
 import { useTheme } from '../design/render'
 import { identity, academics } from '../data/profile'
 
-export const INTRO_H = 350
+export const INTRO_H = 378
 
 const NAME = "JOEL D'LIMA"
 
@@ -173,6 +173,133 @@ export function IntroCard() {
         >
           {identity.focus.toLowerCase()}
         </Mono>
+      </g>
+
+      {/* ── Factory scene — conveyor belt, gears, products, steam ──── */}
+      <g className="fade" style={{ animationDelay: '350ms' }}>
+        {/* Steam particles — above the left gear */}
+        <circle cx={MARGIN + 14} cy={272} r={4} fill={theme.inkMuted} className="steam" opacity="0.35" />
+        <circle cx={MARGIN + 6} cy={268} r={3} fill={theme.inkMuted} className="steam-2" opacity="0.25" />
+        <circle cx={MARGIN + 22} cy={270} r={2.5} fill={theme.inkMuted} className="steam" opacity="0.2" style={{ animationDelay: '1.8s' }} />
+
+        {/* Left gear — 12 teeth, spins clockwise */}
+        <g className="gear-spin">
+          <circle cx={MARGIN + 14} cy={298} r={11} fill="none" stroke={DEPTH_COLOR} strokeWidth={2.5} opacity={0.45} />
+          <circle cx={MARGIN + 14} cy={298} r={5.5} fill="none" stroke={DEPTH_COLOR} strokeWidth={1.5} opacity={0.35} />
+          <circle cx={MARGIN + 14} cy={298} r={2} fill={DEPTH_COLOR} opacity={0.55} />
+          {Array.from({ length: 8 }, (_, i) => {
+            const a = (i * 45 * Math.PI) / 180
+            const r1 = 9, r2 = 14
+            return (
+              <line
+                key={`gl-${i}`}
+                x1={MARGIN + 14 + Math.cos(a) * r1}
+                y1={298 + Math.sin(a) * r1}
+                x2={MARGIN + 14 + Math.cos(a) * r2}
+                y2={298 + Math.sin(a) * r2}
+                stroke={DEPTH_COLOR}
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                opacity={0.4}
+              />
+            )
+          })}
+        </g>
+
+        {/* Right gear — spins counter-clockwise, offset radius for meshing */}
+        <g className="gear-spin-rev">
+          <circle cx={W - MARGIN - 14} cy={298} r={8} fill="none" stroke={DEPTH_COLOR} strokeWidth={2} opacity={0.35} />
+          <circle cx={W - MARGIN - 14} cy={298} r={4} fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.28} />
+          <circle cx={W - MARGIN - 14} cy={298} r={1.5} fill={DEPTH_COLOR} opacity={0.45} />
+          {Array.from({ length: 6 }, (_, i) => {
+            const a = (i * 60 * Math.PI) / 180
+            const r1 = 6.5, r2 = 10.5
+            return (
+              <line
+                key={`gr-${i}`}
+                x1={W - MARGIN - 14 + Math.cos(a) * r1}
+                y1={298 + Math.sin(a) * r1}
+                x2={W - MARGIN - 14 + Math.cos(a) * r2}
+                y2={298 + Math.sin(a) * r2}
+                stroke={DEPTH_COLOR}
+                strokeWidth={2}
+                strokeLinecap="round"
+                opacity={0.3}
+              />
+            )
+          })}
+        </g>
+
+        {/* Conveyor belt — horizontal track with roller wheels */}
+        <line
+          x1={MARGIN + 26}
+          y1={294}
+          x2={W - MARGIN - 26}
+          y2={294}
+          stroke={DEPTH_COLOR}
+          strokeWidth={3}
+          strokeDasharray="4 2"
+          opacity={0.3}
+          className="belt-move"
+        />
+        <line
+          x1={MARGIN + 26}
+          y1={302}
+          x2={W - MARGIN - 26}
+          y2={302}
+          stroke={DEPTH_COLOR}
+          strokeWidth={3}
+          strokeDasharray="4 2"
+          opacity={0.25}
+          className="belt-move"
+        />
+        {/* Belt rails */}
+        <line x1={MARGIN + 26} y1={290} x2={W - MARGIN - 26} y2={290} stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.15} />
+        <line x1={MARGIN + 26} y1={306} x2={W - MARGIN - 26} y2={306} stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.15} />
+        {/* Belt roller wheels */}
+        {[0.2, 0.4, 0.6, 0.8].map((frac, i) => (
+          <circle
+            key={`rw-${i}`}
+            cx={MARGIN + 26 + (W - 2 * MARGIN - 52) * frac}
+            cy={298}
+            r={2}
+            fill="none"
+            stroke={DEPTH_COLOR}
+            strokeWidth={1}
+            opacity={0.2}
+          />
+        ))}
+
+        {/* Products on belt — small chip-like boxes sliding right-to-left */}
+        <g className="product-slide">
+          <rect x={0} y={289} width={14} height={7} rx={1.5} fill={DEPTH_COLOR} opacity={0.35} />
+          <line x1={2} y1={291} x2={12} y2={291} stroke={theme.ink} strokeWidth={0.5} opacity={0.3} />
+          <line x1={2} y1={293.5} x2={9} y2={293.5} stroke={theme.ink} strokeWidth={0.5} opacity={0.2} />
+        </g>
+        <g className="product-slide-2">
+          <rect x={0} y={289} width={14} height={7} rx={1.5} fill={DEPTH_COLOR} opacity={0.35} />
+          <line x1={2} y1={291} x2={12} y2={291} stroke={theme.ink} strokeWidth={0.5} opacity={0.3} />
+          <line x1={2} y1={293.5} x2={9} y2={293.5} stroke={theme.ink} strokeWidth={0.5} opacity={0.2} />
+        </g>
+        <g className="product-slide-3">
+          <rect x={0} y={289} width={14} height={7} rx={1.5} fill={DEPTH_COLOR} opacity={0.35} />
+          <line x1={2} y1={291} x2={12} y2={291} stroke={theme.ink} strokeWidth={0.5} opacity={0.3} />
+          <line x1={2} y1={293.5} x2={9} y2={293.5} stroke={theme.ink} strokeWidth={0.5} opacity={0.2} />
+        </g>
+
+        {/* Belt label — monospace, small, right-aligned */}
+        <text
+          x={W - MARGIN}
+          y={322}
+          fontFamily="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace"
+          fontSize="8"
+          fill={theme.inkFaint}
+          textAnchor="end"
+          letterSpacing="1.2"
+          opacity={0.5}
+        >
+          {'build → ship → repeat'}
+        </text>
       </g>
 
       {/* ── Keyed pin ─────────────────────────────────────────────────── */}

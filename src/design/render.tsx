@@ -61,12 +61,32 @@ const STYLES = `
 @keyframes cursor{0%,49%{opacity:1}50%,100%{opacity:0}}
 .conduct{animation:conduct ${motion.conductDur} linear infinite}
 @keyframes conduct{to{stroke-dashoffset:-96}}
+.gear-spin{transform-box:fill-box;transform-origin:center;animation:gear-spin 8s linear infinite}
+@keyframes gear-spin{to{transform:rotate(360deg)}}
+.gear-spin-rev{transform-box:fill-box;transform-origin:center;animation:gear-spin-rev 6s linear infinite}
+@keyframes gear-spin-rev{to{transform:rotate(-360deg)}}
+.belt-move{animation:belt-move 3s linear infinite}
+@keyframes belt-move{to{stroke-dashoffset:-24}}
+.product-slide{animation:product-slide 4s linear infinite}
+@keyframes product-slide{0%{transform:translateX(180px);opacity:0}5%{opacity:1}90%{opacity:1}100%{transform:translateX(-40px);opacity:0}}
+.product-slide-2{animation:product-slide-2 4s linear infinite 1.3s}
+@keyframes product-slide-2{0%{transform:translateX(180px);opacity:0}5%{opacity:1}90%{opacity:1}100%{transform:translateX(-40px);opacity:0}}
+.product-slide-3{animation:product-slide-3 4s linear infinite 2.6s}
+@keyframes product-slide-3{0%{transform:translateX(180px);opacity:0}5%{opacity:1}90%{opacity:1}100%{transform:translateX(-40px);opacity:0}}
+.steam{animation:steam 3s ease-out infinite}
+@keyframes steam{0%{opacity:0.5;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-20px) scale(1.8)}}
+.steam-2{animation:steam-2 3.5s ease-out infinite 1s}
+@keyframes steam-2{0%{opacity:0.4;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-18px) scale(1.6)}}
 @media (prefers-reduced-motion:reduce){
 .rise,.fade,.grow,.ignite{animation-duration:.01s}
 .rise{transform:none}
 .conduct{animation:none;stroke-dashoffset:-48}
 .cursor{animation:none}
 .blink{animation-duration:${motion.blinkDur};animation-timing-function:ease-in-out}
+.gear-spin,.gear-spin-rev{animation:none}
+.belt-move{animation:none}
+.product-slide,.product-slide-2,.product-slide-3{animation:none;transform:none;opacity:1}
+.steam,.steam-2{animation:none}
 }
 `.trim()
 
