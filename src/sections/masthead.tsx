@@ -11,13 +11,15 @@ const DISC_R = 62
 /**
  * The masthead. No section label — it is the one block allowed to just be big.
  *
- * The name is set in Bodoni caps and painted in the travelling spectrum; its
- * hairlines are what make the gradient read as light moving across the letters
- * rather than as a flat colour fill.
+ * The name is set in JetBrains Mono ExtraBold caps and painted in the travelling
+ * spectrum; its hairlines are what make the gradient read as light moving across
+ * the letters rather than as a flat colour fill. Under it, the one recruiter
+ * fact that outranks everything else on the page — the current appointment —
+ * gets a live blip and its own line.
  */
 export const masthead: Section = ({ y, delay }) => {
   const node = <Masthead y={y} delay={delay} />
-  return { node, height: 232 }
+  return { node, height: 250 }
 }
 
 function Masthead({ y, delay }: { y: number; delay: number }) {
@@ -63,9 +65,26 @@ function Masthead({ y, delay }: { y: number; delay: number }) {
         </Mono>
       </g>
 
-      <g className="fade" style={{ animationDelay: `${delay + 200}ms` }}>
-        <SpectrumRule y={y + 204} w={round(nameW)} h={2} />
-        <TickScale x={MARGIN} y={y + 210} w={CONTENT} count={60} height={5} />
+      {/* The appointment, with a breathing marker: the strongest single fact
+          for a recruiter, and the one thing an earlier revision of this poster
+          defined but never actually rendered. */}
+      <g className="fade" style={{ animationDelay: `${delay + 180}ms` }}>
+        <Blip x={MARGIN + 3} y={y + 198.5} r={2.2} />
+        <Mono
+          x={MARGIN + 14}
+          y={y + 202}
+          size={t.bodyS}
+          weight="monoBold"
+          fill={theme.inkMuted}
+          track={tracking.label}
+        >
+          {identity.status.toLowerCase()}
+        </Mono>
+      </g>
+
+      <g className="fade" style={{ animationDelay: `${delay + 220}ms` }}>
+        <SpectrumRule y={y + 222} w={round(nameW)} h={2} />
+        <TickScale x={MARGIN} y={y + 228} w={CONTENT} count={60} height={5} />
       </g>
 
       <SpectralDisc cx={discX} cy={discY} r={DISC_R} delay={delay + 160} />

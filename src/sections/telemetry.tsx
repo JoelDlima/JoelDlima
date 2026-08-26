@@ -17,9 +17,12 @@ const ROWS = 7
  *
  * An earlier version of this section led with language-mix percentages and
  * byte counts instead of the calendar — measurable, but not what anyone asked
- * for. This is the grid and the streak figures GitHub's own profile shows,
- * rebuilt from the same daily data already sitting in data/github.json.
+ * for. The figures are also set small on purpose: at 71 contributions and a
+ * two-day longest streak there is no number here worth shouting, and headline
+ * sizing would only draw attention to what the calendar already states more
+ * honestly. The grid is the story; the figures are its caption.
  */
+const FIG_SIZE = 26
 export const telemetry: Section = ({ y, snap, delay, index }) => {
   const figTop = y + HEAD_H + AFTER_HEAD + 30
   const gridY = figTop + 40
@@ -69,7 +72,7 @@ function Telemetry({
 
       {figures.map((fig, i) => (
         <g key={fig.caption} className="rise" style={{ animationDelay: `${delay + 60 + i * 55}ms` }}>
-          <Figure x={MARGIN + i * colW} y={figTop} value={fig.value} unit={fig.unit} caption={fig.caption} size={t.figureL} />
+          <Figure x={MARGIN + i * colW} y={figTop} value={fig.value} unit={fig.unit} caption={fig.caption} size={FIG_SIZE} />
           {i > 0 && (
             <rect
               x={round(MARGIN + i * colW - 20)}
@@ -156,12 +159,19 @@ function ContributionGrid({
   )
 }
 
-/** Three trailing segments on one motion path — reads as a body, not a dot. */
+/** Three segments on one motion path — reads as a body, not a dot.
+ *
+ *  Ordering note, measured rather than assumed: a negative `begin` puts a
+ *  segment FURTHER ALONG the path at any given instant, so the offsets here
+ *  are assigned to sizes back-to-front — the largest, brightest segment gets
+ *  the most-negative begin and therefore leads. Flip it and the snake swims
+ *  tail-first: bright dot dragging behind, faint dots pointing the way.
+ */
 function Snake({ pathD }: { pathD: string }) {
   const segments = [
-    { begin: '0s', size: 4.5, opacity: 1 },
+    { begin: '-1.1s', size: 4.5, opacity: 1 },
     { begin: '-0.55s', size: 3.6, opacity: 0.7 },
-    { begin: '-1.1s', size: 2.8, opacity: 0.42 },
+    { begin: '0s', size: 2.8, opacity: 0.42 },
   ]
   return (
     <>

@@ -70,9 +70,9 @@ export const themes: Record<'dark' | 'light', Theme> = {
     ground: '#0A0A0D',
     surface: '#131318',
     surfaceStrong: '#1B1B22',
-    ink: '#F4F4F8',
-    inkMuted: '#B4B4C0',
-    inkFaint: '#7A7A85',
+  ink: '#F4F4F8',
+  inkMuted: '#C2C2CE',
+  inkFaint: '#8B8B97',
     line: '#FFFFFF',
     lineOpacity: 0.09,
     spectrum: spectrumDark,
@@ -83,9 +83,9 @@ export const themes: Record<'dark' | 'light', Theme> = {
     ground: '#FBFAF9',
     surface: '#FFFFFF',
     surfaceStrong: '#F2F1EE',
-    ink: '#101014',
-    inkMuted: '#4B4B58',
-    inkFaint: '#7C7C88',
+  ink: '#101014',
+  inkMuted: '#41414D',
+  inkFaint: '#6B6B77',
     line: '#14141A',
     lineOpacity: 0.13,
     spectrum: spectrumLight,
@@ -98,9 +98,11 @@ export const themes: Record<'dark' | 'light', Theme> = {
 // ---------------------------------------------------------------------------
 
 /**
- * Two faces, split by role: Bodoni Moda carries identity and headline figures,
- * JetBrains Mono carries anything with a data texture. The contrast between
- * them is the poster's main typographic idea, so nothing sits in between.
+ * One family only: **JetBrains Mono**, in three weights (Regular, Bold,
+ * ExtraBold). An earlier generation used a second display face for headlines —
+ * dropped in favour of a single bold-mono register closer to a terminal or a
+ * dev-tool UI (Vercel, GitHub itself). One family also means one fixed 0.6em
+ * advance for every weight, so all layout math is exact arithmetic.
  */
 export const type = {
   masthead: 62,
@@ -150,6 +152,13 @@ export const radius = {
 export const motion = {
   /** One full spectrum turn. Slow enough to feel like light, not a rainbow. */
   spectrumDur: '26s',
+  /** Ambient signal traces cross the poster at three depths and three speeds —
+   *  the parallax is the speed difference, not the direction. */
+  traceDurs: ['46s', '58s', '72s'],
+  /** The instrument re-scans the page top to bottom on this loop. */
+  scanDur: '30s',
+  /** One light packet, top of the spine to the bottom. */
+  pulseDur: '16s',
   ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
   /** The entrance cascade advances by this much per section. */
   cascadeStep: 90,

@@ -27,6 +27,8 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { GlyphRegistry, withRegistry } from './text'
 import { W, motion, spectrumStops, type Theme } from './tokens'
 
+const r1 = (n: number) => Math.round(n * 10) / 10
+
 // ---------------------------------------------------------------------------
 // Theme plumbing
 // ---------------------------------------------------------------------------
@@ -79,6 +81,97 @@ const STYLES = `
 .blip{opacity:.6;transform:none;animation:none}
 }
 `.trim()
+
+// ---------------------------------------------------------------------------
+// Signal traces
+// ---------------------------------------------------------------------------
+
+/**
+ * One horizontal signal, sampled across `span`, deterministic to the digit —
+ * no Math.random anywhere near the render, or the daily workflow would commit
+ * noise. Every waveform is built from whole cycles across one poster width,
+ * which is what makes the drift loop seamless: shift by exactly W and the
+ * window lands on a shape identical to where it started.
+ */
+function tracePath(kind: 'sine' | 'clock' | 'analog', y: number, span: number): string {
+  const pts: string[] = []
+  const step = 9
+  for (let x = 0; x <= span; x += step) {
+    const u = (x / W) * Math.PI * 2
+    let dy = 0
+    if (kind === 'sine') dy = Math.sin(u * 6) * 7
+    if (kind === 'clock') dy = ((x / W) * 24) % 1 < 0.5 ? -5.5 : 5.5
+    if (kind === 'analog') dy = Math.sin(u * 3 + 1.2) * 4 + Math.sin(u * 11 + 0.4) * 2.5
+    pts.push(`${r1(x)} ${r1(y + dy)}`)
+  }
+  return `M${pts.join('L')}`
+}
+
+interface TraceSpec {
+  kind: 'sine' | 'clock' | 'analog'
+  /** Fraction of poster height the trace sits at. */
+  at: number
+  /** Base opacity before the theme's field opacity. */
+  o: number
+  dur: string
+}
+
+const TRACES: TraceSpec[] = [
+  { kind: 'sine', at: 0.1, o: 0.16, dur: motion.traceDurs[0] },
+  { kind: 'clock', at: 0.46, o: 0.12, dur: motion.traceDurs[1] },
+  { kind: 'analog', at: 0.8, o: 0.14, dur: motion.traceDurs[2] },
+]
+
+/** The three ambient signals, drifting left at different speeds. */
+function SignalTraces({ theme, height }: { theme: Theme; height: number }) {
+  return (
+    <g opacity={theme.fieldOpacity}>
+      {TRACES.map((t) => {
+        const y = Math.round(height * t.at)
+        return (
+          <path
+            key={t.kind}
+            d={tracePath(t.kind, y, W * 2)}
+            fill="none"
+            stroke="url(#spectrumH)"
+            strokeWidth={1.1}
+            opacity={t.o}
+          >
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              from="0 0"
+              to={`${-W} 0`}
+              dur={t.dur}
+              repeatCount="indefinite"
+            />
+          </path>
+        )
+      })}
+    </g>
+  )
+}
+
+/**
+ * The scan: a soft band of light travelling top to bottom, like an instrument
+ * re-sweeping its display. The hard restart at the bottom is deliberate — a
+ * scan that bounced back would read as a screensaver.
+ */
+function ScanBand({ theme, height }: { theme: Theme; height: number }) {
+  const band = 110
+  return (
+    <rect width={W} height={band} fill="url(#scanGrad)" opacity={theme.fieldOpacity * 1.4}>
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        from={`0 ${-band}`}
+        to={`0 ${height + band}`}
+        dur={motion.scanDur}
+        repeatCount="indefinite"
+      />
+    </rect>
+  )
+}
 
 // ---------------------------------------------------------------------------
 // Defs
@@ -139,24 +232,52 @@ function SpectrumDefs({ theme, height }: { theme: Theme; height: number }) {
           <stop offset="100%" stopColor={hue} stopOpacity="0" />
         </radialGradient>
       ))}
+
+      {/* Soft vertical band for the scan sweep. */}
+      <linearGradient id="scanGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor={theme.spectrum[0]} stopOpacity="0" />
+        <stop offset="0.5" stopColor={theme.spectrum[1]} stopOpacity="0.14" />
+        <stop offset="1" stopColor={theme.spectrum[2]} stopOpacity="0" />
+      </linearGradient>
+
+      {/* Fade-in/out cap for the spine pulse, so the packet never pops in or
+          out at the ends of its run. */}
+      <linearGradient id="spinePulse" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor={theme.spectrum[1]} stopOpacity="0" />
+        <stop offset="0.5" stopColor={theme.spectrum[1]} stopOpacity="0.9" />
+        <stop offset="1" stopColor={theme.spectrum[1]} stopOpacity="0" />
+      </linearGradient>
     </>
   )
 }
 
 /**
- * Ambient depth. Three slow blooms in the spectrum hues, drifting out of phase,
- * plus a fine lattice. Deliberately quiet: it should register as atmosphere, not
- * as an element you look at.
+ * Ambient depth, in three registered layers:
+ *
+ *   blooms   three slow spectrum glows drifting out of phase
+ *   lattice  the existing fine dot grid
+ *   graticule an oscilloscope grid — hairlines every 45px, heavier every 225px
+ *
+ * On top of the field sit the signal traces and the scan band, which carry the
+ * poster's identity: this is the page Joel's projects actually live on — a
+ * bench instrument — not a generic dark dashboard. All of it is deliberately
+ * quiet: atmosphere you register rather than an element you look at.
  */
 function AmbientField({ theme, height }: { theme: Theme; height: number }) {
   const o = theme.fieldOpacity
   return (
-    <g opacity={o}>
-      <circle className="drift" cx={W * 0.12} cy={height * 0.06} r={340} fill="url(#bloom0)" />
-      <circle className="driftB" cx={W * 0.94} cy={height * 0.42} r={380} fill="url(#bloom1)" />
-      <circle className="drift" cx={W * 0.2} cy={height * 0.86} r={360} fill="url(#bloom2)" />
-      <rect width={W} height={height} fill="url(#lattice)" opacity={theme.name === 'dark' ? 0.5 : 0.7} />
-    </g>
+    <>
+      <g opacity={o}>
+        <circle className="drift" cx={W * 0.12} cy={height * 0.06} r={340} fill="url(#bloom0)" />
+        <circle className="driftB" cx={W * 0.94} cy={height * 0.42} r={380} fill="url(#bloom1)" />
+        <circle className="drift" cx={W * 0.2} cy={height * 0.86} r={360} fill="url(#bloom2)" />
+        <rect width={W} height={height} fill="url(#lattice)" opacity={theme.name === 'dark' ? 0.5 : 0.7} />
+        <rect width={W} height={height} fill="url(#graticule)" opacity={theme.name === 'dark' ? 0.75 : 1} />
+        <rect width={W} height={height} fill="url(#graticuleMajor)" opacity={theme.name === 'dark' ? 0.9 : 1} />
+      </g>
+      <SignalTraces theme={theme} height={height} />
+      <ScanBand theme={theme} height={height} />
+    </>
   )
 }
 
@@ -198,6 +319,14 @@ export function renderPoster(node: React.ReactElement, opts: PosterOptions): str
           <SpectrumDefs theme={theme} height={height} />
           <pattern id="lattice" width={26} height={26} patternUnits="userSpaceOnUse">
             <circle cx={1} cy={1} r={0.9} fill={theme.ink} opacity={0.11} />
+          </pattern>
+          {/* Oscilloscope graticule: fine 45px cells, major lines every 225px.
+              Hairlines only — a filled grid would fight the text. */}
+          <pattern id="graticule" width={45} height={45} patternUnits="userSpaceOnUse">
+            <path d="M45 0H0V45" fill="none" stroke={theme.ink} strokeWidth={0.5} opacity={0.05} />
+          </pattern>
+          <pattern id="graticuleMajor" width={225} height={225} patternUnits="userSpaceOnUse">
+            <path d="M225 0H0V225" fill="none" stroke={theme.ink} strokeWidth={0.6} opacity={0.07} />
           </pattern>
           {defs ? <g dangerouslySetInnerHTML={{ __html: defs }} /> : null}
         </defs>

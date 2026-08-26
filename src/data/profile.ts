@@ -11,6 +11,12 @@ export const identity = {
   role: 'Electronics & Computer Engineering',
   /** One line. It has to earn its place next to a 82px name. */
   pitch: 'Firmware on the board, the API in between, the interface people touch.',
+  /** The plain-language version of the pitch, for the reader who did not
+   *  unpack the first line: what he builds and where he is doing it now.
+   *  Recruiter guidance is blunt about this — personality plus clarity. */
+  focus:
+    'Moves between hardware, backend and frontend to ship complete systems — ' +
+    'four months of startup development behind him, Visteon ahead.',
   location: 'Goa, India',
   status: 'Software Engineering Intern @ Visteon',
   email: 'joeldlima123@gmail.com',
@@ -140,6 +146,10 @@ export const alsoBuilt: { title: string; blurb: string }[] = [
   {
     title: 'Smart Eco-Well',
     blurb: 'TDS, turbidity and pH telemetry from an ESP32 to a live dashboard',
+  },
+  {
+    title: 'Palliative Care',
+    blurb: 'SpO2, ECG and fall-detection telemetry with threshold emergency alerts',
   },
   {
     title: 'Lead Genius',

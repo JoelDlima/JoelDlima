@@ -84,6 +84,36 @@ Hues are deliberately pulled off the obvious `#8B5CF6 / #3B82F6 / #EF4444`
 framework defaults, which read as generic neon. Lower saturation gives ink rather
 than glow.
 
+## The signal bench
+
+The ambient layer is themed as the one place Joel's work actually lives: a bench
+instrument. An oscilloscope graticule (hairlines every 45px, major lines every
+225px), three signal traces drifting across the full poster at different speeds,
+and a soft scan band sweeping top to bottom. An earlier, unrelated profile card
+went space-themed — starfields, moons, an astronaut; this is deliberately *not*
+that. Embedded engineers read signals, not stars, and a graticule behind a
+telemetry section makes the page feel like the hardware it describes.
+
+**The traces are seamless by construction, not by easing.** Each waveform is
+built from whole cycles per poster width (sine: 6, clock: 24 ticks, analog: 3+11
+harmonics), spans 2W, and translates by exactly −W per loop — so the window at
+t=T lands on a shape identical to t=0. Nothing to tune; change the frequencies
+only in whole numbers or the loop will visibly jump.
+
+**The scan restarts hard at the bottom on purpose.** A scan that eased back up
+reads as a screensaver; an instrument re-sweep is allowed to jump.
+
+**The spine carries a light packet** (90px, faded at both ends by `#spinePulse`)
+travelling top to bottom on a 16s loop, and every section head taps the spine
+with a **via** — a PCB pad ring with its drill hole — instead of a plain square
+marker. Both are SMIL/CSS like everything else; nothing depends on scripts.
+
+Under `prefers-reduced-motion` the entrance cascade collapses and the drifting
+blooms stop, but the spectrum, traces, scan, pulse and snake keep moving — that
+is the poster's identity, not decoration, and freezing it would leave a page
+that looks broken rather than calm. This is a deliberate, repeated decision:
+the same one the spectrum made originally.
+
 ## Typography
 
 One family only: **JetBrains Mono**, in three weights (Regular, Bold, ExtraBold).
@@ -112,9 +142,12 @@ them inside an `<img>`, which puts the SVG in "secure animated mode":
 | Animation | **Runs.** CSS keyframes and SMIL both play. |
 
 **Links.** The four contacts are drawn *inside* the poster so you can read them,
-**and** repeated underneath as clickable badges. There is no way to have both in
-one element: `<object>`, `<embed>`, inline `<svg>` and `<map>` are all stripped
-by the sanitiser.
+**and** repeated underneath as clickable badges; the selected-work list under
+the card carries the project/repo links for the same reason. There is no way to
+have links inside the poster itself: `<object>`, `<embed>`, inline `<svg>` and
+`<map>` are all stripped by the sanitiser, and an `<a>` behind an `<img>` is
+inert — which is also why the work section's header says "repos linked below
+the card" rather than pretending its titles can be clicked.
 
 **Fonts.** Rather than inlining a subsetted woff2 as a data URI, every glyph is
 converted to outlines at build time. Nothing to verify, no `font-display` race
@@ -133,12 +166,22 @@ GraphQL — nothing here is refetched). A three-segment marker travels the actua
 route through the days that had commits, via `<animateMotion>` along a path
 built from those days' cell centres in chronological order.
 
-**The snake is three offset copies of the same motion, not one.** Trailing is
-done with negative `begin` values (`-0.55s`, `-1.1s`) on duplicate
-`<animateMotion>` elements sharing one `dur` and one `path` — a negative begin
-means the animation is treated as already partway through when the document
-starts, which is what makes segment 2 and 3 appear to be following segment 1
-rather than all three moving in lockstep.
+**The four figures are deliberately set small (26px, not the 38–58px the other
+sections use for headline numbers).** The honest numbers here are modest — 71
+contributions, a two-day longest streak — and recruiter guidance is unanimous
+that you don't headline metrics that undersell you. The calendar and the snake
+are the section's reason to exist; the figures are their caption. If the
+account's activity grows, `FIG_SIZE` in `telemetry.tsx` is the one constant to
+raise.
+
+**The snake is three offset copies of the same motion, not one.** Spacing is
+done with negative `begin` values on duplicate `<animateMotion>` elements
+sharing one `dur` and one `path` — a negative begin means the animation is
+treated as already partway through when the document starts. Measured detail
+worth keeping: a *more* negative begin sits **further along the path** at any
+instant, so the offsets are assigned back-to-front — the largest, brightest
+segment carries the most-negative begin and leads. Assign them the other way
+and the snake swims tail-first (bright dot dragging, faint dots pointing).
 
 **Verifying SMIL motion cannot go through `element.transform.animVal`** — that
 stays empty for `<animateMotion>` in every browser tested. `element.getCTM()`

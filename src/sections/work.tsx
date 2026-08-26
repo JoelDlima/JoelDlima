@@ -68,7 +68,7 @@ function Work({
   return (
     <>
       <g className="fade" style={{ animationDelay: `${delay}ms` }}>
-        <SectionHead y={y} label="selected work" index={index} />
+        <SectionHead y={y} label="selected work" index={index} meta="repos linked below the card" />
       </g>
 
       {entries.map((entry, i) => {

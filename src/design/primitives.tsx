@@ -4,7 +4,7 @@
  * section use a different layout without the page falling apart.
  */
 import * as React from 'react'
-import { MARGIN, W, CONTENT, radius, tracking, type as t, type Theme } from './tokens'
+import { MARGIN, W, CONTENT, radius, tracking, motion, type as t, type Theme } from './tokens'
 import { Mono, Display, measureMono, centerBaseline, round } from './text'
 import { useTheme, SPECTRUM, SPECTRUM_H } from './render'
 
@@ -72,8 +72,10 @@ export function SectionHead({
   const numberW = index ? measureMono(index, t.label, tracking.sectionLabel) + 14 : 0
   return (
     <>
-      {/* Marker on the spine, so section starts are findable from the margin. */}
-      <rect x={SPINE_X - 3} y={y - 7} width={7} height={7} fill={SPECTRUM} />
+      {/* Via on the spine, so section starts are findable from the margin — a
+          PCB pad ring with its drill hole, not a plain square. */}
+      <circle cx={SPINE_X} cy={y - 3.5} r={4.2} fill="none" stroke={SPECTRUM} strokeWidth={1.1} opacity={0.9} />
+      <circle cx={SPINE_X} cy={y - 3.5} r={1.6} fill={SPECTRUM} />
       {index && (
         <Mono
           x={MARGIN}
@@ -443,6 +445,30 @@ export function Spine({ top, bottom, theme }: { top: number; bottom: number; the
     <>
       <rect x={SPINE_X} y={top} width={1} height={bottom - top} fill={theme.ink} opacity={0.1} />
       <rect x={SPINE_X} y={top} width={1} height={bottom - top} fill={SPECTRUM} opacity={0.5} />
+      <SpinePulse top={top} bottom={bottom} />
     </>
+  )
+}
+
+/**
+ * One light packet travelling the spine, top to bottom — the signal path the
+ * via markers tap into. Faded at both ends by #spinePulse so it never pops in
+ * or out at the extremes of its run.
+ */
+function SpinePulse({ top, bottom }: { top: number; bottom: number }) {
+  const h = 90
+  const travel = Math.max(0, bottom - top - h)
+  if (travel <= 0) return null
+  return (
+    <rect x={SPINE_X - 0.75} y={0} width={2.5} height={h} fill="url(#spinePulse)">
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        from={`0 ${top}`}
+        to={`0 ${top + travel}`}
+        dur={motion.pulseDur}
+        repeatCount="indefinite"
+      />
+    </rect>
   )
 }
