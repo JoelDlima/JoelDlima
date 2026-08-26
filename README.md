@@ -5,11 +5,7 @@
      assets/ for local preview. -->
 
 ```
-────────────────────────────────────────────────
-  01001010 01001111 01000101 01001100     · v2.5
-  firmware → api → interface
-  electronics & computer eng · visteon intern
-────────────────────────────────────────────────
+
 ```
 
 <img src="./assets/intro-dark.svg" alt="Joel D'Lima — Software Engineering Intern at Visteon. Embedded + full-stack." width="100%">
