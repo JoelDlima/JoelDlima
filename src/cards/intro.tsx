@@ -197,27 +197,27 @@ export function IntroCard() {
           x1={MARGIN + 50} y1={252}
           x2={MARGIN + 50} y2={286}
           stroke={DEPTH_COLOR} strokeWidth={1.5}
-          strokeDasharray="3 3" opacity={0.18}
+          strokeDasharray="3 3" opacity={0.4}
         />
-        <circle cx={MARGIN + 50} cy={286} r={2} fill={DEPTH_COLOR} opacity={0.25} />
+        <circle cx={MARGIN + 50} cy={286} r={2} fill={DEPTH_COLOR} opacity={0.55} />
 
         {/* Centre trace — vertical with right-angle jog */}
         <polyline
           points={`${MARGIN + 160},252 ${MARGIN + 160},268 ${MARGIN + 140},268 ${MARGIN + 140},286`}
           fill="none" stroke={DEPTH_COLOR} strokeWidth={1.5}
-          strokeDasharray="3 3" opacity={0.18}
+          strokeDasharray="3 3" opacity={0.4}
         />
-        <circle cx={MARGIN + 160} cy={268} r={2} fill={DEPTH_COLOR} opacity={0.25} />
-        <circle cx={MARGIN + 140} cy={268} r={2} fill={DEPTH_COLOR} opacity={0.25} />
+        <circle cx={MARGIN + 160} cy={268} r={2} fill={DEPTH_COLOR} opacity={0.55} />
+        <circle cx={MARGIN + 140} cy={268} r={2} fill={DEPTH_COLOR} opacity={0.55} />
 
         {/* Right trace — longer jog to reach far side of belt */}
         <polyline
           points={`${W - MARGIN - 100},252 ${W - MARGIN - 100},274 ${W - MARGIN - 80},274 ${W - MARGIN - 80},286`}
           fill="none" stroke={DEPTH_COLOR} strokeWidth={1.5}
-          strokeDasharray="3 3" opacity={0.18}
+          strokeDasharray="3 3" opacity={0.4}
         />
-        <circle cx={W - MARGIN - 100} cy={274} r={2} fill={DEPTH_COLOR} opacity={0.25} />
-        <circle cx={W - MARGIN - 80} cy={274} r={2} fill={DEPTH_COLOR} opacity={0.25} />
+        <circle cx={W - MARGIN - 100} cy={274} r={2} fill={DEPTH_COLOR} opacity={0.55} />
+        <circle cx={W - MARGIN - 80} cy={274} r={2} fill={DEPTH_COLOR} opacity={0.55} />
       </g>
 
       {/* ── Steam particles ─────────────────────────────────────────
@@ -225,9 +225,9 @@ export function IntroCard() {
        * so they don't pulse in sync. Larger particles = closer.
        * ────────────────────────────────────────────────────────────── */}
       <g className="fade" style={{ animationDelay: '750ms' }}>
-        <circle cx={MARGIN + 10} cy={275} r={3.5} fill={theme.inkMuted} className="steam" opacity={0.35} />
-        <circle cx={MARGIN + 20} cy={270} r={2.5} fill={theme.inkMuted} className="steam-2" opacity={0.25} />
-        <circle cx={MARGIN + 5}  cy={272} r={2}   fill={theme.inkMuted} className="steam" opacity={0.2} style={{ animationDelay: '2.4s' }} />
+        <circle cx={MARGIN + 10} cy={275} r={3.5} fill={theme.inkMuted} className="steam" opacity={0.55} />
+        <circle cx={MARGIN + 20} cy={270} r={2.5} fill={theme.inkMuted} className="steam-2" opacity={0.45} />
+        <circle cx={MARGIN + 5}  cy={272} r={2}   fill={theme.inkMuted} className="steam" opacity={0.4} style={{ animationDelay: '2.4s' }} />
       </g>
 
       {/* ── Left gear — 10 teeth, clockwise, 6s ─────────────────────
@@ -237,9 +237,9 @@ export function IntroCard() {
        * around the gear's own centre (learned from Spacey6849).
        * ────────────────────────────────────────────────────────────── */}
       <g className="gear-spin" style={{ animationDelay: '450ms' }}>
-        <circle cx={MARGIN + 14} cy={298} r={12} fill="none" stroke={DEPTH_COLOR} strokeWidth={2} opacity={0.35} />
-        <circle cx={MARGIN + 14} cy={298} r={7}  fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.25} />
-        <circle cx={MARGIN + 14} cy={298} r={2}  fill={DEPTH_COLOR} opacity={0.4} />
+        <circle cx={MARGIN + 14} cy={298} r={12} fill="none" stroke={DEPTH_COLOR} strokeWidth={2} opacity={0.55} />
+        <circle cx={MARGIN + 14} cy={298} r={7}  fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.45} />
+        <circle cx={MARGIN + 14} cy={298} r={2}  fill={DEPTH_COLOR} opacity={0.65} />
         {Array.from({ length: 10 }, (_, i) => {
           const a = (i * 36 * Math.PI) / 180
           const r1 = 10, r2 = 14.5
@@ -253,7 +253,7 @@ export function IntroCard() {
               stroke={DEPTH_COLOR}
               strokeWidth={2.5}
               strokeLinecap="round"
-              opacity={0.3}
+              opacity={0.5}
             />
           )
         })}
@@ -265,9 +265,9 @@ export function IntroCard() {
        * of interlocking.
        * ────────────────────────────────────────────────────────────── */}
       <g className="gear-spin-rev" style={{ animationDelay: '500ms' }}>
-        <circle cx={W - MARGIN - 14} cy={298} r={9}  fill="none" stroke={DEPTH_COLOR} strokeWidth={1.8} opacity={0.3} />
-        <circle cx={W - MARGIN - 14} cy={298} r={5}  fill="none" stroke={DEPTH_COLOR} strokeWidth={1}   opacity={0.22} />
-        <circle cx={W - MARGIN - 14} cy={298} r={1.5} fill={DEPTH_COLOR} opacity={0.35} />
+        <circle cx={W - MARGIN - 14} cy={298} r={9}  fill="none" stroke={DEPTH_COLOR} strokeWidth={1.8} opacity={0.5} />
+        <circle cx={W - MARGIN - 14} cy={298} r={5}  fill="none" stroke={DEPTH_COLOR} strokeWidth={1}   opacity={0.4} />
+        <circle cx={W - MARGIN - 14} cy={298} r={1.5} fill={DEPTH_COLOR} opacity={0.6} />
         {Array.from({ length: 8 }, (_, i) => {
           const a = (i * 45 * Math.PI) / 180
           const r1 = 7.5, r2 = 11.5
@@ -281,7 +281,7 @@ export function IntroCard() {
               stroke={DEPTH_COLOR}
               strokeWidth={2}
               strokeLinecap="round"
-              opacity={0.25}
+              opacity={0.45}
             />
           )
         })}
@@ -295,16 +295,16 @@ export function IntroCard() {
       <g className="fade" style={{ animationDelay: '550ms' }}>
         {/* Rails */}
         <line x1={MARGIN + 28} y1={289} x2={W - MARGIN - 28} y2={289}
-          stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.12} />
+          stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.3} />
         <line x1={MARGIN + 28} y1={307} x2={W - MARGIN - 28} y2={307}
-          stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.12} />
+          stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.3} />
 
         {/* Track — top */}
         <line
           x1={MARGIN + 28} y1={293}
           x2={W - MARGIN - 28} y2={293}
           stroke={DEPTH_COLOR} strokeWidth={2.5}
-          strokeDasharray="4 2" opacity={0.22}
+          strokeDasharray="4 2" opacity={0.45}
           className="belt-move"
         />
         {/* Track — bottom */}
@@ -312,7 +312,7 @@ export function IntroCard() {
           x1={MARGIN + 28} y1={303}
           x2={W - MARGIN - 28} y2={303}
           stroke={DEPTH_COLOR} strokeWidth={2.5}
-          strokeDasharray="4 2" opacity={0.18}
+          strokeDasharray="4 2" opacity={0.4}
           className="belt-move"
         />
 
@@ -324,7 +324,7 @@ export function IntroCard() {
             cy={298}
             r={1.8}
             fill="none" stroke={DEPTH_COLOR}
-            strokeWidth={0.8} opacity={0.15}
+            strokeWidth={0.8} opacity={0.35}
           />
         ))}
       </g>
@@ -346,44 +346,44 @@ export function IntroCard() {
       {/* Product A — IC chip */}
       <g className="product-a" style={{ animationDelay: '650ms' }}>
         <rect x={0} y={290} width={16} height={8} rx={1.5}
-          fill={DEPTH_COLOR} opacity={0.3} />
+          fill={DEPTH_COLOR} opacity={0.55} />
         {/* Left pins */}
-        <line x1={-2} y1={292} x2={0} y2={292} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.25} />
-        <line x1={-2} y1={294.5} x2={0} y2={294.5} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.25} />
-        <line x1={-2} y1={297} x2={0} y2={297} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.25} />
+        <line x1={-2} y1={292} x2={0} y2={292} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
+        <line x1={-2} y1={294.5} x2={0} y2={294.5} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
+        <line x1={-2} y1={297} x2={0} y2={297} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
         {/* Right pins */}
-        <line x1={16} y1={292} x2={18} y2={292} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.25} />
-        <line x1={16} y1={294.5} x2={18} y2={294.5} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.25} />
-        <line x1={16} y1={297} x2={18} y2={297} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.25} />
+        <line x1={16} y1={292} x2={18} y2={292} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
+        <line x1={16} y1={294.5} x2={18} y2={294.5} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
+        <line x1={16} y1={297} x2={18} y2={297} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
         {/* Die mark */}
         <rect x={4} y={292} width={8} height={4} rx={0.5}
-          fill="none" stroke={theme.ink} strokeWidth={0.4} opacity={0.2} />
+          fill="none" stroke={theme.ink} strokeWidth={0.4} opacity={0.35} />
       </g>
 
       {/* Product B — PCB board */}
       <g className="product-b" style={{ animationDelay: '700ms' }}>
         <rect x={0} y={290} width={20} height={7} rx={1}
-          fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.28} />
+          fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.5} />
         {/* Traces on the board */}
-        <line x1={2} y1={292} x2={18} y2={292} stroke={DEPTH_COLOR} strokeWidth={0.5} opacity={0.2} />
-        <line x1={2} y1={294.5} x2={13} y2={294.5} stroke={DEPTH_COLOR} strokeWidth={0.5} opacity={0.18} />
-        <line x1={6} y1={291} x2={6} y2={296} stroke={DEPTH_COLOR} strokeWidth={0.4} opacity={0.15} />
-        <line x1={14} y1={291} x2={14} y2={296} stroke={DEPTH_COLOR} strokeWidth={0.4} opacity={0.15} />
+        <line x1={2} y1={292} x2={18} y2={292} stroke={DEPTH_COLOR} strokeWidth={0.5} opacity={0.4} />
+        <line x1={2} y1={294.5} x2={13} y2={294.5} stroke={DEPTH_COLOR} strokeWidth={0.5} opacity={0.35} />
+        <line x1={6} y1={291} x2={6} y2={296} stroke={DEPTH_COLOR} strokeWidth={0.4} opacity={0.3} />
+        <line x1={14} y1={291} x2={14} y2={296} stroke={DEPTH_COLOR} strokeWidth={0.4} opacity={0.3} />
         {/* Solder pads */}
-        <circle cx={3} cy={293.5} r={0.8} fill={DEPTH_COLOR} opacity={0.2} />
-        <circle cx={17} cy={293.5} r={0.8} fill={DEPTH_COLOR} opacity={0.2} />
+        <circle cx={3} cy={293.5} r={0.8} fill={DEPTH_COLOR} opacity={0.4} />
+        <circle cx={17} cy={293.5} r={0.8} fill={DEPTH_COLOR} opacity={0.4} />
       </g>
 
       {/* Product C — Sensor module */}
       <g className="product-c" style={{ animationDelay: '750ms' }}>
         <circle cx={8} cy={293.5} r={5}
-          fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.28} />
+          fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.5} />
         <circle cx={8} cy={293.5} r={2}
-          fill={DEPTH_COLOR} opacity={0.2} />
+          fill={DEPTH_COLOR} opacity={0.4} />
         {/* Pin legs */}
-        <line x1={3} y1={298.5} x2={3} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.2} />
-        <line x1={8} y1={298.5} x2={8} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.2} />
-        <line x1={13} y1={298.5} x2={13} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.2} />
+        <line x1={3} y1={298.5} x2={3} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.4} />
+        <line x1={8} y1={298.5} x2={8} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.4} />
+        <line x1={13} y1={298.5} x2={13} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.4} />
       </g>
 
       {/* ── Belt label ────────────────────────────────────────────── */}
@@ -396,7 +396,7 @@ export function IntroCard() {
           fill={theme.inkFaint}
           textAnchor="end"
           letterSpacing="1.2"
-          opacity={0.45}
+          opacity={0.65}
         >
           {'build → ship → repeat'}
         </text>
