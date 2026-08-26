@@ -185,61 +185,69 @@ export function IntroCard() {
        *   y 322      "build → ship → repeat" label
        * ═══════════════════════════════════════════════════════════════ */}
 
-      {/* ── PCB Traces — signal flow from name to factory ────────────
-       * Three vertical traces with right-angle bends, marching dashes.
-       * Uses stroke-dasharray + animated stroke-dashoffset (the "marching
-       * ants" technique). Each trace has a junction pad (small circle) at
-       * the bend point, like real PCB routing.
-       * ────────────────────────────────────────────────────────────── */}
-      <g className="pcb-trace" style={{ animationDelay: '300ms' }}>
-        {/* Left trace — straight down from name area to belt */}
+      {/* ═══════════════════════════════════════════════════════════════
+       * FACTORY SCENE — SMIL animations (proven to work on GitHub)
+       * ───────────────────────────────────────────────────────────────
+       * All animations use SMIL <animate>/<animateTransform> elements
+       * instead of CSS @keyframes. This is the same technique that makes
+       * the dither background wave animation work. SMIL is rendered by
+       * the browser's SVG engine directly — no CSS parsing needed.
+       * ═══════════════════════════════════════════════════════════════ */}
+
+      {/* ── PCB Traces — marching dashes via SMIL ──────────────────── */}
+      <g>
         <line
           x1={MARGIN + 50} y1={252}
           x2={MARGIN + 50} y2={286}
           stroke={DEPTH_COLOR} strokeWidth={1.5}
           strokeDasharray="3 3" opacity={0.4}
-        />
+        >
+          <animate attributeName="stroke-dashoffset" from="0" to="-48" dur="6s" repeatCount="indefinite" />
+        </line>
         <circle cx={MARGIN + 50} cy={286} r={2} fill={DEPTH_COLOR} opacity={0.55} />
 
-        {/* Centre trace — vertical with right-angle jog */}
         <polyline
           points={`${MARGIN + 160},252 ${MARGIN + 160},268 ${MARGIN + 140},268 ${MARGIN + 140},286`}
           fill="none" stroke={DEPTH_COLOR} strokeWidth={1.5}
           strokeDasharray="3 3" opacity={0.4}
-        />
+        >
+          <animate attributeName="stroke-dashoffset" from="0" to="-48" dur="6s" repeatCount="indefinite" />
+        </polyline>
         <circle cx={MARGIN + 160} cy={268} r={2} fill={DEPTH_COLOR} opacity={0.55} />
         <circle cx={MARGIN + 140} cy={268} r={2} fill={DEPTH_COLOR} opacity={0.55} />
 
-        {/* Right trace — longer jog to reach far side of belt */}
         <polyline
           points={`${W - MARGIN - 100},252 ${W - MARGIN - 100},274 ${W - MARGIN - 80},274 ${W - MARGIN - 80},286`}
           fill="none" stroke={DEPTH_COLOR} strokeWidth={1.5}
           strokeDasharray="3 3" opacity={0.4}
-        />
+        >
+          <animate attributeName="stroke-dashoffset" from="0" to="-48" dur="6s" repeatCount="indefinite" />
+        </polyline>
         <circle cx={W - MARGIN - 100} cy={274} r={2} fill={DEPTH_COLOR} opacity={0.55} />
         <circle cx={W - MARGIN - 80} cy={274} r={2} fill={DEPTH_COLOR} opacity={0.55} />
       </g>
 
-      {/* ── Steam particles ─────────────────────────────────────────
-       * Three circles that drift upward and fade. Staggered delays
-       * so they don't pulse in sync. Larger particles = closer.
-       * ────────────────────────────────────────────────────────────── */}
-      <g className="fade" style={{ animationDelay: '750ms' }}>
-        <circle cx={MARGIN + 10} cy={275} r={3.5} fill={theme.inkMuted} className="steam" opacity={0.55} />
-        <circle cx={MARGIN + 20} cy={270} r={2.5} fill={theme.inkMuted} className="steam-2" opacity={0.45} />
-        <circle cx={MARGIN + 5}  cy={272} r={2}   fill={theme.inkMuted} className="steam" opacity={0.4} style={{ animationDelay: '2.4s' }} />
+      {/* ── Steam particles — fade + rise via SMIL ─────────────────── */}
+      <g>
+        <circle cx={MARGIN + 10} cy={275} r={3.5} fill={theme.inkMuted} opacity={0.55}>
+          <animate attributeName="opacity" values="0.55;0" dur="4s" repeatCount="indefinite" />
+          <animateTransform attributeName="transform" type="translate" from="0 0" to="0 -22" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx={MARGIN + 20} cy={270} r={2.5} fill={theme.inkMuted} opacity={0.45}>
+          <animate attributeName="opacity" values="0.45;0" dur="4.5s" begin="1.2s" repeatCount="indefinite" />
+          <animateTransform attributeName="transform" type="translate" from="0 0" to="0 -18" dur="4.5s" begin="1.2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx={MARGIN + 5} cy={272} r={2} fill={theme.inkMuted} opacity={0.4}>
+          <animate attributeName="opacity" values="0.4;0" dur="4s" begin="2.4s" repeatCount="indefinite" />
+          <animateTransform attributeName="transform" type="translate" from="0 0" to="0 -20" dur="4s" begin="2.4s" repeatCount="indefinite" />
+        </circle>
       </g>
 
-      {/* ── Left gear — 10 teeth, clockwise, 6s ─────────────────────
-       * Structure: outer ring (tooth tips), inner ring (tooth roots),
-       * hub circle, axle dot. Teeth are lines from inner to outer radius.
-       * transform-box:fill-box + transform-origin:center ensures rotation
-       * around the gear's own centre (learned from Spacey6849).
-       * ────────────────────────────────────────────────────────────── */}
-      <g className="gear-spin" style={{ animationDelay: '450ms' }}>
+      {/* ── Left gear — 10 teeth, clockwise 6s via SMIL ────────────── */}
+      <g>
         <circle cx={MARGIN + 14} cy={298} r={12} fill="none" stroke={DEPTH_COLOR} strokeWidth={2} opacity={0.55} />
-        <circle cx={MARGIN + 14} cy={298} r={7}  fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.45} />
-        <circle cx={MARGIN + 14} cy={298} r={2}  fill={DEPTH_COLOR} opacity={0.65} />
+        <circle cx={MARGIN + 14} cy={298} r={7} fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.45} />
+        <circle cx={MARGIN + 14} cy={298} r={2} fill={DEPTH_COLOR} opacity={0.65} />
         {Array.from({ length: 10 }, (_, i) => {
           const a = (i * 36 * Math.PI) / 180
           const r1 = 10, r2 = 14.5
@@ -257,16 +265,17 @@ export function IntroCard() {
             />
           )
         })}
+        <animateTransform
+          attributeName="transform" type="rotate"
+          from={`0 ${MARGIN + 14} 298`} to={`360 ${MARGIN + 14} 298`}
+          dur="6s" repeatCount="indefinite"
+        />
       </g>
 
-      {/* ── Right gear — 8 teeth, counter-clockwise, 5s ─────────────
-       * Smaller than the left gear. Meshes visually because the
-       * counter-rotation and different tooth count create the illusion
-       * of interlocking.
-       * ────────────────────────────────────────────────────────────── */}
-      <g className="gear-spin-rev" style={{ animationDelay: '500ms' }}>
-        <circle cx={W - MARGIN - 14} cy={298} r={9}  fill="none" stroke={DEPTH_COLOR} strokeWidth={1.8} opacity={0.5} />
-        <circle cx={W - MARGIN - 14} cy={298} r={5}  fill="none" stroke={DEPTH_COLOR} strokeWidth={1}   opacity={0.4} />
+      {/* ── Right gear — 8 teeth, counter-clockwise 5s via SMIL ────── */}
+      <g>
+        <circle cx={W - MARGIN - 14} cy={298} r={9} fill="none" stroke={DEPTH_COLOR} strokeWidth={1.8} opacity={0.5} />
+        <circle cx={W - MARGIN - 14} cy={298} r={5} fill="none" stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.4} />
         <circle cx={W - MARGIN - 14} cy={298} r={1.5} fill={DEPTH_COLOR} opacity={0.6} />
         {Array.from({ length: 8 }, (_, i) => {
           const a = (i * 45 * Math.PI) / 180
@@ -285,122 +294,112 @@ export function IntroCard() {
             />
           )
         })}
+        <animateTransform
+          attributeName="transform" type="rotate"
+          from={`0 ${W - MARGIN - 14} 298`} to={`-360 ${W - MARGIN - 14} 298`}
+          dur="5s" repeatCount="indefinite"
+        />
       </g>
 
-      {/* ── Conveyor belt ───────────────────────────────────────────
-       * Two parallel dashed tracks (top + bottom) with marching-dash
-       * animation. Solid rails above and below. Four roller wheels at
-       * even intervals. The belt spans from left gear to right gear.
-       * ────────────────────────────────────────────────────────────── */}
-      <g className="fade" style={{ animationDelay: '550ms' }}>
-        {/* Rails */}
+      {/* ── Conveyor belt — marching dashes via SMIL ────────────────── */}
+      <g>
         <line x1={MARGIN + 28} y1={289} x2={W - MARGIN - 28} y2={289}
           stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.3} />
         <line x1={MARGIN + 28} y1={307} x2={W - MARGIN - 28} y2={307}
           stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.3} />
 
-        {/* Track — top */}
         <line
           x1={MARGIN + 28} y1={293}
           x2={W - MARGIN - 28} y2={293}
           stroke={DEPTH_COLOR} strokeWidth={2.5}
           strokeDasharray="4 2" opacity={0.45}
-          className="belt-move"
-        />
-        {/* Track — bottom */}
+        >
+          <animate attributeName="stroke-dashoffset" from="0" to="-24" dur="4s" repeatCount="indefinite" />
+        </line>
         <line
           x1={MARGIN + 28} y1={303}
           x2={W - MARGIN - 28} y2={303}
           stroke={DEPTH_COLOR} strokeWidth={2.5}
           strokeDasharray="4 2" opacity={0.4}
-          className="belt-move"
-        />
+        >
+          <animate attributeName="stroke-dashoffset" from="0" to="-24" dur="4s" repeatCount="indefinite" />
+        </line>
 
-        {/* Roller wheels */}
         {[0.15, 0.35, 0.55, 0.75, 0.95].map((frac, i) => (
           <circle
             key={`rw-${i}`}
             cx={MARGIN + 28 + (W - 2 * MARGIN - 56) * frac}
-            cy={298}
-            r={1.8}
+            cy={298} r={1.8}
             fill="none" stroke={DEPTH_COLOR}
             strokeWidth={0.8} opacity={0.35}
           />
         ))}
       </g>
 
-      {/* ── Products on belt — three distinct types ─────────────────
-       * Each product slides right-to-left with a different speed and
-       * stagger delay, creating the feel of a real production line.
-       *
-       * Product A — IC chip: black rectangle with gold pin stubs
-       *   on left/right edges. Represents embedded firmware work.
-       *
-       * Product B — PCB board: wider rectangle with horizontal
-       *   trace lines. Represents hardware design.
-       *
-       * Product C — Sensor module: circle with vertical pin lines.
-       *   Represents IoT / sensor integration.
-       * ────────────────────────────────────────────────────────────── */}
+      {/* ── Products on belt — slide right-to-left via SMIL ────────── */}
 
       {/* Product A — IC chip */}
-      <g className="product-a" style={{ animationDelay: '650ms' }}>
+      <g>
         <rect x={0} y={290} width={16} height={8} rx={1.5}
           fill={DEPTH_COLOR} opacity={0.55} />
-        {/* Left pins */}
         <line x1={-2} y1={292} x2={0} y2={292} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
         <line x1={-2} y1={294.5} x2={0} y2={294.5} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
         <line x1={-2} y1={297} x2={0} y2={297} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
-        {/* Right pins */}
         <line x1={16} y1={292} x2={18} y2={292} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
         <line x1={16} y1={294.5} x2={18} y2={294.5} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
         <line x1={16} y1={297} x2={18} y2={297} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
-        {/* Die mark */}
         <rect x={4} y={292} width={8} height={4} rx={0.5}
           fill="none" stroke={theme.ink} strokeWidth={0.4} opacity={0.35} />
+        <animateTransform attributeName="transform" type="translate"
+          from="180 0" to="-30 0" dur="3.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0;0.55;0.55;0" keyTimes="0;0.05;0.9;1"
+          dur="3.5s" repeatCount="indefinite" />
       </g>
 
       {/* Product B — PCB board */}
-      <g className="product-b" style={{ animationDelay: '700ms' }}>
+      <g>
         <rect x={0} y={290} width={20} height={7} rx={1}
           fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.5} />
-        {/* Traces on the board */}
         <line x1={2} y1={292} x2={18} y2={292} stroke={DEPTH_COLOR} strokeWidth={0.5} opacity={0.4} />
         <line x1={2} y1={294.5} x2={13} y2={294.5} stroke={DEPTH_COLOR} strokeWidth={0.5} opacity={0.35} />
         <line x1={6} y1={291} x2={6} y2={296} stroke={DEPTH_COLOR} strokeWidth={0.4} opacity={0.3} />
         <line x1={14} y1={291} x2={14} y2={296} stroke={DEPTH_COLOR} strokeWidth={0.4} opacity={0.3} />
-        {/* Solder pads */}
         <circle cx={3} cy={293.5} r={0.8} fill={DEPTH_COLOR} opacity={0.4} />
         <circle cx={17} cy={293.5} r={0.8} fill={DEPTH_COLOR} opacity={0.4} />
+        <animateTransform attributeName="transform" type="translate"
+          from="180 0" to="-30 0" dur="4s" begin="1.2s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0;0.5;0.5;0" keyTimes="0;0.05;0.9;1"
+          dur="4s" begin="1.2s" repeatCount="indefinite" />
       </g>
 
       {/* Product C — Sensor module */}
-      <g className="product-c" style={{ animationDelay: '750ms' }}>
+      <g>
         <circle cx={8} cy={293.5} r={5}
           fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.5} />
         <circle cx={8} cy={293.5} r={2}
           fill={DEPTH_COLOR} opacity={0.4} />
-        {/* Pin legs */}
         <line x1={3} y1={298.5} x2={3} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.4} />
         <line x1={8} y1={298.5} x2={8} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.4} />
         <line x1={13} y1={298.5} x2={13} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.4} />
+        <animateTransform attributeName="transform" type="translate"
+          from="180 0" to="-30 0" dur="4.5s" begin="2.4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0;0.5;0.5;0" keyTimes="0;0.05;0.9;1"
+          dur="4.5s" begin="2.4s" repeatCount="indefinite" />
       </g>
 
       {/* ── Belt label ────────────────────────────────────────────── */}
-      <g className="fade" style={{ animationDelay: '850ms' }}>
-        <text
-          x={W - MARGIN}
-          y={322}
-          fontFamily="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace"
-          fontSize="8"
-          fill={theme.inkFaint}
-          textAnchor="end"
-          letterSpacing="1.2"
-          opacity={0.65}
-        >
-          {'build → ship → repeat'}
-        </text>
-      </g>
+      <text
+        x={W - MARGIN}
+        y={322}
+        fontFamily="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace"
+        fontSize="8"
+        fill={theme.inkFaint}
+        textAnchor="end"
+        letterSpacing="1.2"
+        opacity={0.65}
+      >
+        {'build → ship → repeat'}
+      </text>
 
       {/* ── Keyed pin ─────────────────────────────────────────────────── */}
       <rect
