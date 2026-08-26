@@ -7,14 +7,14 @@
  * than a section of a big poster so the README carries it as a discrete
  * element — the thing people actually ask for by name.
  */
-import { MARGIN, W } from '../design/tokens'
+import { MARGIN, W, type as t } from '../design/tokens'
 import { Mono, round } from '../design/text'
 import { Label } from '../design/primitives'
 import { layoutCalendar, ContributionCalendar, CalendarLegend, GRID_H } from '../design/calendar'
 import { useTheme } from '../design/render'
 import type { Snapshot } from '../data/github'
 
-const GRID_Y = 52
+const GRID_Y = 58
 
 export function snakeCardHeight(): number {
   return GRID_Y + GRID_H + 40
@@ -35,7 +35,7 @@ export function SnakeCard({ snap }: { snap: Snapshot }) {
 
       <g className="fade">
         <CalendarLegend x={MARGIN} y={footY} />
-        <Mono x={W - MARGIN} y={footY + 4} size={8.5} fill={theme.inkFaint} anchor="end">
+        <Mono x={W - MARGIN} y={footY + 4} size={t.tiny} fill={theme.inkFaint} anchor="end">
           {`${snap.calendar.length} days · rebuilt daily from the github api`}
         </Mono>
       </g>

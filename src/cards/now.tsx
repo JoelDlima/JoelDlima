@@ -13,7 +13,7 @@ import { Label, Figure, BarRow } from '../design/primitives'
 import { useTheme } from '../design/render'
 import type { Snapshot } from '../data/github'
 
-export const NOW_H = 208
+export const NOW_H = 252
 
 /** The appointment window, from the resume. Build-time dates only. */
 const INTERNSHIP_START = new Date('2026-07-01T00:00:00Z')
@@ -29,7 +29,7 @@ export function NowCard({ snap }: { snap: Snapshot }) {
   // Column geometry — three equal panels with hairline separators.
   const colW = CONTENT / 3
   const colX = [MARGIN, MARGIN + colW, MARGIN + colW * 2]
-  const figY = 96
+  const figY = 104
 
   // Internship gauge: countdown before, fraction during, done after.
   const internship =
@@ -72,29 +72,29 @@ export function NowCard({ snap }: { snap: Snapshot }) {
         <rect
           key={i}
           x={round(MARGIN + colW * i - 14)}
-          y={54}
+          y={62}
           width={1}
-          height={NOW_H - 92}
+          height={NOW_H - 104}
           fill={theme.line}
           opacity={theme.lineOpacity}
         />
       ))}
 
       <g className="rise" style={{ animationDelay: '60ms' }}>
-        <Figure x={colX[0]!} y={figY} value={internship.value} unit={internship.unit} caption={internship.caption} size={32} />
-        <BarRow x={colX[0]!} y={figY + 30} w={colW - 60} pct={internship.pct} delay={200} />
-        <Mono x={colX[0]!} y={figY + 52} size={t.micro} fill={theme.inkFaint}>
+        <Figure x={colX[0]!} y={figY} value={internship.value} unit={internship.unit} caption={internship.caption} size={40} />
+        <BarRow x={colX[0]!} y={figY + 40} w={colW - 56} pct={internship.pct} delay={200} />
+        <Mono x={colX[0]!} y={figY + 66} size={t.micro} fill={theme.inkFaint}>
           {internship.barCaption}
         </Mono>
       </g>
 
       <g className="rise" style={{ animationDelay: '130ms' }}>
-        <Figure x={colX[1]!} y={figY} value={String(daysToGrad)} unit="d" caption="to b.e. graduation · class of '27" size={32} accent />
+        <Figure x={colX[1]!} y={figY} value={String(daysToGrad)} unit="d" caption="to b.e. graduation · class of '27" size={40} accent />
       </g>
 
       <g className="rise" style={{ animationDelay: '200ms' }}>
-        <Figure x={colX[2]!} y={figY} value={String(snap.totals.contributionsYear)} caption={`contributions · trailing 12mo`} size={32} />
-        <Mono x={colX[2]!} y={figY + 52} size={t.micro} fill={theme.inkFaint}>
+        <Figure x={colX[2]!} y={figY} value={String(snap.totals.contributionsYear)} caption={`contributions · trailing 12mo`} size={40} />
+        <Mono x={colX[2]!} y={figY + 66} size={t.micro} fill={theme.inkFaint}>
           {`streak ${snap.totals.currentStreak}d current · ${snap.totals.longestStreak}d best`}
         </Mono>
       </g>

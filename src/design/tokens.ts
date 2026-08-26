@@ -15,9 +15,15 @@
 // Geometry
 // ---------------------------------------------------------------------------
 
-/** Card width. GitHub's README column renders this at roughly 860 CSS px. */
-export const W = 900
-export const MARGIN = 42
+/**
+ * Card width. Sized for the *phone*, not the desktop column: GitHub renders
+ * README images at ~358 CSS px on mobile and ~830 on desktop, so a 760 card
+ * scales to 0.47× on a phone and 1.09× on desktop. Vectors stay crisp in both
+ * directions — what matters is that type survives the 0.47×. The previous
+ * 900-wide cards rendered body text at ~5 px on a phone: invisible.
+ */
+export const W = 760
+export const MARGIN = 36
 /** Usable content width between the margins. */
 export const CONTENT = W - MARGIN * 2
 
@@ -79,18 +85,18 @@ export const themes: Record<'dark' | 'light', Theme> = {
 // ---------------------------------------------------------------------------
 
 export const type = {
-  hero: 58,
-  lead: 19,
-  body: 12.5,
-  bodyS: 11.5,
-  label: 10.5,
-  micro: 9.5,
-  tiny: 8.5,
+  hero: 64,
+  lead: 26,
+  body: 19,
+  bodyS: 17,
+  label: 14,
+  micro: 13,
+  tiny: 11.5,
 } as const
 
 export const tracking = {
-  label: 1.6,
-  micro: 1.1,
+  label: 2.2,
+  micro: 1.5,
   none: 0,
 } as const
 

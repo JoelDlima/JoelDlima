@@ -15,9 +15,11 @@
  */
 import { useTheme } from './render'
 import { Mono } from './text'
+import { type as t } from './tokens'
 import type { Snapshot } from '../data/github'
 
-export const CELL = 8
+// Grid spans the full content width: 53 columns across CONTENT.
+export const CELL = 10.5
 export const GAP = 2.5
 export const STEP = CELL + GAP
 export const ROWS = 7
@@ -114,9 +116,9 @@ export function ContributionCalendar({
 export function Snake({ pathD, dur = '17s' }: { pathD: string; dur?: string }) {
   const theme = useTheme()
   const segments = [
-    { begin: '-1.1s', size: 4.5, opacity: 1 },
-    { begin: '-0.55s', size: 3.6, opacity: 0.7 },
-    { begin: '0s', size: 2.8, opacity: 0.42 },
+    { begin: '-1.1s', size: 6, opacity: 1 },
+    { begin: '-0.55s', size: 4.8, opacity: 0.7 },
+    { begin: '0s', size: 3.7, opacity: 0.42 },
   ]
   return (
     <>
@@ -144,7 +146,7 @@ export function CalendarLegend({ x, y }: { x: number; y: number }) {
   const swatchOpacity = [0.08, 0.32, 0.52, 0.74, 1]
   return (
     <g>
-      <Mono x={x} y={y + 4} size={8.5} fill={theme.inkFaint}>
+      <Mono x={x} y={y + 4} size={t.tiny} fill={theme.inkFaint}>
         less
       </Mono>
       {swatchOpacity.map((o, i) => (

@@ -85,7 +85,7 @@ export function Figure({
   value,
   unit,
   caption,
-  size = 30,
+  size = 38,
   anchor = 'start',
   accent = false,
 }: {
@@ -113,7 +113,7 @@ export function Figure({
           {unit}
         </Mono>
       )}
-      <Mono x={x} y={y + 17} size={t.micro} fill={theme.inkFaint} anchor={anchor} track={tracking.micro}>
+      <Mono x={x} y={y + 22} size={t.micro} fill={theme.inkFaint} anchor={anchor} track={tracking.micro}>
         {caption}
       </Mono>
     </>
@@ -183,7 +183,7 @@ export function EdgeConnectors({
     <g className="fade">
       {Array.from({ length: count }, (_, i) => {
         const keyed = i % 7 === 3
-        const h = i % 2 === 0 ? 9 : 6
+        const h = i % 2 === 0 ? 11 : 7.5
         return (
           <rect
             key={i}
@@ -258,7 +258,7 @@ export function StackRun({ x, y, items, maxW }: { x: number; y: number; items: s
   return (
     <>
       {lines.map((l, i) => (
-        <Mono key={l} x={x} y={y + i * 12} size={t.tiny} fill={theme.inkFaint} track={0.5}>
+        <Mono key={l} x={x} y={y + i * 16} size={t.tiny} fill={theme.inkFaint} track={0.5}>
           {l}
         </Mono>
       ))}

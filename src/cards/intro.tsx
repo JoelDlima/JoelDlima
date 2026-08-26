@@ -12,36 +12,36 @@ import { Blip, Cursor, EdgeConnectors, Trace } from '../design/primitives'
 import { useTheme } from '../design/render'
 import { identity, academics } from '../data/profile'
 
-export const INTRO_H = 344
+export const INTRO_H = 434
 
 const NAME = "JOEL D'LIMA"
 
 export function IntroCard() {
   const theme = useTheme()
-  const size = fitDisplay([NAME], 600, 58, 2)
+  const size = fitDisplay([NAME], 620, t.hero, 2)
   const nameW = measureName(size)
 
   const pitchLines = wrapMono(identity.pitch, t.lead, CONTENT - 4)
   const focusLines = wrapMono(identity.focus, t.body, CONTENT - 60)
 
-  let y = 96
+  let y = 112
   const nameY = y
-  y += 34 // role line
-  const statusY = y + 22
-  y = statusY + 30 // pitch start
+  y += 44 // role line
+  const statusY = y + 30
+  y = statusY + 40 // pitch start
   const pitchStart = y
-  y += pitchLines.length * 27
-  const focusStart = y + 10
-  y = focusStart + focusLines.length * 18
+  y += pitchLines.length * 36
+  const focusStart = y + 14
+  y = focusStart + focusLines.length * 26
 
   return (
     <>
       {/* Ambient trace routing behind the name — signal direction, quietly */}
       <Trace
-        d={`M${MARGIN + 520} 26 H700 Q714 26 714 40 V64`}
+        d={`M${MARGIN + 420} 30 H580 Q596 30 596 46 V74`}
         vias={[
-          [MARGIN + 520, 26],
-          [714, 64],
+          [MARGIN + 420, 30],
+          [596, 74],
         ]}
         opacity={0.55}
       />
@@ -63,18 +63,18 @@ export function IntroCard() {
       </g>
 
       <g className="fade" style={{ animationDelay: '140ms' }}>
-        <Mono x={MARGIN} y={nameY + 26} size={t.bodyS} fill={theme.inkMuted}>
+        <Mono x={MARGIN} y={nameY + 34} size={t.bodyS} fill={theme.inkMuted}>
           {`${identity.role.toLowerCase()} · class of ${academics.graduating}`}
         </Mono>
       </g>
 
       <g className="fade" style={{ animationDelay: '200ms' }}>
-        <Blip x={MARGIN + 3} y={statusY - 3.5} r={2.6} />
-        <Mono x={MARGIN + 15} y={statusY} size={t.bodyS} weight="monoBold" fill={theme.accent} track={0.4}>
+        <Blip x={MARGIN + 3} y={statusY - 5} r={3.4} />
+        <Mono x={MARGIN + 18} y={statusY} size={t.bodyS} weight="monoBold" fill={theme.accent} track={0.4}>
           {identity.status.toLowerCase()}
         </Mono>
         <Mono
-          x={MARGIN + 15 + measureStatus(identity.status) + 12}
+          x={MARGIN + 18 + measureStatus(identity.status) + 14}
           y={statusY}
           size={t.bodyS}
           fill={theme.inkMuted}
@@ -85,7 +85,7 @@ export function IntroCard() {
 
       <g className="rise" style={{ animationDelay: '260ms' }}>
         {pitchLines.map((line, i) => (
-          <Display key={line} x={MARGIN} y={pitchStart + i * 27} size={t.lead} fill={theme.ink}>
+          <Display key={line} x={MARGIN} y={pitchStart + i * 36} size={t.lead} fill={theme.ink}>
             {line.toLowerCase()}
           </Display>
         ))}
@@ -93,13 +93,13 @@ export function IntroCard() {
 
       <g className="fade" style={{ animationDelay: '320ms' }}>
         {focusLines.map((line, i) => (
-          <Mono key={line} x={MARGIN} y={focusStart + i * 18} size={t.body} fill={theme.inkMuted}>
+          <Mono key={line} x={MARGIN} y={focusStart + i * 26} size={t.body} fill={theme.inkMuted}>
             {line.toLowerCase()}
           </Mono>
         ))}
       </g>
 
-      <EdgeConnectors x={MARGIN} y={INTRO_H - 14} count={Math.floor(CONTENT / 11)} />
+      <EdgeConnectors x={MARGIN} y={INTRO_H - 16} count={Math.floor(CONTENT / 13)} />
     </>
   )
 }
