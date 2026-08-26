@@ -39,11 +39,15 @@ export function useTheme(): Theme {
  *   blink                   status blip breathing — "this line is live"
  *   cursor                  terminal block after the name
  *   conduct                 dashes marching along a PCB trace
+ *   pcb-trace               factory trace signal flow
+ *   gear-spin / gear-spin-rev   rotating gears
+ *   belt-move               conveyor belt marching dashes
+ *   product-a/b/c           products sliding on belt
+ *   steam / steam-2         rising steam particles
  *
  * prefers-reduced-motion collapses entrances to near-instant and stops the
- * decorative loops (conduct), but the blink keeps its slow breathing at half
- * amplitude — it marks live state, not decoration, and freezing it makes the
- * status read as static text rather than telemetry.
+ * decorative loops (conduct, pcb-trace, gear, belt, product, steam), but the
+ * blink keeps its slow breathing at half amplitude.
  */
 const STYLES = `
 .rise,.grow,.ignite{transform-box:fill-box}
@@ -61,31 +65,34 @@ const STYLES = `
 @keyframes cursor{0%,49%{opacity:1}50%,100%{opacity:0}}
 .conduct{animation:conduct ${motion.conductDur} linear infinite}
 @keyframes conduct{to{stroke-dashoffset:-96}}
-.gear-spin{transform-box:fill-box;transform-origin:center;animation:gear-spin 8s linear infinite}
+.pcb-trace{animation:pcb-trace 6s linear infinite}
+@keyframes pcb-trace{to{stroke-dashoffset:-48}}
+.gear-spin{transform-box:fill-box;transform-origin:center;animation:gear-spin 6s linear infinite}
 @keyframes gear-spin{to{transform:rotate(360deg)}}
-.gear-spin-rev{transform-box:fill-box;transform-origin:center;animation:gear-spin-rev 6s linear infinite}
+.gear-spin-rev{transform-box:fill-box;transform-origin:center;animation:gear-spin-rev 5s linear infinite}
 @keyframes gear-spin-rev{to{transform:rotate(-360deg)}}
-.belt-move{animation:belt-move 3s linear infinite}
+.belt-move{animation:belt-move 4s linear infinite}
 @keyframes belt-move{to{stroke-dashoffset:-24}}
-.product-slide{animation:product-slide 4s linear infinite}
-@keyframes product-slide{0%{transform:translateX(180px);opacity:0}5%{opacity:1}90%{opacity:1}100%{transform:translateX(-40px);opacity:0}}
-.product-slide-2{animation:product-slide-2 4s linear infinite 1.3s}
-@keyframes product-slide-2{0%{transform:translateX(180px);opacity:0}5%{opacity:1}90%{opacity:1}100%{transform:translateX(-40px);opacity:0}}
-.product-slide-3{animation:product-slide-3 4s linear infinite 2.6s}
-@keyframes product-slide-3{0%{transform:translateX(180px);opacity:0}5%{opacity:1}90%{opacity:1}100%{transform:translateX(-40px);opacity:0}}
-.steam{animation:steam 3s ease-out infinite}
-@keyframes steam{0%{opacity:0.5;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-20px) scale(1.8)}}
-.steam-2{animation:steam-2 3.5s ease-out infinite 1s}
-@keyframes steam-2{0%{opacity:0.4;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-18px) scale(1.6)}}
+.product-a{animation:product-a 3.5s linear infinite}
+@keyframes product-a{0%{transform:translateX(180px);opacity:0}5%{opacity:1}90%{opacity:1}100%{transform:translateX(-30px);opacity:0}}
+.product-b{animation:product-b 4s linear infinite 1.2s}
+@keyframes product-b{0%{transform:translateX(180px);opacity:0}5%{opacity:1}90%{opacity:1}100%{transform:translateX(-30px);opacity:0}}
+.product-c{animation:product-c 4.5s linear infinite 2.4s}
+@keyframes product-c{0%{transform:translateX(180px);opacity:0}5%{opacity:1}90%{opacity:1}100%{transform:translateX(-30px);opacity:0}}
+.steam{animation:steam 4s ease-out infinite}
+@keyframes steam{0%{opacity:.45;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-22px) scale(1.8)}}
+.steam-2{animation:steam-2 4.5s ease-out infinite 1.2s}
+@keyframes steam-2{0%{opacity:.35;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-18px) scale(1.6)}}
 @media (prefers-reduced-motion:reduce){
 .rise,.fade,.grow,.ignite{animation-duration:.01s}
 .rise{transform:none}
 .conduct{animation:none;stroke-dashoffset:-48}
 .cursor{animation:none}
 .blink{animation-duration:${motion.blinkDur};animation-timing-function:ease-in-out}
+.pcb-trace{animation:none;stroke-dashoffset:-24}
 .gear-spin,.gear-spin-rev{animation:none}
 .belt-move{animation:none}
-.product-slide,.product-slide-2,.product-slide-3{animation:none;transform:none;opacity:1}
+.product-a,.product-b,.product-c{animation:none;transform:none;opacity:1}
 .steam,.steam-2{animation:none}
 }
 `.trim()
