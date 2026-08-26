@@ -1,18 +1,22 @@
 /**
- * Renders the poster in both themes, the contact badges, and a local preview.
+ * Renders every card in both themes plus the contact badges.
  *
- * The README picks between the two posters with <picture> +
- * prefers-color-scheme, so the card follows GitHub's own theme instead of
- * sitting on the page as a dark slab in light mode.
+ * Cards are separate SVGs on purpose — the README composes them as discrete
+ * markdown-level elements (intro → work list → bench status → snake), each
+ * with its own entrance cascade, rather than one tall poster. The README
+ * picks dark/light per element with <picture> + prefers-color-scheme.
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { renderPoster, renderBadge, useTheme } from './design/render'
-import { themes, type Theme, type as t, radius } from './design/tokens'
+import * as React from 'react'
+import { renderCard, renderBadge, useTheme, BADGE_EDGE } from './design/render'
+import { themes, type Theme, type as t } from './design/tokens'
 import { Mono, measureMono, centerBaseline } from './design/text'
-import { loadSnapshot, type Snapshot } from './data/github'
-import { buildPoster } from './poster'
-import { LINKS } from './sections/links'
+import { loadSnapshot } from './data/github'
+import { INTRO_H, IntroCard } from './cards/intro'
+import { NOW_H, NowCard } from './cards/now'
+import { snakeCardHeight, SnakeCard } from './cards/snake-card'
+import { LINKS } from './links'
 import { ASSETS_DIR, CACHE_DIR } from './paths'
 
 interface Asset {
@@ -20,9 +24,8 @@ interface Asset {
   svg: string
 }
 
-export const ALT =
-  "Joel D'Lima — Electronics and Computer Engineering. Capability, selected work, " +
-  'track record, and live GitHub telemetry.'
+export const ALT_INTRO =
+  "Joel D'Lima — Electronics and Computer Engineering. Software Engineering Intern at Visteon."
 
 export function renderAll() {
   const snap = loadSnapshot()
@@ -30,20 +33,44 @@ export function renderAll() {
 
   const assets: Asset[] = []
 
-  // One tree, two themes: colour is resolved through context at render time,
-  // so the layout is guaranteed identical between the light and dark files.
-  const poster = buildPoster(snap)
+  // One tree per card, two themes each: colour resolves through context at
+  // render time, so light and dark layouts cannot drift apart.
+  const cards: { file: string; height: number; node: React.ReactElement; title: string; desc: string }[] = [
+    {
+      file: 'intro',
+      height: INTRO_H,
+      node: <IntroCard />,
+      title: "Joel D'Lima — intro",
+      desc: ALT_INTRO,
+    },
+    {
+      file: 'now',
+      height: NOW_H,
+      node: <NowCard snap={snap} />,
+      title: "Joel D'Lima — bench status",
+      desc: 'Internship progress, graduation countdown, and trailing-year contributions.',
+    },
+    {
+      file: 'snake',
+      height: snakeCardHeight(),
+      node: <SnakeCard snap={snap} />,
+      title: "Joel D'Lima — contribution snake",
+      desc: `A snake travelling the ${snap.totals.contributionsYear}-contribution trailing year.`,
+    },
+  ]
 
   for (const theme of [themes.dark, themes.light]) {
-    assets.push({
-      file: `profile-${theme.name}.svg`,
-      svg: renderPoster(poster.node, {
-        theme,
-        height: poster.height,
-        title: "Joel D'Lima — Electronics and Computer Engineering",
-        desc: describe(snap),
-      }),
-    })
+    for (const card of cards) {
+      assets.push({
+        file: `${card.file}-${theme.name}.svg`,
+        svg: renderCard(card.node, {
+          theme,
+          height: card.height,
+          title: card.title,
+          desc: card.desc,
+        }),
+      })
+    }
   }
 
   for (const link of LINKS) {
@@ -57,21 +84,12 @@ export function renderAll() {
   for (const asset of assets) {
     fs.writeFileSync(path.join(ASSETS_DIR, asset.file), asset.svg)
     total += asset.svg.length
-    console.log(`  ${asset.file.padEnd(24)} ${kb(asset.svg.length).padStart(9)}`)
+    console.log(`  ${asset.file.padEnd(22)} ${kb(asset.svg.length).padStart(9)}`)
   }
-  console.log(`  ${'—'.repeat(24)} ${kb(total).padStart(9)}`)
+  console.log(`  ${'—'.repeat(22)} ${kb(total).padStart(9)}`)
 
-  writePreview(assets)
+  writePreview(cards)
   console.log(`\n  preview → ${path.join(CACHE_DIR, 'preview.html')}`)
-}
-
-function describe(snap: Snapshot) {
-  return (
-    'Firmware on the board, the API in between, the interface people touch. ' +
-    `${snap.user.publicRepos} public repositories, CGPA 9.7 of 10, four hackathon placements. ` +
-    'Currently a Software Engineering Intern at Visteon. ' +
-    'Sections: capability, selected work, track record, telemetry, contact.'
-  )
 }
 
 const kb = (n: number) => `${(n / 1024).toFixed(1)} KB`
@@ -80,10 +98,7 @@ const kb = (n: number) => `${(n / 1024).toFixed(1)} KB`
 // Badges
 // ---------------------------------------------------------------------------
 
-/**
- * The clickable row under the poster. Drawn in the same spectrum rather than in
- * each service's brand colour, so the README still reads as one object.
- */
+/** Clickable contact row under the hero. Amber edge, one palette, no brands. */
 function renderBadgeAsset(theme: Theme, label: string, handle: string) {
   const height = 30
   const padX = 13
@@ -100,27 +115,10 @@ function Badge({ label, width, height }: { label: string; width: number; height:
   const theme = useTheme()
   return (
     <>
-      <rect width={width} height={height} rx={radius.chip} fill={theme.surface} />
-      <rect width={width} height={height} rx={radius.chip} fill="url(#badgeSweep)" opacity={0.15} />
-      <rect
-        x={0.75}
-        y={0.75}
-        width={width - 1.5}
-        height={height - 1.5}
-        rx={radius.chip}
-        fill="none"
-        stroke="url(#badgeSweep)"
-        strokeWidth={1.5}
-      />
-      <circle cx={15} cy={height / 2} r={3.5} fill="url(#badgeSweep)" />
-      <Mono
-        x={28}
-        y={centerBaseline(0, height, t.bodyS)}
-        size={t.bodyS}
-        weight="monoBold"
-        fill={theme.ink}
-        track={0.3}
-      >
+      <rect width={width} height={height} rx={4} fill={theme.surface} />
+      <rect x={0.75} y={0.75} width={width - 1.5} height={height - 1.5} rx={3.5} fill="none" stroke={BADGE_EDGE} strokeWidth={1.5} />
+      <rect x={11} y={height / 2 - 2.75} width={5.5} height={5.5} rx={1} fill={theme.accent} />
+      <Mono x={24} y={centerBaseline(0, height, t.bodyS)} size={t.bodyS} weight="monoBold" fill={theme.ink} track={0.3}>
         {label}
       </Mono>
     </>
@@ -131,21 +129,20 @@ function Badge({ label, width, height }: { label: string; width: number; height:
 // Preview
 // ---------------------------------------------------------------------------
 
-/**
- * A local page showing both themes on GitHub's own backgrounds. Viewing an SVG
- * in isolation hides exactly the problems that matter: contrast against the
- * page, and how the poster reads at the width a README actually renders it.
- */
-function writePreview(assets: Asset[]) {
-  const badges = assets
-    .filter((a) => a.file.startsWith('badge-'))
-    .map((a) => `<img src="../assets/${a.file}" alt="" height="30">`)
+function writePreview(cards: { file: string; title: string }[]) {
+  const badges = ['github', 'linkedin', 'portfolio', 'email']
+    .map((k) => `<img src="../assets/badge-${k}.svg" alt="" height="30">`)
     .join(' ')
 
   const pane = (theme: 'dark' | 'light') => `
     <section class="${theme}">
       <h2>github ${theme}</h2>
-      <img src="../assets/profile-${theme}.svg" alt="${ALT}">
+      ${cards
+        .map(
+          (c) =>
+            `<img src="../assets/${c.file}-${theme}.svg" alt="${c.title}" style="margin-bottom:18px">`,
+        )
+        .join('\n      ')}
       <p class="badges">${badges}</p>
     </section>`
 
@@ -157,7 +154,7 @@ function writePreview(assets: Asset[]) {
   .light{background:#fff;color:#57606a}
   h2{font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin:0 0 14px;opacity:.7}
   img{max-width:900px;width:100%;display:block}
-  .badges{margin:14px 0 0;display:flex;gap:8px;flex-wrap:wrap}
+  .badges{margin:6px 0 0;display:flex;gap:8px;flex-wrap:wrap}
   .badges img{width:auto;display:inline-block}
 </style>
 ${pane('dark')}

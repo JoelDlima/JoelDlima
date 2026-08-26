@@ -1,18 +1,13 @@
 /**
- * The component vocabulary. Every section is composed from these, so a change
- * here propagates across the whole poster — that consistency is what lets each
- * section use a different layout without the page falling apart.
+ * The workbench component vocabulary. Small on purpose — three cards compose
+ * from these, and anything they all need lives here so it stays consistent.
  */
-import * as React from 'react'
-import { MARGIN, W, CONTENT, radius, tracking, motion, type as t, type Theme } from './tokens'
-import { Mono, Display, measureMono, centerBaseline, round } from './text'
-import { useTheme, SPECTRUM, SPECTRUM_H } from './render'
-
-/** x of the vertical spine that runs the full height of the poster. */
-export const SPINE_X = 24
+import { CONTENT, MARGIN, W, type as t, tracking } from './tokens'
+import { Mono, Display, measureMono, round } from './text'
+import { useTheme } from './render'
 
 // ---------------------------------------------------------------------------
-// Rules and structure
+// Structure
 // ---------------------------------------------------------------------------
 
 export function Rule({
@@ -32,443 +27,244 @@ export function Rule({
   )
 }
 
-/** A rule painted in the travelling spectrum, growing in from the left. */
-export function SpectrumRule({
-  y,
-  x = MARGIN,
-  w = CONTENT,
-  h = 2,
-}: {
-  y: number
-  x?: number
-  w?: number
-  h?: number
-}) {
-  return (
-    <g className="grow">
-      <rect x={x} y={y} width={w} height={h} fill={SPECTRUM_H} />
-    </g>
-  )
-}
+/** Height consumed by a Label row: baseline to rule. */
+export const LABEL_H = 20
 
 /**
- * Section header: a tracked label on the left, optional meta on the right, and
- * a hairline beneath. Repeated at every section so the eye can find the seams
- * without each section having to announce itself loudly.
+ * Card header: tracked caps label left, optional meta right, hairline under.
+ * Every card opens with one so the README reads as a set of instrument panels.
  */
-export function SectionHead({
-  y,
-  label,
-  meta,
-  index,
-}: {
-  y: number
-  label: string
-  meta?: string
-  /** Two-digit section number, printed ahead of the label as an index. */
-  index?: string
-}) {
+export function Label({ y, text, meta }: { y: number; text: string; meta?: string }) {
   const theme = useTheme()
-  const numberW = index ? measureMono(index, t.label, tracking.sectionLabel) + 14 : 0
   return (
     <>
-      {/* Via on the spine, so section starts are findable from the margin — a
-          PCB pad ring with its drill hole, not a plain square. */}
-      <circle cx={SPINE_X} cy={y - 3.5} r={4.2} fill="none" stroke={SPECTRUM} strokeWidth={1.1} opacity={0.9} />
-      <circle cx={SPINE_X} cy={y - 3.5} r={1.6} fill={SPECTRUM} />
-      {index && (
-        <Mono
-          x={MARGIN}
-          y={y}
-          size={t.label}
-          weight="monoBold"
-          fill={SPECTRUM}
-          track={tracking.sectionLabel}
-        >
-          {index}
-        </Mono>
-      )}
-      <Mono
-        x={MARGIN + numberW}
-        y={y}
-        size={t.label}
-        weight="monoBold"
-        fill={theme.inkFaint}
-        track={tracking.sectionLabel}
-      >
-        {label.toUpperCase()}
+      <Mono x={MARGIN} y={y} size={t.label} weight="monoBold" fill={theme.inkFaint} track={tracking.label}>
+        {text.toUpperCase()}
       </Mono>
       {meta && (
         <Mono x={W - MARGIN} y={y} size={t.micro} fill={theme.inkFaint} anchor="end" track={tracking.micro}>
           {meta}
         </Mono>
       )}
-      <Rule y={y + 13} />
+      <Rule y={y + 9} />
     </>
   )
-}
-
-/** Height consumed by a SectionHead, from its label baseline to its rule. */
-export const HEAD_H = 13
-
-/** Leader dots between two x positions — the catalogue-index texture. */
-export function DotLeader({ x1, x2, y }: { x1: number; x2: number; y: number }) {
-  const theme = useTheme()
-  const gap = 5
-  const count = Math.max(0, Math.floor((x2 - x1) / gap))
-  return (
-    <g fill={theme.inkFaint} opacity={0.5}>
-      {Array.from({ length: count }, (_, i) => (
-        <circle key={i} cx={round(x1 + i * gap)} cy={y} r={0.75} />
-      ))}
-    </g>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Chips
-// ---------------------------------------------------------------------------
-
-const CHIP_PAD = 9
-const CHIP_H = 22
-
-export function chipWidth(label: string, size = t.bodyS) {
-  return measureMono(label, size, 0) + CHIP_PAD * 2
-}
-
-export function Chip({
-  x,
-  y,
-  label,
-  delay = 0,
-  accent = false,
-}: {
-  x: number
-  y: number
-  label: string
-  delay?: number
-  /** Draws the border in the spectrum instead of the hairline colour. */
-  accent?: boolean
-}) {
-  const theme = useTheme()
-  const w = chipWidth(label)
-  return (
-    <g className="ignite" style={{ animationDelay: `${delay}ms` }}>
-      <rect
-        x={x}
-        y={y}
-        width={round(w)}
-        height={CHIP_H}
-        rx={radius.chip}
-        fill={theme.surface}
-        stroke={accent ? SPECTRUM : theme.line}
-        strokeOpacity={accent ? 0.85 : theme.lineOpacity * 2}
-        strokeWidth={1}
-      />
-      <Mono
-        x={x + CHIP_PAD}
-        y={centerBaseline(y, CHIP_H, t.bodyS)}
-        size={t.bodyS}
-        fill={theme.inkMuted}
-      >
-        {label}
-      </Mono>
-    </g>
-  )
-}
-
-/**
- * Flows chips across a width, wrapping as needed, and reports the height used.
- * Widths come from the monospace advance, so nothing can overflow regardless of
- * what gets added to the stack later.
- */
-export function chipFlow(
-  labels: string[],
-  opts: { x: number; y: number; maxW: number; delay?: number; step?: number; accentEvery?: number },
-) {
-  const gap = 7
-  const lineH = CHIP_H + gap
-  const nodes: React.ReactNode[] = []
-  let cx = opts.x
-  let cy = opts.y
-  labels.forEach((label, i) => {
-    const w = chipWidth(label)
-    if (cx + w > opts.x + opts.maxW && cx > opts.x) {
-      cx = opts.x
-      cy += lineH
-    }
-    nodes.push(
-      <Chip
-        key={label + i}
-        x={cx}
-        y={cy}
-        label={label}
-        delay={(opts.delay ?? 0) + i * (opts.step ?? 26)}
-        accent={opts.accentEvery ? i % opts.accentEvery === 0 : false}
-      />,
-    )
-    cx += w + gap
-  })
-  return { nodes, height: cy - opts.y + CHIP_H }
-}
-
-// ---------------------------------------------------------------------------
-// Figures and proportion
-// ---------------------------------------------------------------------------
-
-/** A headline number in the display face, with its caption beneath. */
-export function Figure({
-  x,
-  y,
-  value,
-  unit,
-  caption,
-  size = t.figureXL,
-  anchor = 'start',
-  spectrum = true,
-}: {
-  x: number
-  y: number
-  value: string
-  /** Short suffix drawn smaller beside the value, e.g. "d" for days. */
-  unit?: string
-  caption: string
-  size?: number
-  anchor?: 'start' | 'end'
-  spectrum?: boolean
-}) {
-  const theme = useTheme()
-  const hue = spectrum ? SPECTRUM : theme.ink
-  const valueW = measureMono(value, size, -0.5)
-  // The value's right edge sits at x+valueW when left-anchored, or at x itself
-  // when right-anchored (anchor="end" means the text ENDS at x). The unit
-  // always sits just past that right edge, growing further right either way.
-  const unitX = (anchor === 'end' ? x : x + valueW) + 4
-  return (
-    <>
-      <Display x={x} y={y} size={size} fill={hue} track={-0.5} anchor={anchor}>
-        {value}
-      </Display>
-      {unit && (
-        <Mono x={unitX} y={y} size={t.label} weight="monoBold" fill={hue} opacity={0.7}>
-          {unit}
-        </Mono>
-      )}
-      <Mono
-        x={x}
-        y={y + 21}
-        size={t.micro}
-        fill={theme.inkFaint}
-        anchor={anchor}
-        track={tracking.micro}
-      >
-        {caption}
-      </Mono>
-    </>
-  )
-}
-
-/** label · track+fill · value — the standard proportion row. */
-export function BarRow({
-  x,
-  y,
-  labelW,
-  barW,
-  label,
-  pct,
-  value,
-  delay = 0,
-}: {
-  x: number
-  y: number
-  labelW: number
-  barW: number
-  label: string
-  /** 0..1 */
-  pct: number
-  value: string
-  delay?: number
-}) {
-  const theme = useTheme()
-  const h = 7
-  const barX = x + labelW
-  const filled = Math.max(h, barW * Math.min(1, Math.max(0, pct)))
-  return (
-    <>
-      <Mono x={x} y={y + 6} size={t.bodyS} fill={theme.inkMuted}>
-        {label}
-      </Mono>
-      <rect x={barX} y={y} width={barW} height={h} rx={radius.bar} fill={theme.ink} opacity={0.09} />
-      <rect
-        className="grow"
-        style={{ animationDelay: `${delay}ms` }}
-        x={barX}
-        y={y}
-        width={round(filled)}
-        height={h}
-        rx={radius.bar}
-        fill={SPECTRUM}
-      />
-      <Mono x={barX + barW + 14} y={y + 6} size={t.bodyS} fill={theme.inkFaint}>
-        {value}
-      </Mono>
-    </>
-  )
-}
-
-/**
- * One horizontal band divided proportionally, with leader lines down to labels.
- * Reads as a spectrum being split rather than as a row of separate bars, which
- * is the point — it is the same gradient the rest of the poster is painted in.
- */
-export function SpectralBand({
-  x,
-  y,
-  w,
-  h,
-  segments,
-  delay = 0,
-}: {
-  x: number
-  y: number
-  w: number
-  h: number
-  segments: { label: string; pct: number; value: string }[]
-  delay?: number
-}) {
-  const theme = useTheme()
-  const gap = 2
-  let cx = x
-  const bars: React.ReactNode[] = []
-  const legend: React.ReactNode[] = []
-
-  segments.forEach((seg, i) => {
-    const segW = Math.max(3, w * seg.pct - gap)
-    bars.push(
-      <rect
-        key={`b${i}`}
-        x={round(cx)}
-        y={y}
-        width={round(segW)}
-        height={h}
-        rx={radius.bar}
-        fill={SPECTRUM}
-        opacity={1 - i * 0.11}
-      />,
-    )
-    cx += segW + gap
-  })
-
-  // Legend below, in two columns so long stacks stay compact.
-  const perCol = Math.ceil(segments.length / 2)
-  segments.forEach((seg, i) => {
-    const col = Math.floor(i / perCol)
-    const row = i % perCol
-    const lx = x + col * (w / 2)
-    const ly = y + h + 26 + row * 17
-    legend.push(
-      <React.Fragment key={`l${i}`}>
-        <rect x={lx} y={ly - 6} width={7} height={7} rx={1.5} fill={SPECTRUM} opacity={1 - i * 0.11} />
-        <Mono x={lx + 14} y={ly} size={t.bodyS} fill={theme.inkMuted}>
-          {seg.label}
-        </Mono>
-        <Mono x={lx + w / 2 - 26} y={ly} size={t.bodyS} fill={theme.inkFaint} anchor="end">
-          {seg.value}
-        </Mono>
-      </React.Fragment>,
-    )
-  })
-
-  return (
-    <>
-      <g className="grow" style={{ animationDelay: `${delay}ms` }}>
-        {bars}
-      </g>
-      {legend}
-    </>
-  )
-}
-
-export function spectralBandHeight(count: number, h: number) {
-  return h + 26 + Math.ceil(count / 2) * 17 - 6
 }
 
 // ---------------------------------------------------------------------------
 // Marks
 // ---------------------------------------------------------------------------
 
-/** A small spectrum dot with a breathing halo — used for "live" states. */
-export function Blip({ x, y, r = 3.5 }: { x: number; y: number; r?: number }) {
+/** A breathing amber dot — marks whatever line is actually live right now. */
+export function Blip({ x, y, r = 3 }: { x: number; y: number; r?: number }) {
+  const theme = useTheme()
   return (
     <g>
-      <circle className="blip" cx={x} cy={y} r={r * 2.6} fill={SPECTRUM} />
-      <circle cx={x} cy={y} r={r} fill={SPECTRUM} />
+      <circle className="blink" cx={x} cy={y} r={r * 2.2} fill={theme.accent} opacity={0.35} />
+      <circle cx={x} cy={y} r={r} fill={theme.accent} />
     </g>
   )
 }
 
-/** A tick scale, like the graduations on an instrument face. */
-export function TickScale({
+/** Terminal block cursor that sits after the name and blinks in steps. */
+export function Cursor({ x, y, size }: { x: number; y: number; size: number }) {
+  const theme = useTheme()
+  const w = size * 0.55
+  const h = size * 1.05
+  return <rect className="cursor" x={round(x)} y={round(y - h * 0.78)} width={round(w)} height={round(h)} fill={theme.accent} />
+}
+
+// ---------------------------------------------------------------------------
+// Figures and bars
+// ---------------------------------------------------------------------------
+
+/** A number worth reading, its unit beside it small, its caption underneath. */
+export function Figure({
+  x,
+  y,
+  value,
+  unit,
+  caption,
+  size = 30,
+  anchor = 'start',
+  accent = false,
+}: {
+  x: number
+  y: number
+  value: string
+  /** Short suffix drawn smaller beside the value ("d", "/120"). */
+  unit?: string
+  caption: string
+  size?: number
+  anchor?: 'start' | 'end'
+  accent?: boolean
+}) {
+  const theme = useTheme()
+  const paint = accent ? theme.accent : theme.ink
+  const valueW = measureMono(value, size, -0.5)
+  const unitX = (anchor === 'end' ? x : x + valueW) + 4
+  return (
+    <>
+      <Display x={x} y={y} size={size} fill={paint} track={-0.5} anchor={anchor}>
+        {value}
+      </Display>
+      {unit && (
+        <Mono x={unitX} y={y} size={t.bodyS} weight="monoBold" fill={theme.accent} opacity={0.85}>
+          {unit}
+        </Mono>
+      )}
+      <Mono x={x} y={y + 17} size={t.micro} fill={theme.inkFaint} anchor={anchor} track={tracking.micro}>
+        {caption}
+      </Mono>
+    </>
+  )
+}
+
+/** Track + animated amber fill, with the value printed at the bar's right end. */
+export function BarRow({
   x,
   y,
   w,
-  count = 40,
-  height = 5,
+  pct,
+  delay = 0,
 }: {
   x: number
   y: number
   w: number
-  count?: number
-  height?: number
+  /** 0..1 */
+  pct: number
+  delay?: number
 }) {
   const theme = useTheme()
-  const step = w / count
+  const h = 7
+  const filled = Math.max(h / 2, w * Math.min(1, Math.max(0, pct)))
   return (
-    <g fill={theme.inkFaint}>
-      {Array.from({ length: count + 1 }, (_, i) => (
-        <rect
-          key={i}
-          x={round(x + i * step)}
-          y={y}
-          width={1}
-          height={i % 5 === 0 ? height : height * 0.5}
-          opacity={i % 5 === 0 ? 0.55 : 0.3}
-        />
+    <>
+      <rect x={x} y={y} width={w} height={h} rx={2} fill={theme.ink} opacity={0.1} />
+      <rect
+        className="grow"
+        style={{ animationDelay: `${delay}ms` }}
+        x={x}
+        y={y}
+        width={round(filled)}
+        height={h}
+        rx={2}
+        fill={theme.accent}
+      />
+    </>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// PCB furniture
+// ---------------------------------------------------------------------------
+
+/**
+ * Gold edge-connector fingers along a horizontal run — the contact edge of a
+ * expansion card. One or two "keyed" pins carry full accent so the strip is
+ * never mechanically uniform.
+ */
+export function EdgeConnectors({
+  x,
+  y,
+  count = 26,
+  fingerW = 6,
+  gap = 5,
+}: {
+  x: number
+  y: number
+  count?: number
+  fingerW?: number
+  gap?: number
+}) {
+  const theme = useTheme()
+  const step = fingerW + gap
+  return (
+    <g className="fade">
+      {Array.from({ length: count }, (_, i) => {
+        const keyed = i % 7 === 3
+        const h = i % 2 === 0 ? 9 : 6
+        return (
+          <rect
+            key={i}
+            x={round(x + i * step)}
+            y={y - h}
+            width={fingerW}
+            height={h}
+            rx={1}
+            fill={theme.accent}
+            opacity={keyed ? 0.95 : 0.32}
+          />
+        )
+      })}
+    </g>
+  )
+}
+
+/**
+ * A copper trace: faint base line with accent dashes conducting along it, and
+ * via pads at each bend supplied by the caller. `d` should be an orthogonal
+ * rounded path — traces route, they do not wander.
+ */
+export function Trace({
+  d,
+  vias = [],
+  opacity = 1,
+}: {
+  d: string
+  vias?: [number, number][]
+  opacity?: number
+}) {
+  const theme = useTheme()
+  return (
+    <g opacity={opacity}>
+      <path d={d} fill="none" stroke={theme.line} strokeWidth={2.4} strokeOpacity={theme.lineOpacity * 2.4} strokeLinecap="round" />
+      <path
+        className="conduct"
+        d={d}
+        fill="none"
+        stroke={theme.accent}
+        strokeWidth={1.2}
+        strokeOpacity={0.75}
+        strokeDasharray="3 13"
+        strokeLinecap="round"
+      />
+      {vias.map(([vx, vy], i) => (
+        <g key={i}>
+          <circle cx={vx} cy={vy} r={3.4} fill="none" stroke={theme.accent} strokeWidth={1} strokeOpacity={0.8} />
+          <circle cx={vx} cy={vy} r={1.2} fill={theme.accent} />
+        </g>
       ))}
     </g>
   )
 }
 
-/** Vertical spine running the full poster height, painted in the spectrum. */
-export function Spine({ top, bottom, theme }: { top: number; bottom: number; theme: Theme }) {
+/** Inline stack run: `a` · `b` · `c` in muted mono, for project footers. */
+export function StackRun({ x, y, items, maxW }: { x: number; y: number; items: string[]; maxW: number }) {
+  const theme = useTheme()
+  const sep = '  ·  '
+  let line = ''
+  const lines: string[] = []
+  for (const item of items) {
+    const next = line ? line + sep + item.toLowerCase() : item.toLowerCase()
+    if (measureMono(next, t.tiny, 0.5) > maxW && line) {
+      lines.push(line)
+      line = item.toLowerCase()
+    } else {
+      line = next
+    }
+  }
+  if (line) lines.push(line)
   return (
     <>
-      <rect x={SPINE_X} y={top} width={1} height={bottom - top} fill={theme.ink} opacity={0.1} />
-      <rect x={SPINE_X} y={top} width={1} height={bottom - top} fill={SPECTRUM} opacity={0.5} />
-      <SpinePulse top={top} bottom={bottom} />
+      {lines.map((l, i) => (
+        <Mono key={l} x={x} y={y + i * 12} size={t.tiny} fill={theme.inkFaint} track={0.5}>
+          {l}
+        </Mono>
+      ))}
     </>
   )
 }
 
-/**
- * One light packet travelling the spine, top to bottom — the signal path the
- * via markers tap into. Faded at both ends by #spinePulse so it never pops in
- * or out at the extremes of its run.
- */
-function SpinePulse({ top, bottom }: { top: number; bottom: number }) {
-  const h = 90
-  const travel = Math.max(0, bottom - top - h)
-  if (travel <= 0) return null
-  return (
-    <rect x={SPINE_X - 0.75} y={0} width={2.5} height={h} fill="url(#spinePulse)">
-      <animateTransform
-        attributeName="transform"
-        type="translate"
-        from={`0 ${top}`}
-        to={`0 ${top + travel}`}
-        dur={motion.pulseDur}
-        repeatCount="indefinite"
-      />
-    </rect>
-  )
-}
+/** Convenience for cards that want the standard side margins. */
+export const CARD_X = MARGIN

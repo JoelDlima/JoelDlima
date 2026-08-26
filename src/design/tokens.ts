@@ -1,42 +1,25 @@
 /**
- * Design tokens for the poster.
+ * Design tokens — "the workbench" system.
  *
- * The whole thing is one continuous spectrum — violet → blue → red → violet —
- * that travels slowly across the page. Colour is never decorative here: an
- * element's hue is a function of where it sits, so the poster reads as one
- * gradient sampled in many places rather than as several accent colours. That
- * is what stops it looking like a palette picked at random.
+ * One idea carries the whole page: Joel builds hardware, so the profile reads
+ * like his bench at night — carbon-black surfaces, a single amber-phosphor
+ * accent the way instruments mark what is live, copper traces and gold
+ * contacts as structure. Deliberately NOT the violet-gradient look every
+ * second student profile has, and deliberately single-accent: one hue marked
+ * "energised" reads as intent, three read as a theme store.
  *
- * Every value below is shared by both themes unless it lives inside `themes`.
+ * Light theme is the same bench in daylight: warm paper, burnt amber ink.
  */
 
 // ---------------------------------------------------------------------------
 // Geometry
 // ---------------------------------------------------------------------------
 
-/** Poster width. GitHub's README column renders this at roughly 860 CSS px. */
+/** Card width. GitHub's README column renders this at roughly 860 CSS px. */
 export const W = 900
 export const MARGIN = 42
 /** Usable content width between the margins. */
 export const CONTENT = W - MARGIN * 2
-
-// ---------------------------------------------------------------------------
-// Spectrum
-// ---------------------------------------------------------------------------
-
-/**
- * Deliberately desaturated against the obvious neon versions of these hues.
- * #8B5CF6 / #3B82F6 / #EF4444 are the framework defaults and read as generic;
- * pulling saturation down and value slightly in gives ink rather than glow.
- */
-export const spectrumDark = ['#8257E5', '#3D7DE0', '#D24A4A'] as const
-export const spectrumLight = ['#6A3AD0', '#2A5FBF', '#B33636'] as const
-
-/** One full violet → blue → red → violet turn, twice, for a seamless loop. */
-export function spectrumStops(hues: readonly string[]): { offset: number; color: string }[] {
-  const cycle = [...hues, ...hues, hues[0]!]
-  return cycle.map((color, i) => ({ offset: i / (cycle.length - 1), color }))
-}
 
 // ---------------------------------------------------------------------------
 // Themes
@@ -44,73 +27,57 @@ export function spectrumStops(hues: readonly string[]): { offset: number; color:
 
 export interface Theme {
   name: 'dark' | 'light'
-  /** Poster background. */
+  /** Card background. */
   ground: string
-  /** Raised surfaces — chips, cards, meter tracks. */
+  /** Raised surfaces — chips, badge fills. */
   surface: string
-  surfaceStrong: string
   /** Primary reading colour. */
   ink: string
-  /** Secondary text: descriptions, values. */
+  /** Secondary text. */
   inkMuted: string
-  /** Tertiary: section labels, captions, axis marks. */
+  /** Tertiary: labels, captions, axis marks. */
   inkFaint: string
-  /** Hairline rules and chip borders. */
+  /** The one live colour: amber phosphor. */
+  accent: string
+  /** Hairline rules and borders. */
   line: string
   lineOpacity: number
-  /** Spectrum stops for this theme. */
-  spectrum: readonly string[]
-  /** Opacity for the ambient interference field behind everything. */
-  fieldOpacity: number
 }
 
 export const themes: Record<'dark' | 'light', Theme> = {
   dark: {
     name: 'dark',
-    ground: '#0A0A0D',
-    surface: '#131318',
-    surfaceStrong: '#1B1B22',
-  ink: '#F4F4F8',
-  inkMuted: '#C2C2CE',
-  inkFaint: '#8B8B97',
+    ground: '#0C0C0E',
+    surface: '#141417',
+    ink: '#EDEAE1',
+    inkMuted: '#B3AEA2',
+    inkFaint: '#79746A',
+    accent: '#FFB627',
     line: '#FFFFFF',
     lineOpacity: 0.09,
-    spectrum: spectrumDark,
-    fieldOpacity: 0.5,
   },
   light: {
     name: 'light',
-    ground: '#FBFAF9',
+    ground: '#FAF8F3',
     surface: '#FFFFFF',
-    surfaceStrong: '#F2F1EE',
-  ink: '#101014',
-  inkMuted: '#41414D',
-  inkFaint: '#6B6B77',
-    line: '#14141A',
+    ink: '#1B1812',
+    inkMuted: '#59544B',
+    inkFaint: '#8B857A',
+    // Burnt amber: bright phosphor fails contrast on paper; this keeps the
+    // same hue family at ≥4.5:1 against the light ground.
+    accent: '#9A6100',
+    line: '#1B1812',
     lineOpacity: 0.13,
-    spectrum: spectrumLight,
-    fieldOpacity: 0.28,
   },
 }
 
 // ---------------------------------------------------------------------------
-// Typography
+// Typography — JetBrains Mono only, three weights, fixed 0.6em advance.
 // ---------------------------------------------------------------------------
 
-/**
- * One family only: **JetBrains Mono**, in three weights (Regular, Bold,
- * ExtraBold). An earlier generation used a second display face for headlines —
- * dropped in favour of a single bold-mono register closer to a terminal or a
- * dev-tool UI (Vercel, GitHub itself). One family also means one fixed 0.6em
- * advance for every weight, so all layout math is exact arithmetic.
- */
 export const type = {
-  masthead: 62,
-  figureXL: 58,
-  figureL: 38,
-  sectionTitle: 25,
-  lead: 17,
-
+  hero: 58,
+  lead: 19,
   body: 12.5,
   bodyS: 11.5,
   label: 10.5,
@@ -119,30 +86,9 @@ export const type = {
 } as const
 
 export const tracking = {
-  masthead: 2.4,
-  sectionLabel: 1.9,
-  label: 1.5,
+  label: 1.6,
   micro: 1.1,
   none: 0,
-} as const
-
-// ---------------------------------------------------------------------------
-// Rhythm
-// ---------------------------------------------------------------------------
-
-export const space = {
-  /** Gap between the end of one section and the next section's rule. */
-  section: 34,
-  /** Gap from a section rule down to its first content. */
-  afterRule: 30,
-  row: 15,
-  tight: 8,
-} as const
-
-export const radius = {
-  chip: 4,
-  card: 7,
-  bar: 2,
 } as const
 
 // ---------------------------------------------------------------------------
@@ -150,16 +96,13 @@ export const radius = {
 // ---------------------------------------------------------------------------
 
 export const motion = {
-  /** One full spectrum turn. Slow enough to feel like light, not a rainbow. */
-  spectrumDur: '26s',
-  /** Ambient signal traces cross the poster at three depths and three speeds —
-   *  the parallax is the speed difference, not the direction. */
-  traceDurs: ['46s', '58s', '72s'],
-  /** The instrument re-scans the page top to bottom on this loop. */
-  scanDur: '30s',
-  /** One light packet, top of the spine to the bottom. */
-  pulseDur: '16s',
+  /** Status blip breathing. */
+  blinkDur: '2.6s',
+  /** Terminal cursor after the name. */
+  cursorDur: '1.1s',
+  /** Marching dashes along a PCB trace — signal direction, quietly. */
+  conductDur: '9s',
   ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-  /** The entrance cascade advances by this much per section. */
-  cascadeStep: 90,
+  /** Entrance cascade step per card element. */
+  cascadeStep: 70,
 } as const
