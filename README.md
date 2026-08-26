@@ -1,12 +1,4 @@
-<!-- Every visual element on this profile is a rendered card — no generic
-     markdown headings or tables between them. The only markdown left is
-     functional: the repo link line (SVG links are inert behind <img>) and
-     the contact badges. Light-theme variants of every card exist in
-     assets/ for local preview. -->
 
-```
-
-```
 
 <img src="./assets/intro-dark.svg" alt="Joel D'Lima — Software Engineering Intern at Visteon. Embedded + full-stack." width="100%">
 
