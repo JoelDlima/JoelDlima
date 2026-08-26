@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="340" viewBox="0 0 840 340" role="img" aria-label="Joel D'Lima — Tech Stack">
+  <title>Joel D'Lima — Tech Stack &amp; Skills</title>
+  <desc>Technical skills organized by category with animated entries</desc>
+
+  <defs>
+    <filter id="nb3" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="40"/>
+    </filter>
+    <filter id="sg3" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.5" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="lang-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="fw-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="hw-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="ai-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#a855f7" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;600;700;800&amp;display=swap');
+
+    .sec-title { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-weight: 800; font-size: 24px; fill: #ffffff; letter-spacing: -0.5px; }
+    .cat-title { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1.5px; }
+    .skill-text { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-weight: 600; font-size: 11px; }
+    .skill-sub { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; font-weight: 300; font-size: 10px; fill: #64748b; }
+
+    .r1 { animation: rIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s both; }
+    .r2 { animation: rIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s both; }
+    .r3 { animation: rIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.35s both; }
+    .r4 { animation: rIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.5s both; }
+    .r5 { animation: rIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.65s both; }
+
+    @keyframes rIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    @media (prefers-reduced-motion:reduce) { .r1,.r2,.r3,.r4,.r5 { animation-duration:0.01s; } }
+  </style>
+
+  <!-- Background -->
+  <rect width="840" height="340" rx="12" fill="#0a0a0f"/>
+
+  <!-- Nebula -->
+  <circle cx="200" cy="170" r="100" fill="#7c3aed" opacity="0.03" filter="url(#nb3)"/>
+  <circle cx="650" cy="200" r="90" fill="#22d3ee" opacity="0.03" filter="url(#nb3)"/>
+
+  <!-- Stars -->
+  <g filter="url(#sg3)" opacity="0.35">
+    <circle cx="80" cy="25" r="0.5" fill="#e2e8f0"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="3.5s" repeatCount="indefinite"/></circle>
+    <circle cx="250" cy="18" r="0.6" fill="#cbd5e1"><animate attributeName="opacity" values="0.2;0.9;0.2" dur="4s" begin="0.5s" repeatCount="indefinite"/></circle>
+    <circle cx="500" cy="30" r="0.5" fill="#e2e8f0"><animate attributeName="opacity" values="0.4;0.8;0.4" dur="3.8s" begin="1s" repeatCount="indefinite"/></circle>
+    <circle cx="720" cy="22" r="0.6" fill="#e2e8f0"><animate attributeName="opacity" values="0.3;0.7;0.3" dur="4.2s" begin="1.5s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <!-- Section title -->
+  <g class="r1">
+    <text x="420" y="45" text-anchor="middle" class="sec-title">🛠️ Tech Stack</text>
+    <line x1="330" y1="57" x2="510" y2="57" stroke="#7c3aed" stroke-width="1" opacity="0.3">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="4s" repeatCount="indefinite"/>
+    </line>
+  </g>
+
+  <!-- ====== ROW 1: Languages ====== -->
+  <g class="r2">
+    <rect x="40" y="75" width="370" height="110" rx="10" fill="url(#lang-grad)" stroke="#7c3aed" stroke-width="0.5" opacity="0.8"/>
+    <text x="60" y="100" class="cat-title" fill="#a78bfa">LANGUAGES</text>
+
+    <rect x="60" y="112" width="60" height="24" rx="5" fill="#1e1b4b" stroke="#7c3aed" stroke-width="0.5"/>
+    <text x="90" y="128" text-anchor="middle" class="skill-text" fill="#c4b5fd">Python</text>
+
+    <rect x="128" y="112" width="82" height="24" rx="5" fill="#1e1b4b" stroke="#7c3aed" stroke-width="0.5"/>
+    <text x="169" y="128" text-anchor="middle" class="skill-text" fill="#c4b5fd">TypeScript</text>
+
+    <rect x="218" y="112" width="76" height="24" rx="5" fill="#1e1b4b" stroke="#7c3aed" stroke-width="0.5"/>
+    <text x="256" y="128" text-anchor="middle" class="skill-text" fill="#c4b5fd">JavaScript</text>
+
+    <rect x="302" y="112" width="30" height="24" rx="5" fill="#1e1b4b" stroke="#7c3aed" stroke-width="0.5"/>
+    <text x="317" y="128" text-anchor="middle" class="skill-text" fill="#c4b5fd">C</text>
+
+    <rect x="340" y="112" width="40" height="24" rx="5" fill="#1e1b4b" stroke="#7c3aed" stroke-width="0.5"/>
+    <text x="360" y="128" text-anchor="middle" class="skill-text" fill="#c4b5fd">C++</text>
+
+    <rect x="60" y="144" width="55" height="24" rx="5" fill="#1e1b4b" stroke="#7c3aed" stroke-width="0.5"/>
+    <text x="87" y="160" text-anchor="middle" class="skill-text" fill="#c4b5fd">Verilog</text>
+  </g>
+
+  <!-- ====== ROW 1: Frameworks ====== -->
+  <g class="r3">
+    <rect x="430" y="75" width="370" height="110" rx="10" fill="url(#fw-grad)" stroke="#22d3ee" stroke-width="0.5" opacity="0.8"/>
+    <text x="450" y="100" class="cat-title" fill="#67e8f9">FRAMEWORKS &amp; CLOUD</text>
+
+    <rect x="450" y="112" width="48" height="24" rx="5" fill="#0c3547" stroke="#22d3ee" stroke-width="0.5"/>
+    <text x="474" y="128" text-anchor="middle" class="skill-text" fill="#67e8f9">React</text>
+
+    <rect x="506" y="112" width="58" height="24" rx="5" fill="#0c3547" stroke="#22d3ee" stroke-width="0.5"/>
+    <text x="535" y="128" text-anchor="middle" class="skill-text" fill="#67e8f9">Node.js</text>
+
+    <rect x="572" y="112" width="42" height="24" rx="5" fill="#0c3547" stroke="#22d3ee" stroke-width="0.5"/>
+    <text x="593" y="128" text-anchor="middle" class="skill-text" fill="#67e8f9">Flask</text>
+
+    <rect x="622" y="112" width="68" height="24" rx="5" fill="#0c3547" stroke="#22d3ee" stroke-width="0.5"/>
+    <text x="656" y="128" text-anchor="middle" class="skill-text" fill="#67e8f9">Tailwind</text>
+
+    <rect x="698" y="112" width="72" height="24" rx="5" fill="#0c3547" stroke="#22d3ee" stroke-width="0.5"/>
+    <text x="734" y="128" text-anchor="middle" class="skill-text" fill="#67e8f9">REST APIs</text>
+
+    <rect x="450" y="144" width="68" height="24" rx="5" fill="#0c3547" stroke="#22d3ee" stroke-width="0.5"/>
+    <text x="484" y="160" text-anchor="middle" class="skill-text" fill="#67e8f9">Supabase</text>
+
+    <rect x="526" y="144" width="55" height="24" rx="5" fill="#0c3547" stroke="#22d3ee" stroke-width="0.5"/>
+    <text x="553" y="160" text-anchor="middle" class="skill-text" fill="#67e8f9">Vercel</text>
+
+    <rect x="589" y="144" width="92" height="24" rx="5" fill="#0c3547" stroke="#22d3ee" stroke-width="0.5"/>
+    <text x="635" y="160" text-anchor="middle" class="skill-text" fill="#67e8f9">Google Cloud</text>
+  </g>
+
+  <!-- ====== ROW 2: Embedded ====== -->
+  <g class="r4">
+    <rect x="40" y="200" width="370" height="110" rx="10" fill="url(#hw-grad)" stroke="#f59e0b" stroke-width="0.5" opacity="0.8"/>
+    <text x="60" y="225" class="cat-title" fill="#fbbf24">EMBEDDED &amp; HARDWARE</text>
+
+    <rect x="60" y="237" width="52" height="24" rx="5" fill="#422006" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="86" y="253" text-anchor="middle" class="skill-text" fill="#fbbf24">ESP32</text>
+
+    <rect x="120" y="237" width="82" height="24" rx="5" fill="#422006" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="161" y="253" text-anchor="middle" class="skill-text" fill="#fbbf24">ESP32-CAM</text>
+
+    <rect x="210" y="237" width="35" height="24" rx="5" fill="#422006" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="227" y="253" text-anchor="middle" class="skill-text" fill="#fbbf24">I2C</text>
+
+    <rect x="253" y="237" width="35" height="24" rx="5" fill="#422006" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="270" y="253" text-anchor="middle" class="skill-text" fill="#fbbf24">SPI</text>
+
+    <rect x="296" y="237" width="45" height="24" rx="5" fill="#422006" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="318" y="253" text-anchor="middle" class="skill-text" fill="#fbbf24">UART</text>
+
+    <rect x="349" y="237" width="45" height="24" rx="5" fill="#422006" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="371" y="253" text-anchor="middle" class="skill-text" fill="#fbbf24">GPIO</text>
+
+    <rect x="60" y="269" width="75" height="24" rx="5" fill="#422006" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="97" y="285" text-anchor="middle" class="skill-text" fill="#fbbf24">IoT Sensors</text>
+  </g>
+
+  <!-- ====== ROW 2: AI & Tools ====== -->
+  <g class="r5">
+    <rect x="430" y="200" width="370" height="110" rx="10" fill="url(#ai-grad)" stroke="#a855f7" stroke-width="0.5" opacity="0.8"/>
+    <text x="450" y="225" class="cat-title" fill="#c4b5fd">AI &amp; TOOLS</text>
+
+    <rect x="450" y="237" width="78" height="24" rx="5" fill="#1a1a2e" stroke="#a855f7" stroke-width="0.5"/>
+    <text x="489" y="253" text-anchor="middle" class="skill-text" fill="#c4b5fd">Gemini API</text>
+
+    <rect x="536" y="237" width="55" height="24" rx="5" fill="#1a1a2e" stroke="#a855f7" stroke-width="0.5"/>
+    <text x="563" y="253" text-anchor="middle" class="skill-text" fill="#c4b5fd">Ollama</text>
+
+    <rect x="599" y="237" width="82" height="24" rx="5" fill="#1a1a2e" stroke="#a855f7" stroke-width="0.5"/>
+    <text x="640" y="253" text-anchor="middle" class="skill-text" fill="#c4b5fd">TensorFlow</text>
+
+    <rect x="689" y="237" width="32" height="24" rx="5" fill="#1a1a2e" stroke="#a855f7" stroke-width="0.5"/>
+    <text x="705" y="253" text-anchor="middle" class="skill-text" fill="#c4b5fd">Git</text>
+
+    <rect x="450" y="269" width="95" height="24" rx="5" fill="#1a1a2e" stroke="#a855f7" stroke-width="0.5"/>
+    <text x="497" y="285" text-anchor="middle" class="skill-text" fill="#c4b5fd">Web Scraping</text>
+  </g>
+</svg>

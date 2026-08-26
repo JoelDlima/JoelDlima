@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="420" viewBox="0 0 840 420" role="img" aria-label="Joel D'Lima — Experience &amp; Achievements">
+  <title>Joel D'Lima — Experience &amp; Achievements</title>
+  <desc>Work experience timeline and hackathon achievements</desc>
+
+  <defs>
+    <filter id="nb4" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="40"/>
+    </filter>
+    <filter id="sg4" x="-300%" y="-300%" width="700%" height="700%">
+      <feGaussianBlur stdDeviation="1.5" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="timeline-line" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;600;700;800&amp;display=swap');
+
+    .s-title { font-family:'Inter','Segoe UI',system-ui,sans-serif; font-weight:800; font-size:24px; fill:#ffffff; letter-spacing:-0.5px; }
+    .exp-company { font-family:'Inter','Segoe UI',system-ui,sans-serif; font-weight:700; font-size:15px; fill:#f1f5f9; }
+    .exp-role { font-family:'Inter','Segoe UI',system-ui,sans-serif; font-weight:600; font-size:12px; fill:#a78bfa; }
+    .exp-date { font-family:'Inter','Segoe UI',system-ui,sans-serif; font-weight:300; font-size:11px; fill:#64748b; }
+    .exp-desc { font-family:'Inter','Segoe UI',system-ui,sans-serif; font-weight:300; font-size:11px; fill:#94a3b8; }
+    .ach-title { font-family:'Inter','Segoe UI',system-ui,sans-serif; font-weight:700; font-size:13px; fill:#f1f5f9; }
+    .ach-desc { font-family:'Inter','Segoe UI',system-ui,sans-serif; font-weight:300; font-size:11px; fill:#94a3b8; }
+    .ach-badge { font-family:'Inter','Segoe UI',system-ui,sans-serif; font-weight:600; font-size:10px; fill:#fbbf24; }
+
+    .a1 { animation:aIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s both; }
+    .a2 { animation:aIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.25s both; }
+    .a3 { animation:aIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.4s both; }
+    .a4 { animation:aIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.55s both; }
+    .a5 { animation:aIn 0.7s cubic-bezier(0.16,1,0.3,1) 0.7s both; }
+
+    @keyframes aIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+    @media(prefers-reduced-motion:reduce){ .a1,.a2,.a3,.a4,.a5{animation-duration:0.01s} }
+  </style>
+
+  <!-- Background -->
+  <rect width="840" height="420" rx="12" fill="#0a0a0f"/>
+  <circle cx="150" cy="200" r="100" fill="#7c3aed" opacity="0.025" filter="url(#nb4)"/>
+  <circle cx="700" cy="250" r="120" fill="#22d3ee" opacity="0.025" filter="url(#nb4)"/>
+
+  <!-- Stars -->
+  <g filter="url(#sg4)" opacity="0.3">
+    <circle cx="65" cy="22" r="0.5" fill="#e2e8f0"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="3.5s" repeatCount="indefinite"/></circle>
+    <circle cx="300" cy="15" r="0.6" fill="#cbd5e1"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="4s" begin="0.5s" repeatCount="indefinite"/></circle>
+    <circle cx="550" cy="28" r="0.5" fill="#e2e8f0"><animate attributeName="opacity" values="0.4;0.9;0.4" dur="3.8s" begin="1s" repeatCount="indefinite"/></circle>
+    <circle cx="780" cy="20" r="0.6" fill="#e2e8f0"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="4.2s" begin="0.3s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <!-- Section title -->
+  <g class="a1">
+    <text x="420" y="45" text-anchor="middle" class="s-title">🚀 Experience &amp; Achievements</text>
+    <line x1="270" y1="57" x2="570" y2="57" stroke="#7c3aed" stroke-width="1" opacity="0.3">
+      <animate attributeName="opacity" values="0.2;0.5;0.2" dur="4s" repeatCount="indefinite"/>
+    </line>
+  </g>
+
+  <!-- ====== LEFT SIDE: EXPERIENCE TIMELINE ====== -->
+
+  <!-- Timeline vertical line -->
+  <g class="a2">
+    <rect x="68" y="80" width="2" height="260" rx="1" fill="url(#timeline-line)" opacity="0.4"/>
+
+    <!-- Dot 1 — Visteon -->
+    <circle cx="69" cy="100" r="6" fill="#0a0a0f" stroke="#7c3aed" stroke-width="2">
+      <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="69" cy="100" r="2.5" fill="#7c3aed">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/>
+    </circle>
+
+    <text x="90" y="96" class="exp-company">Visteon Corporation</text>
+    <text x="90" y="112" class="exp-role">Software Engineering Intern (Incoming)</text>
+    <text x="90" y="128" class="exp-date">Jul 2026 – Oct 2026  ·  Panjim, Goa</text>
+    <text x="90" y="145" class="exp-desc">Embedded/software development in automotive-grade environments.</text>
+    <text x="90" y="159" class="exp-desc">Pre-placement offer (PPO) evaluation at term end.</text>
+
+    <!-- Dot 2 — EpicForce -->
+    <circle cx="69" cy="195" r="6" fill="#0a0a0f" stroke="#22d3ee" stroke-width="2">
+      <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="69" cy="195" r="2.5" fill="#22d3ee">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+
+    <text x="90" y="191" class="exp-company">EpicForce (InnerVerse)</text>
+    <text x="90" y="207" class="exp-role">Software Developer</text>
+    <text x="90" y="223" class="exp-date">Feb 2026 – Jun 2026  ·  Remote</text>
+    <text x="90" y="240" class="exp-desc">Rebuilt dashboard UI and quiz components with React.</text>
+    <text x="90" y="254" class="exp-desc">Scoped migration from WordPress → React + Node.js + Supabase.</text>
+
+    <!-- Dot 3 — Education -->
+    <circle cx="69" cy="290" r="6" fill="#0a0a0f" stroke="#a855f7" stroke-width="2">
+      <animate attributeName="stroke-opacity" values="0.6;1;0.6" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="69" cy="290" r="2.5" fill="#a855f7">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="4s" repeatCount="indefinite"/>
+    </circle>
+
+    <text x="90" y="286" class="exp-company">Agnel Institute of Technology &amp; Design</text>
+    <text x="90" y="302" class="exp-role">B.E. — Electronics &amp; Computer Engineering</text>
+    <text x="90" y="318" class="exp-date">Expected 2027  ·  Assagao, Goa  ·  CGPA: 9.7</text>
+    <text x="90" y="335" class="exp-desc">Sem I–III: 10.0 | Sem IV: 9.81 | Sem V: 9.41. Entering 4th year.</text>
+  </g>
+
+  <!-- ====== RIGHT SIDE: ACHIEVEMENTS ====== -->
+  <g class="a3">
+    <!-- Achievement cards -->
+    <rect x="460" y="80" width="340" height="68" rx="8" fill="#0f0f18" stroke="#fbbf24" stroke-width="0.5" opacity="0.8"/>
+    <text x="480" y="102" class="ach-title">🏆 HackIndia — Top 25 (State Level)</text>
+    <text x="480" y="118" class="ach-desc">Achieved top 25 state-level finish in 2nd year.</text>
+    <text x="480" y="134" class="ach-badge">HACKATHON • COMPETITIVE</text>
+  </g>
+
+  <g class="a4">
+    <rect x="460" y="160" width="340" height="68" rx="8" fill="#0f0f18" stroke="#a78bfa" stroke-width="0.5" opacity="0.8"/>
+    <text x="480" y="182" class="ach-title">🥉 SIH — 3rd Place (SW &amp; HW Tracks)</text>
+    <text x="480" y="198" class="ach-desc">3rd place in both Software and Hardware tracks,</text>
+    <text x="480" y="212" class="ach-desc">Smart India Hackathon, college level.</text>
+  </g>
+
+  <g class="a4">
+    <rect x="460" y="240" width="340" height="68" rx="8" fill="#0f0f18" stroke="#22d3ee" stroke-width="0.5" opacity="0.8"/>
+    <text x="480" y="262" class="ach-title">📜 Lenovo Programs</text>
+    <text x="480" y="278" class="ach-desc">Completed two 8-week self-paced programs:</text>
+    <text x="480" y="292" class="ach-desc">Artificial Intelligence &amp; Web Technologies.</text>
+  </g>
+
+  <g class="a5">
+    <rect x="460" y="320" width="340" height="68" rx="8" fill="#0f0f18" stroke="#67e8f9" stroke-width="0.5" opacity="0.8"/>
+    <text x="480" y="342" class="ach-title">🔧 Hackathon Projects</text>
+    <text x="480" y="358" class="ach-desc">RideScore (ESP32 driving scorer) &amp; AccessMate</text>
+    <text x="480" y="372" class="ach-desc">(accessibility app) at GDG Goa "Build for All".</text>
+  </g>
+</svg>
