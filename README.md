@@ -1,11 +1,16 @@
 # joel d'lima
 
+<!-- ASCII uses rule lines only, no box-drawing frame: GitHub renders code
+     blocks in the viewer's system mono font, where box glyphs have different
+     advance widths and the right border drifts off-grid (seen on real
+     machines). Rules can't misalign — a dash row is a dash row at any width. -->
+
 ```
-┌──────────────────────────────────────────────┐
-│  01001010 01001111 01000101 01001100         │
-│  firmware → api → interface                  │
-│  electronics & computer eng · visteon intern │
-└──────────────────────────────────────────────┘
+────────────────────────────────────────────────
+  01001010 01001111 01000101 01001100
+  firmware → api → interface
+  electronics & computer eng · visteon intern
+────────────────────────────────────────────────
 ```
 
 <img src="./assets/intro-dark.svg" alt="Joel D'Lima — Electronics and Computer Engineering. Software Engineering Intern at Visteon." width="100%">

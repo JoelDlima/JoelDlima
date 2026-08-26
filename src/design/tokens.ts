@@ -51,7 +51,10 @@ export const themes: Record<'dark' | 'light', Theme> = {
     surface: '#141417',
     ink: '#EDEAE1',
     inkMuted: '#B3AEA2',
-    inkFaint: '#79746A',
+    // Raised one step from the original #79746A: this tone carries real
+    // captions (footers, axis marks), and on compressed/mobile screens the
+    // old value crushed into the ground and read as missing content.
+    inkFaint: '#8A8478',
     accent: '#FFB627',
     line: '#FFFFFF',
     lineOpacity: 0.09,
@@ -62,7 +65,7 @@ export const themes: Record<'dark' | 'light', Theme> = {
     surface: '#FFFFFF',
     ink: '#1B1812',
     inkMuted: '#59544B',
-    inkFaint: '#8B857A',
+    inkFaint: '#7B756A',
     // Burnt amber: bright phosphor fails contrast on paper; this keeps the
     // same hue family at ≥4.5:1 against the light ground.
     accent: '#9A6100',

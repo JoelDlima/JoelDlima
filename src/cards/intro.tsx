@@ -77,7 +77,7 @@ export function IntroCard() {
           x={MARGIN + 15 + measureStatus(identity.status) + 12}
           y={statusY}
           size={t.bodyS}
-          fill={theme.inkFaint}
+          fill={theme.inkMuted}
         >
           automotive embedded · ppo track
         </Mono>
