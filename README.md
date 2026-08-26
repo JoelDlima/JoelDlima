@@ -8,7 +8,10 @@
 └──────────────────────────────────────────────┘
 ```
 
-<a href="https://github.com/JoelDlima"><img src="./assets/intro-dark.svg" alt="Joel D'Lima — Electronics and Computer Engineering. Software Engineering Intern at Visteon." width="100%"></a>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/intro-dark.svg">
+  <img src="./assets/intro-light.svg" alt="Joel D'Lima — Electronics and Computer Engineering. Software Engineering Intern at Visteon." width="100%">
+</picture>
 
 ### ▸ selected work
 
@@ -23,7 +26,10 @@
 
 ### ▸ bench status
 
-<img src="./assets/now-dark.svg" alt="Internship progress, graduation countdown, and trailing-year contributions." width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/now-dark.svg">
+  <img src="./assets/now-light.svg" alt="Internship progress, graduation countdown, and trailing-year contributions." width="100%">
+</picture>
 
 ### ▸ the snake eats my commits
 
@@ -34,7 +40,7 @@
 
 ### ▸ contact
 
-<a href="https://github.com/JoelDlima"><img src="./assets/badge-github.svg" alt="github / joeldlima" height="30"></a>
-<a href="https://linkedin.com/in/joel-dlima"><img src="./assets/badge-linkedin.svg" alt="linkedin / joel-dlima" height="30"></a>
-<a href="https://portfolio-v1-seven-nu.vercel.app"><img src="./assets/badge-portfolio.svg" alt="portfolio" height="30"></a>
-<a href="mailto:joeldlima123@gmail.com"><img src="./assets/badge-email.svg" alt="joeldlima123@gmail.com" height="30"></a>
+<a href="https://github.com/JoelDlima"><img src="./assets/contact-github.svg" alt="github / joeldlima" height="30"></a>
+<a href="https://linkedin.com/in/joel-dlima"><img src="./assets/contact-linkedin.svg" alt="linkedin / joel-dlima" height="30"></a>
+<a href="https://portfolio-v1-seven-nu.vercel.app"><img src="./assets/contact-portfolio.svg" alt="portfolio" height="30"></a>
+<a href="mailto:joeldlima123@gmail.com"><img src="./assets/contact-email.svg" alt="joeldlima123@gmail.com" height="30"></a>

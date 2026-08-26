@@ -75,7 +75,10 @@ export function renderAll() {
 
   for (const link of LINKS) {
     assets.push({
-      file: `badge-${link.key}.svg`,
+      // `contact-` prefix, not `badge-`: the old violet-era badges shipped
+      // under assets/badge-*.svg, and GitHub's camo proxy caches per-URL —
+      // same name would keep serving the stale old design for hours.
+      file: `contact-${link.key}.svg`,
       svg: renderBadgeAsset(themes.dark, link.label, link.handle),
     })
   }
@@ -131,7 +134,7 @@ function Badge({ label, width, height }: { label: string; width: number; height:
 
 function writePreview(cards: { file: string; title: string }[]) {
   const badges = ['github', 'linkedin', 'portfolio', 'email']
-    .map((k) => `<img src="../assets/badge-${k}.svg" alt="" height="30">`)
+    .map((k) => `<img src="../assets/contact-${k}.svg" alt="" height="30">`)
     .join(' ')
 
   const pane = (theme: 'dark' | 'light') => `
