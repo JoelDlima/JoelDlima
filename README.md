@@ -8,10 +8,13 @@
 └──────────────────────────────────────────────┘
 ```
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/intro-dark.svg">
-  <img src="./assets/intro-light.svg" alt="Joel D'Lima — Electronics and Computer Engineering. Software Engineering Intern at Visteon." width="100%">
-</picture>
+<img src="./assets/intro-dark.svg" alt="Joel D'Lima — Electronics and Computer Engineering. Software Engineering Intern at Visteon." width="100%">
+
+<!-- light variants exist in assets/ (intro-light, now-light, snake-light) but
+     are deliberately not referenced: GitHub's camo proxy and the mobile app
+     mangle <picture>/<source>, leaving the fallback img — which rendered the
+     light theme for everyone regardless of device preference. Dark-only on
+     the profile until that pipeline is trustworthy. -->
 
 ### ▸ selected work
 
@@ -26,17 +29,11 @@
 
 ### ▸ bench status
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/now-dark.svg">
-  <img src="./assets/now-light.svg" alt="Internship progress, graduation countdown, and trailing-year contributions." width="100%">
-</picture>
+<img src="./assets/now-dark.svg" alt="Internship progress, graduation countdown, and trailing-year contributions." width="100%">
 
 ### ▸ the snake eats my commits
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./assets/snake-dark.svg">
-  <img src="./assets/snake-light.svg" alt="A snake travelling the contribution grid of the trailing year." width="100%">
-</picture>
+<img src="./assets/snake-dark.svg" alt="A snake travelling the contribution grid of the trailing year." width="100%">
 
 ### ▸ contact
 
