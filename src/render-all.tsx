@@ -14,6 +14,7 @@ import { themes, type Theme, type as t } from './design/tokens'
 import { Mono, measureMono, centerBaseline } from './design/text'
 import { loadSnapshot } from './data/github'
 import { INTRO_H, IntroCard } from './cards/intro'
+import { WORK_H, WorkCard } from './cards/work'
 import { NOW_H, NowCard } from './cards/now'
 import { snakeCardHeight, SnakeCard } from './cards/snake-card'
 import { LINKS } from './links'
@@ -42,6 +43,13 @@ export function renderAll() {
       node: <IntroCard />,
       title: "Joel D'Lima — intro",
       desc: ALT_INTRO,
+    },
+    {
+      file: 'work',
+      height: WORK_H,
+      node: <WorkCard />,
+      title: "Joel D'Lima — project index",
+      desc: 'Six selected projects with one-line descriptions.',
     },
     {
       file: 'now',

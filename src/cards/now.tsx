@@ -36,8 +36,7 @@ export function NowCard({ snap }: { snap: Snapshot }) {
     now < INTERNSHIP_START
       ? {
           value: String(Math.ceil((INTERNSHIP_START.getTime() - now.getTime()) / DAY)),
-          unit: 'd',
-          caption: 'until visteon · jul 2026',
+          unit: 'd',              caption: 'until visteon · jul 26',
           pct: 0,
           barCaption: 'not started',
         }
@@ -48,7 +47,7 @@ export function NowCard({ snap }: { snap: Snapshot }) {
             return {
               value: String(day),
               unit: `/${total}`,
-              caption: 'visteon internship · day',
+              caption: 'visteon · day',
               pct: day / total,
               barCaption: 'automotive embedded · in progress',
             }
@@ -56,7 +55,7 @@ export function NowCard({ snap }: { snap: Snapshot }) {
         : {
             value: 'done',
             unit: '',
-            caption: 'visteon internship · oct 2026',
+            caption: 'visteon · oct 26',
             pct: 1,
             barCaption: 'completed',
           }
@@ -89,11 +88,11 @@ export function NowCard({ snap }: { snap: Snapshot }) {
       </g>
 
       <g className="rise" style={{ animationDelay: '130ms' }}>
-        <Figure x={colX[1]!} y={figY} value={String(daysToGrad)} unit="d" caption="to b.e. graduation · class of '27" size={40} accent />
+        <Figure x={colX[1]!} y={figY} value={String(daysToGrad)} unit="d" caption="graduation · class '27" size={40} accent />
       </g>
 
       <g className="rise" style={{ animationDelay: '200ms' }}>
-        <Figure x={colX[2]!} y={figY} value={String(snap.totals.contributionsYear)} caption={`contributions · trailing 12mo`} size={40} />
+        <Figure x={colX[2]!} y={figY} value={String(snap.totals.contributionsYear)} caption={`contributions · 12mo`} size={40} />
         <Mono x={colX[2]!} y={figY + 66} size={t.micro} fill={theme.inkFaint}>
           {`streak ${snap.totals.currentStreak}d current · ${snap.totals.longestStreak}d best`}
         </Mono>
