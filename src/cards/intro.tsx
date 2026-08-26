@@ -1,114 +1,141 @@
 /**
- * Intro card — who he is, in one panel.
+ * Intro card — the hero panel, redesigned.
  *
- * Name with a blinking terminal cursor, the one live fact (current
- * appointment, breathing blip), the pitch, and one plain sentence that does
- * the recruiting. Gold edge-connector fingers close the bottom edge: this is
- * a card you could seat on a board.
+ * DepthText 3D layered name with purple depthColor, sitting on a dithered
+ * noise background (SVG feTurbulence). Subtitle shows role and graduation.
+ * Edge connectors, trace routing, pitch, and focus text are all removed —
+ * the card is the name and nothing else.
  */
 import { W, MARGIN, CONTENT, type as t, tracking } from '../design/tokens'
-import { Display, Mono, wrapMono, fitDisplay } from '../design/text'
-import { Blip, Cursor, EdgeConnectors, Trace } from '../design/primitives'
+import { Mono, Display, fitDisplay } from '../design/text'
 import { useTheme } from '../design/render'
 import { identity, academics } from '../data/profile'
 
-export const INTRO_H = 434
+export const INTRO_H = 350
 
 const NAME = "JOEL D'LIMA"
 
+/** Number of depth shadow layers behind the face. */
+const DEPTH_LAYERS = 8
+/** Vertical offset per depth layer (px). */
+const DEPTH_STEP = 2.4
+/** Depth colour — matches DepthText depthColor="#7c3aed". */
+const DEPTH_COLOR = '#7c3aed'
+
 export function IntroCard() {
   const theme = useTheme()
-  const size = fitDisplay([NAME], 620, t.hero, 2)
-  const nameW = measureName(size)
+  const size = fitDisplay([NAME], CONTENT, t.hero, 2)
 
-  const pitchLines = wrapMono(identity.pitch, t.lead, CONTENT - 4)
-  const focusLines = wrapMono(identity.focus, t.body, CONTENT - 60)
-
-  let y = 112
-  const nameY = y
-  y += 44 // role line
-  const statusY = y + 30
-  y = statusY + 40 // pitch start
-  const pitchStart = y
-  y += pitchLines.length * 36
-  const focusStart = y + 14
-  y = focusStart + focusLines.length * 26
+  // Centred vertically.
+  const nameY = 170
 
   return (
     <>
-      {/* Ambient trace routing behind the name — signal direction, quietly */}
-      <Trace
-        d={`M${MARGIN + 420} 30 H580 Q596 30 596 46 V74`}
-        vias={[
-          [MARGIN + 420, 30],
-          [596, 74],
-        ]}
-        opacity={0.55}
+      {/* ── Dither background ─────────────────────────────────────────── */}
+      <defs>
+        <filter id="dither" x="0" y="0" width="100%" height="100%">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.65"
+            numOctaves="3"
+            seed="2"
+            result="noise"
+          />
+          <feComponentTransfer in="noise" result="quantized">
+            <feFuncR type="discrete" tableValues="0 0.15 0.3 0.45" />
+            <feFuncG type="discrete" tableValues="0 0.15 0.3 0.45" />
+            <feFuncB type="discrete" tableValues="0 0.15 0.3 0.45" />
+          </feComponentTransfer>
+          <feColorMatrix
+            type="saturate"
+            values="0"
+            in="quantized"
+            result="greyNoise"
+          />
+        </filter>
+      </defs>
+
+      <rect
+        x="0"
+        y="0"
+        width={W}
+        height={INTRO_H}
+        filter="url(#dither)"
+        opacity="0.12"
       />
 
-      <g className="fade">
-        <Mono x={MARGIN} y={30} size={t.micro} fill={theme.inkFaint} track={tracking.label}>
-          PROFILE / JOELDLIMA
-        </Mono>
-        <Mono x={W - MARGIN} y={30} size={t.micro} fill={theme.inkFaint} anchor="end" track={tracking.micro}>
-          {`${identity.location.toLowerCase()} · utc+5:30`}
-        </Mono>
-      </g>
-
-      <g className="rise" style={{ animationDelay: '60ms' }}>
+      {/* ── DepthText — 3D layered name ────────────────────────────────── */}
+      <g>
+        {/* Shadow layers — back to front, darkest to lightest */}
+        {Array.from({ length: DEPTH_LAYERS }, (_, i) => {
+          const layerIndex = DEPTH_LAYERS - 1 - i
+          const yOff = (layerIndex + 1) * DEPTH_STEP
+          const opacity = 0.15 + (i / (DEPTH_LAYERS - 1)) * 0.55
+          return (
+            <Display
+              key={layerIndex}
+              x={MARGIN}
+              y={nameY + yOff}
+              size={size}
+              fill={DEPTH_COLOR}
+              track={2}
+              opacity={opacity}
+            >
+              {NAME}
+            </Display>
+          )
+        })}
+        {/* Face — the readable top layer */}
         <Display x={MARGIN} y={nameY} size={size} fill={theme.ink} track={2}>
           {NAME}
         </Display>
-        <Cursor x={MARGIN + nameW + 14} y={nameY} size={size} />
       </g>
 
+      {/* ── Subtitle ──────────────────────────────────────────────────── */}
       <g className="fade" style={{ animationDelay: '140ms' }}>
-        <Mono x={MARGIN} y={nameY + 34} size={t.bodyS} fill={theme.inkMuted}>
+        <Mono x={MARGIN} y={nameY + 38} size={t.bodyS} fill={theme.inkMuted}>
           {`${identity.role.toLowerCase()} · class of ${academics.graduating}`}
         </Mono>
       </g>
 
-      <g className="fade" style={{ animationDelay: '200ms' }}>
-        <Blip x={MARGIN + 3} y={statusY - 5} r={3.4} />
-        <Mono x={MARGIN + 18} y={statusY} size={t.bodyS} weight="monoBold" fill={theme.accent} track={0.4}>
-          {identity.status.toLowerCase()}
-        </Mono>
+      {/* ── Pitch — one tight line ─────────────────────────────────────── */}
+      <g className="fade" style={{ animationDelay: '220ms' }}>
         <Mono
-          x={MARGIN + 18 + measureStatus(identity.status) + 14}
-          y={statusY}
-          size={t.bodyS}
-          fill={theme.inkMuted}
+          x={MARGIN}
+          y={nameY + 68}
+          size={t.body}
+          fill={theme.inkFaint}
+          track={tracking.micro}
         >
-          automotive embedded · ppo track
+          {identity.pitch.toLowerCase()}
         </Mono>
       </g>
 
-      <g className="rise" style={{ animationDelay: '260ms' }}>
-        {pitchLines.map((line, i) => (
-          <Display key={line} x={MARGIN} y={pitchStart + i * 36} size={t.lead} fill={theme.ink}>
-            {line.toLowerCase()}
-          </Display>
-        ))}
+      {/* ── Focus — second line ────────────────────────────────────────── */}
+      <g className="fade" style={{ animationDelay: '280ms' }}>
+        <Mono
+          x={MARGIN}
+          y={nameY + 94}
+          size={t.body}
+          fill={theme.inkFaint}
+          track={tracking.micro}
+        >
+          {identity.focus.toLowerCase()}
+        </Mono>
       </g>
 
-      <g className="fade" style={{ animationDelay: '320ms' }}>
-        {focusLines.map((line, i) => (
-          <Mono key={line} x={MARGIN} y={focusStart + i * 26} size={t.body} fill={theme.inkMuted}>
-            {line.toLowerCase()}
-          </Mono>
-        ))}
-      </g>
-
-      <EdgeConnectors x={MARGIN} y={INTRO_H - 16} count={Math.floor(CONTENT / 13)} />
+      {/* ── Keyed pin ─────────────────────────────────────────────────── */}
+      <rect
+        x={W - MARGIN - 6}
+        y={INTRO_H - 20}
+        width={6}
+        height={6}
+        rx={1}
+        fill={theme.accent}
+        opacity={0.85}
+      />
     </>
   )
 }
 
-/** Width helper local to this card (keeps measureMono out of JSX math above). */
-function measureName(size: number): number {
-  return NAME.length * 0.6 * size + (NAME.length - 1) * 2
-}
 
-function measureStatus(s: string): number {
-  return s.length * 0.6 * t.bodyS + (s.length - 1) * 0.4
-}

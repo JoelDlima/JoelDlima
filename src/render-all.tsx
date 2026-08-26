@@ -26,7 +26,7 @@ interface Asset {
 }
 
 export const ALT_INTRO =
-  "Joel D'Lima — Electronics and Computer Engineering. Software Engineering Intern at Visteon."
+  "Joel D'Lima — Software Engineering Intern at Visteon. Embedded + full-stack."
 
 export function renderAll() {
   const snap = loadSnapshot()
@@ -48,15 +48,15 @@ export function renderAll() {
       file: 'work',
       height: WORK_H,
       node: <WorkCard />,
-      title: "Joel D'Lima — project index",
-      desc: 'Six selected projects with one-line descriptions.',
+      title: "Joel D'Lima — projects",
+      desc: 'Four selected projects with one-line descriptions.',
     },
     {
       file: 'now',
       height: NOW_H,
       node: <NowCard snap={snap} />,
-      title: "Joel D'Lima — bench status",
-      desc: 'Internship progress, graduation countdown, and trailing-year contributions.',
+      title: "Joel D'Lima — status",
+      desc: 'Role, graduation, and trailing-year contributions.'
     },
     {
       file: 'snake',
@@ -141,7 +141,7 @@ function Badge({ label, width, height }: { label: string; width: number; height:
 // ---------------------------------------------------------------------------
 
 function writePreview(cards: { file: string; title: string }[]) {
-  const badges = ['github', 'linkedin', 'portfolio', 'email']
+  const badges = ['linkedin', 'portfolio', 'email']
     .map((k) => `<img src="../assets/contact-${k}.svg" alt="" height="30">`)
     .join(' ')
 

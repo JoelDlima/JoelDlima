@@ -10,18 +10,18 @@ export const identity = {
   handle: 'JoelDlima',
   role: 'Electronics & Computer Engineering',
   /** One line. It has to earn its place next to a 82px name. */
-  pitch: 'Firmware on the board, the API in between, the interface people touch.',
+  pitch: 'Embedded + full-stack. ESP32/C++ firmware, React/TypeScript/Node, AI features.',
   /** The plain-language version of the pitch, for the reader who did not
    *  unpack the first line: what he builds and where he is doing it now.
    *  Recruiter guidance is blunt about this — personality plus clarity. */
   focus:
-    'Moves between hardware, backend and frontend to ship complete systems — ' +
-    'four months of startup development behind him, Visteon ahead.',
+    'Shipped 6 products, 1 recognized by Lenovo. ' +
+    'Electronics & Computer Engineering · ECOMP 27.',
   location: 'Goa, India',
   status: 'Software Engineering Intern @ Visteon',
   email: 'joeldlima123@gmail.com',
-  linkedin: 'joel-dlima',
-  portfolio: 'https://portfolio-v1-seven-nu.vercel.app',
+  linkedin: 'www.linkedin.com/in/joel-dlima-9b0244292',
+  portfolio: 'https://joel-portfolio-eight.vercel.app/work',
 } as const
 
 // ---------------------------------------------------------------------------
@@ -87,53 +87,36 @@ export interface Project {
 
 export const featured: Project[] = [
   {
-    repo: 'BharatVanni-AI',
-    title: 'BharatVaani AI',
+    repo: null,
+    title: 'Smart Well Management',
     blurb:
-      'Turns government publications into audiobooks. Vite front end, Python serverless back end, Gemini multimodal TTS.',
-    stack: ['JavaScript', 'Vite', 'Python', 'Gemini', 'Supabase'],
-    tag: 'AI',
-  },
-  {
-    repo: 'esp32_project',
-    title: 'ESP32-CAM Hand Detection',
-    blurb:
-      'Board streams video over Wi-Fi, MediaPipe counts raised fingers, LEDs follow. Finds itself on the network unaided.',
-    stack: ['C++', 'PlatformIO', 'Python', 'MediaPipe'],
+      'TDS, turbidity and pH telemetry from an ESP32 to a live dashboard.',
+    stack: ['C++', 'ESP32', 'React'],
     tag: 'EMBEDDED',
   },
   {
-    repo: 'Nexus-AI',
-    title: 'Nexus AI',
+    repo: null,
+    title: 'UCLI',
     blurb:
-      'Windows desktop assistant. Command automation and macro replay, with an explicit confirm step before anything risky runs.',
-    stack: ['Python', 'Groq', 'Windows'],
-    tag: 'DESKTOP',
+      'Unified command-line interface for streamlined dev workflows.',
+    stack: ['Python', 'CLI'],
+    tag: 'TOOLING',
   },
   {
-    repo: 'CropGuardv2',
-    title: 'CropGuard',
+    repo: null,
+    title: 'AgroProfit',
     blurb:
-      'Crop disease detection that answers in language a farmer can act on, not a confidence score.',
-    stack: ['TypeScript', 'React', 'Tailwind'],
-    demo: 'https://crop-guardv2.vercel.app',
+      'Mandi price intelligence with a Gemini advisory layer.',
+    stack: ['Python', 'React', 'Gemini'],
     tag: 'AI',
   },
   {
-    repo: 'MindCare_TeamNexus',
-    title: 'MindCare',
+    repo: null,
+    title: 'Palliative Care',
     blurb:
-      'Mental health platform for campuses — AI companion, counsellor booking and moderated peer support.',
-    stack: ['TypeScript', 'React', 'Supabase'],
-    tag: 'PLATFORM',
-  },
-  {
-    repo: 'yt-cli',
-    title: 'yt-cli',
-    blurb:
-      'Terminal YouTube client over yt-dlp. Interactive menu, or scriptable flags for automation. Streams straight to VLC.',
-    stack: ['Python', 'yt-dlp'],
-    tag: 'CLI',
+      'SpO2, ECG and fall-detection telemetry with threshold emergency alerts.',
+    stack: ['C++', 'ESP32', 'React'],
+    tag: 'HEALTH',
   },
 ]
 
