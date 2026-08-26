@@ -1,10 +1,19 @@
 /**
- * Intro card — the hero panel, redesigned.
+ * Intro card — the hero panel, redesigned with a galaxy/space theme.
  *
- * DepthText 3D layered name with purple depthColor, sitting on a dithered
- * noise background (SVG feTurbulence). Subtitle shows role and graduation.
- * Edge connectors, trace routing, pitch, and focus text are all removed —
- * the card is the name and nothing else.
+ * DepthText 3D layered name with purple depthColor, sitting on:
+ *   - Dithered noise background (SVG feTurbulence) — animated wave motion
+ *   - Multi-layer twinkling starfield (70 stars across 3 depth layers)
+ *   - Nebula clouds (feGaussianBlur circles in cyan, violet, amber)
+ *   - Shooting stars (animateMotion along diagonal paths)
+ *   - Orbital rings around the name
+ *   - Galaxy core glow behind the name
+ *
+ * Subtitle shows role and graduation. Factory scene at bottom.
+ *
+ * IMPORTANT: GitHub's camo SVG proxy strips <animateTransform> elements.
+ * All rotation/translation animations use <animate attributeName="transform">
+ * with inline values syntax instead. This has been verified to work.
  */
 import { W, MARGIN, CONTENT, type as t, tracking } from '../design/tokens'
 import { Mono, Display, fitDisplay } from '../design/text'
@@ -22,16 +31,39 @@ const DEPTH_STEP = 2.4
 /** Depth colour — matches DepthText depthColor="#7c3aed". */
 const DEPTH_COLOR = '#7c3aed'
 
+/** Seeded pseudo-random number generator (mulberry32). */
+function seededRandom(seed: number) {
+  let s = seed | 0
+  return () => {
+    s = (s + 0x6d2b79f5) | 0
+    let t = Math.imul(s ^ (s >>> 15), 1 | s)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+/** Starfield layer config — 3 depth layers for parallax feel. */
+const STAR_LAYERS = [
+  { count: 40, label: 'bg', rMin: 0.3, rMax: 0.7, oMin: 0.06, oMax: 0.25, durMin: 5, durMax: 9 },
+  { count: 20, label: 'mid', rMin: 0.5, rMax: 1.1, oMin: 0.15, oMax: 0.45, durMin: 3.5, durMax: 7 },
+  { count: 10, label: 'fg', rMin: 0.9, rMax: 1.6, oMin: 0.35, oMax: 0.7, durMin: 2, durMax: 4.5 },
+] as const
+
+/** Accent colours for coloured stars. */
+const STAR_COLORS = ['#7c3aed', '#a78bfa', '#c084fc', '#e0e7ff']
+
 export function IntroCard() {
   const theme = useTheme()
   const size = fitDisplay([NAME], CONTENT, t.hero, 2)
 
   // Centred vertically.
   const nameY = 170
+  const nameCenterX = W / 2
+  const nameCenterY = nameY - 10
 
   return (
     <>
-      {/* ── Dither background — animated wave motion via SMIL ────────── */}
+      {/* ── Defs — dither filters, nebula blur, glow filters ────── */}
       <defs>
         {/* Layer 1: base dithered noise, waveSpeed 0.05 → ~20s cycle */}
         <filter id="dither1" x="0" y="0" width="100%" height="100%">
@@ -42,14 +74,12 @@ export function IntroCard() {
             seed="2"
             result="noise"
           >
-            {/* waveFrequency=3 → 3 cycles in baseFrequency range */}
             <animate
               attributeName="baseFrequency"
               values="0.62;0.68;0.62"
               dur="20s"
               repeatCount="indefinite"
             />
-            {/* waveSpeed=0.05 → seed shifts slowly for organic drift */}
             <animate
               attributeName="seed"
               values="2;5;3;6;2"
@@ -94,9 +124,43 @@ export function IntroCard() {
           </feComponentTransfer>
           <feColorMatrix type="saturate" values="0" in="qFine" result="grey2" />
         </filter>
+
+        {/* Nebula blur — large soft glow for nebula clouds */}
+        <filter id="nebula-blur" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="40" />
+        </filter>
+
+        {/* Star glow — subtle halo for bright foreground stars */}
+        <filter id="star-glow" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="2" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+
+        {/* Core haze gradient — radial glow behind the name */}
+        <radialGradient id="core-haze" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor={DEPTH_COLOR} stopOpacity="0.12" />
+          <stop offset="40%" stopColor={DEPTH_COLOR} stopOpacity="0.05" />
+          <stop offset="100%" stopColor={DEPTH_COLOR} stopOpacity="0" />
+        </radialGradient>
+
+        {/* Core bright center gradient */}
+        <radialGradient id="core-bright" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.08" />
+          <stop offset="50%" stopColor={DEPTH_COLOR} stopOpacity="0.04" />
+          <stop offset="100%" stopColor={DEPTH_COLOR} stopOpacity="0" />
+        </radialGradient>
+
+        {/* Shooting star gradient — white fade to transparent */}
+        <linearGradient id="shoot-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
       </defs>
 
-      {/* Base wave layer */}
+      {/* ── Base wave layer (dither) ────────────────────────────── */}
       <rect
         x="0"
         y="0"
@@ -115,7 +179,226 @@ export function IntroCard() {
         opacity="0.06"
       />
 
-      {/* ── DepthText — 3D layered name ────────────────────────────────── */}
+      {/* ═══════════════════════════════════════════════════════════════
+       * GALAXY LAYERS — nebula, starfield, core glow, orbital rings
+       * ───────────────────────────────────────────────────────────────
+       * Rendered between dither and text for depth layering.
+       * All animations use <animate> (NOT <animateTransform>) because
+       * GitHub's camo SVG proxy strips animateTransform elements.
+       * ═══════════════════════════════════════════════════════════════ */}
+
+      {/* ── Nebula clouds — large blurred colour blobs ───────────── */}
+      <g opacity="0.8">
+        {/* Cyan nebula — upper left */}
+        <circle cx={W * 0.2} cy={INTRO_H * 0.3} r={100}
+          fill="#7c3aed" opacity="0.02" filter="url(#nebula-blur)">
+          <animate attributeName="opacity" values="0.02;0.035;0.02" dur="12s" repeatCount="indefinite" />
+        </circle>
+        {/* Violet nebula — right side */}
+        <circle cx={W * 0.75} cy={INTRO_H * 0.25} r={90}
+          fill="#a78bfa" opacity="0.018" filter="url(#nebula-blur)">
+          <animate attributeName="opacity" values="0.018;0.03;0.018" dur="15s" begin="3s" repeatCount="indefinite" />
+        </circle>
+        {/* Amber nebula — bottom center */}
+        <circle cx={W * 0.5} cy={INTRO_H * 0.7} r={110}
+          fill="#c084fc" opacity="0.015" filter="url(#nebula-blur)">
+          <animate attributeName="opacity" values="0.015;0.025;0.015" dur="18s" begin="6s" repeatCount="indefinite" />
+        </circle>
+      </g>
+
+      {/* ── Starfield — 3 depth layers with twinkle ─────────────── */}
+      <g>
+        {STAR_LAYERS.map((layer) => {
+          const rng = seededRandom(
+            layer.label === 'bg' ? 42 : layer.label === 'mid' ? 137 : 256
+          )
+          return Array.from({ length: layer.count }, (_, i) => {
+            const cx = 10 + rng() * (W - 20)
+            const cy = 10 + rng() * (INTRO_H - 20)
+            const r = layer.rMin + rng() * (layer.rMax - layer.rMin)
+            const opacity = layer.oMin + rng() * (layer.oMax - layer.oMin)
+            const dur = layer.durMin + rng() * (layer.durMax - layer.durMin)
+            const delay = rng() * dur
+            const color = i % 5 === 0
+              ? STAR_COLORS[Math.floor(rng() * STAR_COLORS.length)]
+              : '#ffffff'
+            const isBright = layer.label === 'fg' && rng() > 0.5
+
+            return (
+              <circle
+                key={`${layer.label}-${i}`}
+                cx={cx}
+                cy={cy}
+                r={r}
+                fill={color}
+                opacity={opacity}
+                filter={isBright ? 'url(#star-glow)' : undefined}
+              >
+                <animate
+                  attributeName="opacity"
+                  values={`${opacity};${opacity * 2.2};${opacity}`}
+                  dur={`${dur.toFixed(1)}s`}
+                  begin={`${delay.toFixed(1)}s`}
+                  repeatCount="indefinite"
+                />
+              </circle>
+            )
+          })
+        })}
+      </g>
+
+      {/* ── Galaxy core glow — radial light behind the name ─────── */}
+      <g>
+        {/* Outer haze */}
+        <circle cx={nameCenterX} cy={nameCenterY} r={80}
+          fill="url(#core-haze)">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="8s" repeatCount="indefinite" />
+        </circle>
+        {/* Inner bright center */}
+        <circle cx={nameCenterX} cy={nameCenterY} r={40}
+          fill="url(#core-bright)" />
+      </g>
+
+      {/* ── Orbital rings — elliptical orbits around the name ────── */}
+      <g>
+        {/* Ring 1 — inner, cyan */}
+        <ellipse
+          cx={nameCenterX}
+          cy={nameCenterY}
+          rx={60}
+          ry={20}
+          fill="none"
+          stroke={DEPTH_COLOR}
+          strokeWidth={0.6}
+          strokeDasharray="4 6"
+          opacity={0.15}
+        >
+          <animate
+            attributeName="transform"
+            values={`rotate(0 ${nameCenterX} ${nameCenterY});rotate(360 ${nameCenterX} ${nameCenterY})`}
+            dur="20s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="opacity"
+            values="0.15;0.25;0.15"
+            dur="8s"
+            repeatCount="indefinite"
+          />
+        </ellipse>
+        {/* Ring 2 — outer, violet, counter-rotation */}
+        <ellipse
+          cx={nameCenterX}
+          cy={nameCenterY}
+          rx={85}
+          ry={28}
+          fill="none"
+          stroke="#a78bfa"
+          strokeWidth={0.5}
+          strokeDasharray="3 8"
+          opacity={0.1}
+        >
+          <animate
+            attributeName="transform"
+            values={`rotate(360 ${nameCenterX} ${nameCenterY});rotate(0 ${nameCenterX} ${nameCenterY})`}
+            dur="30s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="opacity"
+            values="0.1;0.18;0.1"
+            dur="10s"
+            begin="2s"
+            repeatCount="indefinite"
+          />
+        </ellipse>
+      </g>
+
+      {/* ── Shooting stars — 3 comets on diagonal paths ─────────── */}
+      <g>
+        {/* Comet 1 — top-left to center */}
+        <line
+          x1={W * 0.08}
+          y1={INTRO_H * 0.12}
+          x2={W * 0.08 + 25}
+          y2={INTRO_H * 0.12 + 6}
+          stroke="url(#shoot-grad)"
+          strokeWidth={1.2}
+          strokeLinecap="round"
+          opacity={0}
+        >
+          <animate
+            attributeName="opacity"
+            values="0;0.9;0.6;0;0"
+            keyTimes="0;0.04;0.12;0.18;1"
+            dur="7s"
+            repeatCount="indefinite"
+          />
+          <animateMotion
+            path={`M0,0 L${W * 0.35},${INTRO_H * 0.28}`}
+            dur="7s"
+            repeatCount="indefinite"
+          />
+        </line>
+        {/* Comet 2 — top-right toward center */}
+        <line
+          x1={W * 0.82}
+          y1={INTRO_H * 0.08}
+          x2={W * 0.82 + 22}
+          y2={INTRO_H * 0.08 + 5}
+          stroke="url(#shoot-grad)"
+          strokeWidth={1}
+          strokeLinecap="round"
+          opacity={0}
+        >
+          <animate
+            attributeName="opacity"
+            values="0;0.8;0.5;0;0"
+            keyTimes="0;0.04;0.12;0.18;1"
+            dur="9s"
+            begin="3s"
+            repeatCount="indefinite"
+          />
+          <animateMotion
+            path={`M0,0 L${-W * 0.25},${INTRO_H * 0.22}`}
+            dur="9s"
+            begin="3s"
+            repeatCount="indefinite"
+          />
+        </line>
+        {/* Comet 3 — bottom-left upward */}
+        <line
+          x1={W * 0.15}
+          y1={INTRO_H * 0.75}
+          x2={W * 0.15 + 20}
+          y2={INTRO_H * 0.75 - 4}
+          stroke="url(#shoot-grad)"
+          strokeWidth={0.8}
+          strokeLinecap="round"
+          opacity={0}
+        >
+          <animate
+            attributeName="opacity"
+            values="0;0.7;0.4;0;0"
+            keyTimes="0;0.05;0.14;0.2;1"
+            dur="8s"
+            begin="5.5s"
+            repeatCount="indefinite"
+          />
+          <animateMotion
+            path={`M0,0 L${W * 0.2},${-INTRO_H * 0.3}`}
+            dur="8s"
+            begin="5.5s"
+            repeatCount="indefinite"
+          />
+        </line>
+      </g>
+
+      {/* ═══════════════════════════════════════════════════════════════
+       * TEXT LAYERS — name, subtitle, pitch, focus
+       * ═══════════════════════════════════════════════════════════════ */}
+
+      {/* ── DepthText — 3D layered name ──────────────────────────── */}
       <g>
         {/* Shadow layers — back to front, darkest to lightest */}
         {Array.from({ length: DEPTH_LAYERS }, (_, i) => {
@@ -142,14 +425,14 @@ export function IntroCard() {
         </Display>
       </g>
 
-      {/* ── Subtitle ──────────────────────────────────────────────────── */}
+      {/* ── Subtitle ────────────────────────────────────────────── */}
       <g className="fade" style={{ animationDelay: '140ms' }}>
         <Mono x={MARGIN} y={nameY + 38} size={t.bodyS} fill={theme.inkMuted}>
           {`${identity.role.toLowerCase()} · class of ${academics.graduating}`}
         </Mono>
       </g>
 
-      {/* ── Pitch — one tight line ─────────────────────────────────────── */}
+      {/* ── Pitch — one tight line ───────────────────────────────── */}
       <g className="fade" style={{ animationDelay: '220ms' }}>
         <Mono
           x={MARGIN}
@@ -162,7 +445,7 @@ export function IntroCard() {
         </Mono>
       </g>
 
-      {/* ── Focus — second line ────────────────────────────────────────── */}
+      {/* ── Focus — second line ──────────────────────────────────── */}
       <g className="fade" style={{ animationDelay: '280ms' }}>
         <Mono
           x={MARGIN}
@@ -183,18 +466,14 @@ export function IntroCard() {
        *   y 286-310  Conveyor belt + gears + products
        *   y 265-280  Steam particles (above left gear)
        *   y 322      "build → ship → repeat" label
-       * ═══════════════════════════════════════════════════════════════ */}
-
-      {/* ═══════════════════════════════════════════════════════════════
-       * FACTORY SCENE — SMIL animations (proven to work on GitHub)
-       * ───────────────────────────────────────────────────────────────
+       *
        * All animations use SMIL <animate> elements (NOT <animateTransform>
-       * — GitHub strips animateTransform but keeps animate). This is the same
-       * technique that makes the dither background wave animation work.
+       * — GitHub strips animateTransform but keeps animate). This is the
+       * same technique that makes the dither background wave animation work.
        * SMIL <animate> on the transform attribute uses inline values syntax.
        * ═══════════════════════════════════════════════════════════════ */}
 
-      {/* ── PCB Traces — marching dashes via SMIL ──────────────────── */}
+      {/* ── PCB Traces — marching dashes via SMIL ──────────────── */}
       <g>
         <line
           x1={MARGIN + 50} y1={252}
@@ -227,7 +506,7 @@ export function IntroCard() {
         <circle cx={W - MARGIN - 80} cy={274} r={2} fill={DEPTH_COLOR} opacity={0.55} />
       </g>
 
-      {/* ── Steam particles — fade + rise via SMIL ─────────────────── */}
+      {/* ── Steam particles — fade + rise via SMIL ─────────────── */}
       <g>
         <circle cx={MARGIN + 10} cy={275} r={3.5} fill={theme.inkMuted} opacity={0.55}>
           <animate attributeName="opacity" values="0.55;0" dur="4s" repeatCount="indefinite" />
@@ -243,7 +522,7 @@ export function IntroCard() {
         </circle>
       </g>
 
-      {/* ── Left gear — 10 teeth, clockwise 6s via SMIL ────────────── */}
+      {/* ── Left gear — 10 teeth, clockwise 6s via SMIL ────────── */}
       <g>
         <circle cx={MARGIN + 14} cy={298} r={12} fill="none" stroke={DEPTH_COLOR} strokeWidth={2} opacity={0.55} />
         <circle cx={MARGIN + 14} cy={298} r={7} fill="none" stroke={DEPTH_COLOR} strokeWidth={1.2} opacity={0.45} />
@@ -272,7 +551,7 @@ export function IntroCard() {
         />
       </g>
 
-      {/* ── Right gear — 8 teeth, counter-clockwise 5s via SMIL ────── */}
+      {/* ── Right gear — 8 teeth, counter-clockwise 5s via SMIL ── */}
       <g>
         <circle cx={W - MARGIN - 14} cy={298} r={9} fill="none" stroke={DEPTH_COLOR} strokeWidth={1.8} opacity={0.5} />
         <circle cx={W - MARGIN - 14} cy={298} r={5} fill="none" stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.4} />
@@ -301,7 +580,7 @@ export function IntroCard() {
         />
       </g>
 
-      {/* ── Conveyor belt — marching dashes via SMIL ────────────────── */}
+      {/* ── Conveyor belt — marching dashes via SMIL ────────────── */}
       <g>
         <line x1={MARGIN + 28} y1={289} x2={W - MARGIN - 28} y2={289}
           stroke={DEPTH_COLOR} strokeWidth={1} opacity={0.3} />
@@ -336,7 +615,7 @@ export function IntroCard() {
         ))}
       </g>
 
-      {/* ── Products on belt — slide right-to-left via SMIL ────────── */}
+      {/* ── Products on belt — slide right-to-left via SMIL ────── */}
 
       {/* Product A — IC chip */}
       <g>
@@ -384,7 +663,7 @@ export function IntroCard() {
           dur="4.5s" begin="2.4s" repeatCount="indefinite" />
       </g>
 
-      {/* ── Belt label ────────────────────────────────────────────── */}
+      {/* ── Belt label ──────────────────────────────────────────── */}
       <text
         x={W - MARGIN}
         y={322}
@@ -398,7 +677,7 @@ export function IntroCard() {
         {'build → ship → repeat'}
       </text>
 
-      {/* ── Keyed pin ─────────────────────────────────────────────────── */}
+      {/* ── Keyed pin ───────────────────────────────────────────── */}
       <rect
         x={W - MARGIN - 6}
         y={INTRO_H - 20}
@@ -411,5 +690,3 @@ export function IntroCard() {
     </>
   )
 }
-
-
