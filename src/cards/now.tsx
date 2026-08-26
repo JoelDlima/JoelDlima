@@ -40,11 +40,20 @@ export function NowCard({ snap }: { snap: Snapshot }) {
           fill={theme.ink}
           weight="monoBold"
         >
-          software intern · visteon
+          software intern
         </Mono>
         <Mono
           x={colX[0]!}
-          y={figY + 30}
+          y={figY + 22}
+          size={t.body}
+          fill={theme.inkMuted}
+          weight="monoBold"
+        >
+          {'· visteon'}
+        </Mono>
+        <Mono
+          x={colX[0]!}
+          y={figY + 46}
           size={t.bodyS}
           fill={theme.inkFaint}
           track={0.5}

@@ -44,9 +44,9 @@ function seededRandom(seed: number) {
 
 /** Starfield layer config — 3 depth layers for parallax feel. */
 const STAR_LAYERS = [
-  { count: 40, label: 'bg', rMin: 0.3, rMax: 0.7, oMin: 0.06, oMax: 0.25, durMin: 5, durMax: 9 },
-  { count: 20, label: 'mid', rMin: 0.5, rMax: 1.1, oMin: 0.15, oMax: 0.45, durMin: 3.5, durMax: 7 },
-  { count: 10, label: 'fg', rMin: 0.9, rMax: 1.6, oMin: 0.35, oMax: 0.7, durMin: 2, durMax: 4.5 },
+  { count: 40, label: 'bg', rMin: 0.4, rMax: 0.9, oMin: 0.15, oMax: 0.40, durMin: 5, durMax: 9 },
+  { count: 20, label: 'mid', rMin: 0.7, rMax: 1.3, oMin: 0.30, oMax: 0.65, durMin: 3.5, durMax: 7 },
+  { count: 10, label: 'fg', rMin: 1.1, rMax: 1.8, oMin: 0.55, oMax: 0.9, durMin: 2, durMax: 4.5 },
 ] as const
 
 /** Accent colours for coloured stars. */
@@ -141,21 +141,21 @@ export function IntroCard() {
 
         {/* Core haze gradient — radial glow behind the name */}
         <radialGradient id="core-haze" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor={DEPTH_COLOR} stopOpacity="0.12" />
-          <stop offset="40%" stopColor={DEPTH_COLOR} stopOpacity="0.05" />
+          <stop offset="0%" stopColor={DEPTH_COLOR} stopOpacity="0.3" />
+          <stop offset="40%" stopColor={DEPTH_COLOR} stopOpacity="0.12" />
           <stop offset="100%" stopColor={DEPTH_COLOR} stopOpacity="0" />
         </radialGradient>
 
         {/* Core bright center gradient */}
         <radialGradient id="core-bright" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.08" />
-          <stop offset="50%" stopColor={DEPTH_COLOR} stopOpacity="0.04" />
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.2" />
+          <stop offset="50%" stopColor={DEPTH_COLOR} stopOpacity="0.1" />
           <stop offset="100%" stopColor={DEPTH_COLOR} stopOpacity="0" />
         </radialGradient>
 
         {/* Shooting star gradient — white fade to transparent */}
         <linearGradient id="shoot-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
       </defs>
@@ -191,18 +191,18 @@ export function IntroCard() {
       <g opacity="0.8">
         {/* Cyan nebula — upper left */}
         <circle cx={W * 0.2} cy={INTRO_H * 0.3} r={100}
-          fill="#7c3aed" opacity="0.02" filter="url(#nebula-blur)">
-          <animate attributeName="opacity" values="0.02;0.035;0.02" dur="12s" repeatCount="indefinite" />
+          fill="#7c3aed" opacity="0.07" filter="url(#nebula-blur)">
+          <animate attributeName="opacity" values="0.07;0.12;0.07" dur="12s" repeatCount="indefinite" />
         </circle>
         {/* Violet nebula — right side */}
         <circle cx={W * 0.75} cy={INTRO_H * 0.25} r={90}
-          fill="#a78bfa" opacity="0.018" filter="url(#nebula-blur)">
-          <animate attributeName="opacity" values="0.018;0.03;0.018" dur="15s" begin="3s" repeatCount="indefinite" />
+          fill="#a78bfa" opacity="0.06" filter="url(#nebula-blur)">
+          <animate attributeName="opacity" values="0.06;0.1;0.06" dur="15s" begin="3s" repeatCount="indefinite" />
         </circle>
         {/* Amber nebula — bottom center */}
         <circle cx={W * 0.5} cy={INTRO_H * 0.7} r={110}
-          fill="#c084fc" opacity="0.015" filter="url(#nebula-blur)">
-          <animate attributeName="opacity" values="0.015;0.025;0.015" dur="18s" begin="6s" repeatCount="indefinite" />
+          fill="#c084fc" opacity="0.05" filter="url(#nebula-blur)">
+          <animate attributeName="opacity" values="0.05;0.08;0.05" dur="18s" begin="6s" repeatCount="indefinite" />
         </circle>
       </g>
 
@@ -252,11 +252,13 @@ export function IntroCard() {
         {/* Outer haze */}
         <circle cx={nameCenterX} cy={nameCenterY} r={80}
           fill="url(#core-haze)">
-          <animate attributeName="opacity" values="0.7;1;0.7" dur="8s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="8s" repeatCount="indefinite" />
         </circle>
         {/* Inner bright center */}
         <circle cx={nameCenterX} cy={nameCenterY} r={40}
-          fill="url(#core-bright)" />
+          fill="url(#core-bright)">
+          <animate attributeName="opacity" values="0.6;1;0.6" dur="6s" repeatCount="indefinite" />
+        </circle>
       </g>
 
       {/* ── Orbital rings — elliptical orbits around the name ────── */}
@@ -269,9 +271,9 @@ export function IntroCard() {
           ry={20}
           fill="none"
           stroke={DEPTH_COLOR}
-          strokeWidth={0.6}
+          strokeWidth={0.8}
           strokeDasharray="4 6"
-          opacity={0.15}
+          opacity={0.3}
         >
           <animate
             attributeName="transform"
@@ -281,7 +283,7 @@ export function IntroCard() {
           />
           <animate
             attributeName="opacity"
-            values="0.15;0.25;0.15"
+            values="0.3;0.45;0.3"
             dur="8s"
             repeatCount="indefinite"
           />
@@ -294,9 +296,9 @@ export function IntroCard() {
           ry={28}
           fill="none"
           stroke="#a78bfa"
-          strokeWidth={0.5}
+          strokeWidth={0.7}
           strokeDasharray="3 8"
-          opacity={0.1}
+          opacity={0.2}
         >
           <animate
             attributeName="transform"
@@ -306,7 +308,7 @@ export function IntroCard() {
           />
           <animate
             attributeName="opacity"
-            values="0.1;0.18;0.1"
+            values="0.2;0.35;0.2"
             dur="10s"
             begin="2s"
             repeatCount="indefinite"
@@ -323,7 +325,7 @@ export function IntroCard() {
           x2={W * 0.08 + 25}
           y2={INTRO_H * 0.12 + 6}
           stroke="url(#shoot-grad)"
-          strokeWidth={1.2}
+          strokeWidth={1.8}
           strokeLinecap="round"
           opacity={0}
         >
@@ -347,13 +349,13 @@ export function IntroCard() {
           x2={W * 0.82 + 22}
           y2={INTRO_H * 0.08 + 5}
           stroke="url(#shoot-grad)"
-          strokeWidth={1}
+          strokeWidth={1.4}
           strokeLinecap="round"
           opacity={0}
         >
           <animate
             attributeName="opacity"
-            values="0;0.8;0.5;0;0"
+            values="0;1;0.7;0;0"
             keyTimes="0;0.04;0.12;0.18;1"
             dur="9s"
             begin="3s"
@@ -373,13 +375,13 @@ export function IntroCard() {
           x2={W * 0.15 + 20}
           y2={INTRO_H * 0.75 - 4}
           stroke="url(#shoot-grad)"
-          strokeWidth={0.8}
+          strokeWidth={1.2}
           strokeLinecap="round"
           opacity={0}
         >
           <animate
             attributeName="opacity"
-            values="0;0.7;0.4;0;0"
+            values="0;0.9;0.5;0;0"
             keyTimes="0;0.05;0.14;0.2;1"
             dur="8s"
             begin="5.5s"
