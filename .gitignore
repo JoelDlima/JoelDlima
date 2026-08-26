@@ -3,3 +3,5 @@ node_modules/
 
 # local tooling
 .claude/
+preview.html
+walkthrough.md

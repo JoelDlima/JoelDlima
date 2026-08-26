@@ -3,11 +3,12 @@
   "version": "2.0.0",
   "description": "React-authored SVG component system that renders the GitHub profile README.",
   "scripts": {
+    "generate": "node scripts/generate-cards.mjs",
     "fonts": "node scripts/fetch-fonts.mjs",
     "compile": "esbuild src/cli.ts --bundle --platform=node --format=esm --packages=external --jsx=automatic --outfile=.cache/cli.mjs --log-level=warning",
     "data": "npm run compile && node .cache/cli.mjs data",
-    "render": "npm run compile && node .cache/cli.mjs render",
-    "build": "npm run compile && node .cache/cli.mjs all",
+    "render": "node scripts/generate-cards.mjs",
+    "build": "node scripts/generate-cards.mjs",
     "bands": "node scripts/bands.mjs",
     "typecheck": "tsc --noEmit"
   },
