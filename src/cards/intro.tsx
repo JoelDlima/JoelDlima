@@ -188,10 +188,10 @@ export function IntroCard() {
       {/* ═══════════════════════════════════════════════════════════════
        * FACTORY SCENE — SMIL animations (proven to work on GitHub)
        * ───────────────────────────────────────────────────────────────
-       * All animations use SMIL <animate>/<animateTransform> elements
-       * instead of CSS @keyframes. This is the same technique that makes
-       * the dither background wave animation work. SMIL is rendered by
-       * the browser's SVG engine directly — no CSS parsing needed.
+       * All animations use SMIL <animate> elements (NOT <animateTransform>
+       * — GitHub strips animateTransform but keeps animate). This is the same
+       * technique that makes the dither background wave animation work.
+       * SMIL <animate> on the transform attribute uses inline values syntax.
        * ═══════════════════════════════════════════════════════════════ */}
 
       {/* ── PCB Traces — marching dashes via SMIL ──────────────────── */}
@@ -231,15 +231,15 @@ export function IntroCard() {
       <g>
         <circle cx={MARGIN + 10} cy={275} r={3.5} fill={theme.inkMuted} opacity={0.55}>
           <animate attributeName="opacity" values="0.55;0" dur="4s" repeatCount="indefinite" />
-          <animateTransform attributeName="transform" type="translate" from="0 0" to="0 -22" dur="4s" repeatCount="indefinite" />
+          <animate attributeName="transform" values="translate(0,0);translate(0,-22)" dur="4s" repeatCount="indefinite" />
         </circle>
         <circle cx={MARGIN + 20} cy={270} r={2.5} fill={theme.inkMuted} opacity={0.45}>
           <animate attributeName="opacity" values="0.45;0" dur="4.5s" begin="1.2s" repeatCount="indefinite" />
-          <animateTransform attributeName="transform" type="translate" from="0 0" to="0 -18" dur="4.5s" begin="1.2s" repeatCount="indefinite" />
+          <animate attributeName="transform" values="translate(0,0);translate(0,-18)" dur="4.5s" begin="1.2s" repeatCount="indefinite" />
         </circle>
         <circle cx={MARGIN + 5} cy={272} r={2} fill={theme.inkMuted} opacity={0.4}>
           <animate attributeName="opacity" values="0.4;0" dur="4s" begin="2.4s" repeatCount="indefinite" />
-          <animateTransform attributeName="transform" type="translate" from="0 0" to="0 -20" dur="4s" begin="2.4s" repeatCount="indefinite" />
+          <animate attributeName="transform" values="translate(0,0);translate(0,-20)" dur="4s" begin="2.4s" repeatCount="indefinite" />
         </circle>
       </g>
 
@@ -265,9 +265,9 @@ export function IntroCard() {
             />
           )
         })}
-        <animateTransform
-          attributeName="transform" type="rotate"
-          from={`0 ${MARGIN + 14} 298`} to={`360 ${MARGIN + 14} 298`}
+        <animate
+          attributeName="transform"
+          values={`rotate(0 ${MARGIN + 14} 298);rotate(360 ${MARGIN + 14} 298)`}
           dur="6s" repeatCount="indefinite"
         />
       </g>
@@ -294,9 +294,9 @@ export function IntroCard() {
             />
           )
         })}
-        <animateTransform
-          attributeName="transform" type="rotate"
-          from={`0 ${W - MARGIN - 14} 298`} to={`-360 ${W - MARGIN - 14} 298`}
+        <animate
+          attributeName="transform"
+          values={`rotate(0 ${W - MARGIN - 14} 298);rotate(-360 ${W - MARGIN - 14} 298)`}
           dur="5s" repeatCount="indefinite"
         />
       </g>
@@ -350,8 +350,7 @@ export function IntroCard() {
         <line x1={16} y1={297} x2={18} y2={297} stroke={DEPTH_COLOR} strokeWidth={0.8} opacity={0.45} />
         <rect x={4} y={292} width={8} height={4} rx={0.5}
           fill="none" stroke={theme.ink} strokeWidth={0.4} opacity={0.35} />
-        <animateTransform attributeName="transform" type="translate"
-          from="180 0" to="-30 0" dur="3.5s" repeatCount="indefinite" />
+        <animate attributeName="transform" values="translate(180,0);translate(-30,0)" dur="3.5s" repeatCount="indefinite" />
         <animate attributeName="opacity" values="0;0.55;0.55;0" keyTimes="0;0.05;0.9;1"
           dur="3.5s" repeatCount="indefinite" />
       </g>
@@ -366,8 +365,7 @@ export function IntroCard() {
         <line x1={14} y1={291} x2={14} y2={296} stroke={DEPTH_COLOR} strokeWidth={0.4} opacity={0.3} />
         <circle cx={3} cy={293.5} r={0.8} fill={DEPTH_COLOR} opacity={0.4} />
         <circle cx={17} cy={293.5} r={0.8} fill={DEPTH_COLOR} opacity={0.4} />
-        <animateTransform attributeName="transform" type="translate"
-          from="180 0" to="-30 0" dur="4s" begin="1.2s" repeatCount="indefinite" />
+        <animate attributeName="transform" values="translate(180,0);translate(-30,0)" dur="4s" begin="1.2s" repeatCount="indefinite" />
         <animate attributeName="opacity" values="0;0.5;0.5;0" keyTimes="0;0.05;0.9;1"
           dur="4s" begin="1.2s" repeatCount="indefinite" />
       </g>
@@ -381,8 +379,7 @@ export function IntroCard() {
         <line x1={3} y1={298.5} x2={3} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.4} />
         <line x1={8} y1={298.5} x2={8} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.4} />
         <line x1={13} y1={298.5} x2={13} y2={301} stroke={DEPTH_COLOR} strokeWidth={0.6} opacity={0.4} />
-        <animateTransform attributeName="transform" type="translate"
-          from="180 0" to="-30 0" dur="4.5s" begin="2.4s" repeatCount="indefinite" />
+        <animate attributeName="transform" values="translate(180,0);translate(-30,0)" dur="4.5s" begin="2.4s" repeatCount="indefinite" />
         <animate attributeName="opacity" values="0;0.5;0.5;0" keyTimes="0;0.05;0.9;1"
           dur="4.5s" begin="2.4s" repeatCount="indefinite" />
       </g>
