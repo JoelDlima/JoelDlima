@@ -55,37 +55,31 @@ function buildLane(labels, y, theme) {
 }
 
 export function marqueeStack({ top, x = 34, width = 812, theme, id = "dark" }) {
+  // Lane 1: Core Embedded Systems, Hardware & Systems Programming
   const lane1Labels = [
-    "esp32",
     "c++",
     "c",
-    "python",
-    "typescript",
-    "javascript",
+    "esp32",
     "arduino",
     "linux",
-    "html5",
-    "css3",
+    "python",
     "sql",
+    "git",
   ];
 
+  // Lane 2: Complementary Software & Machine Learning Toolchain
   const lane2Labels = [
+    "typescript",
     "react",
     "next.js",
-    "tailwind",
-    "vite",
     "node",
     "fastapi",
-    "flask",
+    "docker",
+    "postgres",
     "supabase",
     "gemini api",
-    "tensorflow",
     "pytorch",
-    "postgres",
-    "docker",
-    "git",
     "github",
-    "figma",
   ];
 
   const lane1Y = top + 52;
@@ -115,15 +109,16 @@ export function marqueeStack({ top, x = 34, width = 812, theme, id = "dark" }) {
       `</mask>` +
       `</defs>` +
       // Header tag row
-      text("TECH STACK", { x, y: top + 26, size: 10, spacing: 1.6, fill: theme.muted, cls: "rise d10", face: "display" }) +
-      text("AUTO-SCROLLING HARDWARE & SOFTWARE REGISTRY", {
+      text("TECHNICAL DOMAINS & TOOLCHAIN", { x, y: top + 26, size: 10, spacing: 1.6, fill: theme.muted, cls: "rise d10", face: "mono", weight: 700 }) +
+      text("EMBEDDED SYSTEMS  ·  FIRMWARE  ·  SYSTEMS INFRASTRUCTURE", {
         x: x + width,
         y: top + 26,
         size: 9.5,
         fill: theme.accent,
         anchor: "end",
         cls: "rise d12",
-        weight: 600,
+        weight: 700,
+        face: "mono",
       }) +
       // Background track container
       rect({ x, y: top + 42, width, height: 80, fill: theme.bg, rx: 8, stroke: theme.border, opacity: 0.8 }) +

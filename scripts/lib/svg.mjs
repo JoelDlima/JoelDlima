@@ -13,40 +13,42 @@
  *    loops that never stop. Nothing loops fast enough to nag.
  */
 
+import { dotGridBackground } from "./dotgrid.mjs";
+
 const MONO = "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 const DISPLAY = "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 const FACES = { mono: MONO, display: DISPLAY };
 
 export const THEMES = {
   dark: {
-    bg: "#040711",
-    border: "#152438",
-    text: "#f1f5f9",
-    muted: "#7c8ba1",
-    track: "#0c1524",
-    ink: "#2dd4bf",
-    accent: "#2dd4bf",
+    bg: "#090d16",
+    border: "#1e293b",
+    text: "#f8fafc",
+    muted: "#64748b",
+    track: "#111827",
+    ink: "#f59e0b",
+    accent: "#f59e0b",
     gold: "#fbbf24",
-    cyan: "#38bdf8",
-    cardBg: "#081120",
-    star: "#e2e8f0",
-    haze: "#0ea5e9",
-    hazeOpacity: 0.08,
+    cyan: "#14b8a6",
+    cardBg: "#0e1524",
+    dot: "#1e293b",
+    haze: "#f59e0b",
+    hazeOpacity: 0.04,
   },
   light: {
-    bg: "#f8fafc",
-    border: "#cbd5e1",
+    bg: "#fcfbf9",
+    border: "#e2e8f0",
     text: "#0f172a",
     muted: "#64748b",
-    track: "#e2e8f0",
-    ink: "#0d9488",
-    accent: "#0d9488",
-    gold: "#d97706",
-    cyan: "#0284c7",
-    cardBg: "#f1f5f9",
-    star: "#0f172a",
-    haze: "#0284c7",
-    hazeOpacity: 0.04,
+    track: "#f1f5f9",
+    ink: "#d97706",
+    accent: "#d97706",
+    gold: "#b45309",
+    cyan: "#0d9488",
+    cardBg: "#ffffff",
+    dot: "#cbd5e1",
+    haze: "#d97706",
+    hazeOpacity: 0.02,
   },
 };
 
@@ -338,7 +340,7 @@ export function astronaut({ x, y, width, height, base64 }) {
 
 /* ------------------------------------------------------------- components */
 
-export function frame({ width, height, theme, seed, stars = 120 }) {
+export function frame({ width, height, theme, seed }) {
   const clipId = `frame-clip-${seed}`;
   return (
     `<defs>` +
@@ -348,8 +350,7 @@ export function frame({ width, height, theme, seed, stars = 120 }) {
     `</defs>` +
     rect({ x: 0.5, y: 0.5, width: width - 1, height: height - 1, fill: theme.bg, rx: 12, stroke: theme.border }) +
     `<g clip-path="url(#${clipId})">` +
-    reactBitsBackground({ width, height, theme, seed }) +
-    twinkleStarfield({ width, height, count: stars, seed, theme }) +
+    dotGridBackground({ width, height, theme, seed }) +
     `</g>`
   );
 }
@@ -631,93 +632,55 @@ function entranceRules() {
 
 function ambientRules(width) {
   return (
-    ".tw{animation:tw 5s ease-in-out infinite}" +
-    ".haze{transform-origin:center;animation:haze 22s ease-in-out infinite}" +
-    ".aurora-orb-1{animation:aurora-float-1 20s ease-in-out infinite;transform-box:fill-box;transform-origin:center}" +
-    ".aurora-orb-2{animation:aurora-float-2 26s ease-in-out infinite;transform-box:fill-box;transform-origin:center}" +
-    ".aurora-orb-3{animation:aurora-float-3 22s ease-in-out infinite;transform-box:fill-box;transform-origin:center}" +
-    ".float{animation:float 13s ease-in-out infinite}" +
-    ".planet{transform-origin:center;animation:planet 9s ease-in-out infinite}" +
-    ".orbit{transform-origin:center;animation:spin 9s linear infinite}" +
-    ".orbit-mid{transform-origin:center;animation:spin 15s linear infinite reverse}" +
-    ".orbit-slow{transform-origin:center;animation:spin 21s linear infinite}" +
     ".halo{transform-origin:center;animation:halo 3.2s ease-in-out infinite;animation-delay:2s}" +
-    ".probe{offset-rotate:0deg;animation:travel 11s cubic-bezier(.5,0,.5,1) infinite;animation-delay:2.4s}" +
     ".glowbar{animation:glowbar 6s ease-in-out infinite}" +
     ".chip{animation:chip 5.5s ease-in-out infinite}" +
-    ".astro{transform-origin:center;animation:astro 14s ease-in-out infinite}" +
     ".breathe{animation:breathe 7s ease-in-out infinite}" +
-    ".moon{animation-name:moon;animation-timing-function:steps(60);animation-iteration-count:infinite}" +
-    ".thruster{transform-origin:right center;animation:thrust .34s ease-in-out infinite alternate}" +
-    ".shoot{animation-name:shoot;animation-timing-function:cubic-bezier(.3,0,.5,1);animation-iteration-count:infinite}" +
-    ".galaxy-spin{animation:galaxy-spin 42s linear infinite;transform-box:fill-box;transform-origin:center}" +
-    ".galaxy-pulse{animation:galaxy-pulse 6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}" +
-    ".marquee-track-l1{animation:marquee-scroll-left 26s linear infinite}" +
-    ".marquee-track-l2{animation:marquee-scroll-right 28s linear infinite}" +
-    ".oscillo-sweep{animation:oscillo-sweep 4.8s cubic-bezier(.4,0,.2,1) infinite}" +
-    ".scan-reveal-rect{animation:scan-reveal 4.8s cubic-bezier(.4,0,.2,1) infinite}" +
-    ".blink{animation:blink 1.1s steps(1) infinite}" +
-    ".pulse-slow{animation:pulse-slow 3.2s ease-in-out infinite}"
+    ".marquee-track-l1{animation:marquee-scroll-left 36s linear infinite}" +
+    ".marquee-track-l2{animation:marquee-scroll-right 38s linear infinite}" +
+    ".oscillo-sweep{animation:oscillo-sweep 6s cubic-bezier(.4,0,.2,1) infinite}" +
+    ".scan-reveal-rect{animation:scan-reveal 6s cubic-bezier(.4,0,.2,1) infinite}" +
+    ".blink{animation:blink 1.2s steps(1) infinite}" +
+    ".pulse-slow{animation:pulse-slow 3.2s ease-in-out infinite}" +
+    ".decrypt{animation:decrypt .9s cubic-bezier(.22,.8,.3,1) both;animation-delay:.15s}" +
+    ".decrypt-sub{animation:rise .8s cubic-bezier(.22,.8,.3,1) both;animation-delay:.45s}"
   );
 }
 
 function keyframeRules(width) {
   return (
-    "@keyframes tw{0%,100%{opacity:.25}50%{opacity:1}}" +
     "@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}" +
-    "@keyframes pop{from{opacity:0;transform:scale(.78)}to{opacity:1;transform:none}}" +
+    "@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}" +
     "@keyframes fade{from{opacity:0}to{opacity:1}}" +
     "@keyframes draw{to{stroke-dashoffset:0}}" +
     "@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}" +
-    "@keyframes ignite{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}" +
-    "@keyframes halo{0%,100%{opacity:.12;transform:scale(.8)}50%{opacity:.45;transform:scale(1.4)}}" +
-    "@keyframes planet{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.22;transform:scale(.88)}}" +
-    "@keyframes spin{to{transform:rotate(360deg)}}" +
-    "@keyframes float{0%,100%{transform:translateY(-3.5px)}50%{transform:translateY(3.5px)}}" +
-    "@keyframes haze{0%,100%{opacity:.75;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}" +
-    "@keyframes glowbar{0%,100%{fill-opacity:1}50%{fill-opacity:.68}}" +
-    "@keyframes chip{0%,100%{fill-opacity:.07}50%{fill-opacity:.15}}" +
-    "@keyframes astro{0%,100%{transform:translateY(-9px) rotate(-4deg)}35%{transform:translateY(4px) rotate(2deg)}70%{transform:translateY(9px) rotate(5deg)}}" +
-    "@keyframes breathe{0%,100%{opacity:1}50%{opacity:.5}}" +
-    "@keyframes travel{0%{offset-distance:0%;opacity:0}7%{opacity:.9}88%{opacity:.9}100%{offset-distance:100%;opacity:0}}" +
-    "@keyframes thrust{from{transform:scaleX(.5);opacity:.45}to{transform:scaleX(1.2);opacity:1}}" +
-    "@keyframes moon{to{transform:translateX(var(--sheet,-2880px))}}" +
-    "@keyframes shoot{0%{opacity:0;transform:translateX(0)}2%{opacity:0}5%{opacity:1}13%{opacity:1}17%{opacity:0;transform:translateX(var(--travel,1200px))}100%{opacity:0;transform:translateX(var(--travel,1200px))}}" +
-    "@keyframes galaxy-spin{to{transform:rotate(360deg)}}" +
-    "@keyframes galaxy-pulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.2);opacity:1}}" +
+    "@keyframes ignite{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}" +
+    "@keyframes halo{0%,100%{opacity:.12;transform:scale(.9)}50%{opacity:.35;transform:scale(1.2)}}" +
+    "@keyframes glowbar{0%,100%{fill-opacity:1}50%{fill-opacity:.7}}" +
+    "@keyframes chip{0%,100%{fill-opacity:.06}50%{fill-opacity:.12}}" +
+    "@keyframes breathe{0%,100%{opacity:1}50%{opacity:.6}}" +
     "@keyframes marquee-scroll-left{0%{transform:translateX(0)}100%{transform:translateX(calc(-1 * var(--w1, 1180px)))}}" +
     "@keyframes marquee-scroll-right{0%{transform:translateX(calc(-1 * var(--w2, 1470px)))}100%{transform:translateX(0)}}" +
     "@keyframes oscillo-sweep{0%{transform:translateX(0);opacity:0}4%{opacity:1}96%{opacity:1}100%{transform:translateX(var(--scan-w, 750px));opacity:0}}" +
     "@keyframes scan-reveal{0%{width:0}4%{width:0}96%{width:var(--scan-w, 750px)}99%{width:var(--scan-w, 750px)}100%{width:0}}" +
     "@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}" +
     "@keyframes pulse-slow{0%,100%{opacity:.4}50%{opacity:.95}}" +
-    "@keyframes aurora-float-1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(100px,60px) scale(1.22)}}" +
-    "@keyframes aurora-float-2{0%,100%{transform:translate(0,0) scale(1.1)}50%{transform:translate(-80px,-70px) scale(.88)}}" +
-    "@keyframes aurora-float-3{0%,100%{transform:translate(0,0) scale(.92)}50%{transform:translate(70px,-50px) scale(1.18)}}"
+    "@keyframes decrypt{0%{opacity:0;letter-spacing:3px}50%{opacity:.6;letter-spacing:2px}100%{opacity:1;letter-spacing:1.6px}}"
   );
 }
 
 /**
- * Reduced motion strips travel, spin and scale — not the card. Everything that
- * moved becomes a plain fade; opacity-only loops keep running, slower.
+ * Reduced motion strips travel, spin and scale — not the card.
  */
 function reducedMotionRules() {
   return (
     "@media(prefers-reduced-motion:reduce){" +
-    ".drift-a,.drift-b,.drift-c{animation:none!important}" +
-    ".shoot{animation-duration:22s}" +
-    // The ship and probe stay in flight under reduced motion. The ship keeps
-    // its full-speed duration because the cell flashes are scheduled against
-    // it; slowing it here would desync every one of them.
-    ".probe{animation-duration:18s}" +
-    ".haze{animation:haze 26s ease-in-out infinite;transform:none!important}" +
-    ".pop,.rise,.ignite{animation:fade .7s ease-out both}" +
+    ".pop,.rise,.ignite,.decrypt,.decrypt-sub{animation:fade .7s ease-out both}" +
     ".grow,.wipe{animation:fade .9s ease-out both;transform:none!important}" +
     ".draw{animation:fade .9s ease-out both;stroke-dasharray:none!important;stroke-dashoffset:0!important}" +
-    ".tw{animation:tw 8s ease-in-out infinite}" +
     ".breathe{animation:breathe 10s ease-in-out infinite}" +
     ".glowbar{animation:glowbar 9s ease-in-out infinite}" +
-    ".marquee-track-l1,.marquee-track-l2,.galaxy-spin,.galaxy-pulse,.oscillo-sweep{animation:none!important}" +
+    ".marquee-track-l1,.marquee-track-l2,.oscillo-sweep{animation:none!important}" +
     "}"
   );
 }
