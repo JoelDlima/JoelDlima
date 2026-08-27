@@ -1,10 +1,11 @@
 /**
- * Bento Stats Visualizer for Joel D'Lima
- * Clean, honest, data-driven presentation without AI-slop jargon:
- * 1. 52-Week Commit Activity Equalizer (Bento Card A)
- * 2. Academic & Engineering Benchmarks (Bento Card B — replaces vanity 1-day streak)
- * 3. Segmented Horizon Language Bar & 5 Modular Language Pods
- * 4. Daily Contribution History Grid
+ * Technical Specification Metrics & Activity Log for Joel D'Lima
+ * Clean, honest, data-driven presentation adhering to datasheet aesthetics:
+ * - Dual-font typographic hierarchy (Technical Sans for labels, Monospace for data)
+ * - 52-Week Commit Cadence Equalizer
+ * - Technical Ratings & Benchmarks (unambiguous, no awkward acronyms)
+ * - Codebase Language Allocation (TypeScript labeled as Internal Tooling / Systems UI)
+ * - Clean 52-Week Commit History Calendar
  */
 
 import { oscilloscopeScanner } from "./scanner.mjs";
@@ -27,9 +28,9 @@ function round(n) {
 }
 
 /**
- * Bento Card A: 52-Week Commit Activity Equalizer
+ * 52-Week Commit Cadence Card
  */
-function spectrumEqualizerCard({ x, y, width, height, stats, theme }) {
+function commitCadenceCard({ x, y, width, height, stats, theme }) {
   const weeks = stats.weeks || [];
   const peak = Math.max(stats.bestWeek || 1, 1);
   const barCount = 52;
@@ -50,54 +51,51 @@ function spectrumEqualizerCard({ x, y, width, height, stats, theme }) {
     bars += rect({ x: barX, y: barY, width: barW, height: barH, fill, rx: 1.5, opacity });
   }
 
-  // Graticule grid line
   const gridLine = `<line x1="${x + 18}" y1="${baselineY + 4}" x2="${x + width - 18}" y2="${baselineY + 4}" stroke="${theme.border}" stroke-width="1" opacity="0.6" />`;
 
   return (
     `<g class="rise d35">` +
-    rect({ x, y, width, height, fill: theme.cardBg, rx: 8, stroke: theme.border }) +
-    // Header labels
-    text("52-WEEK COMMIT ACTIVITY & CADENCE", {
-      x: x + 24,
-      y: y + 24,
-      size: 10,
+    rect({ x, y, width, height, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
+    // Header labels: Technical Sans
+    text("52-WEEK COMMIT CADENCE", {
+      x: x + 20,
+      y: y + 22,
+      size: 11,
       weight: 700,
-      spacing: 1.2,
-      fill: theme.muted,
-      face: "mono",
+      fill: theme.text,
+      face: "sans",
     }) +
-    // Headline number
+    // Headline number: Monospace
     text(String(stats.total), {
-      x: x + 24,
-      y: y + 58,
-      size: 28,
+      x: x + 20,
+      y: y + 56,
+      size: 26,
       weight: 800,
       fill: theme.text,
       cls: "pop d36",
       face: "mono",
     }) +
     text("COMMITS", {
-      x: x + 92,
-      y: y + 46,
-      size: 10.5,
-      weight: 800,
+      x: x + 82,
+      y: y + 44,
+      size: 10,
+      weight: 700,
       fill: theme.accent,
       face: "mono",
     }) +
-    text("trailing year output", {
-      x: x + 92,
-      y: y + 58,
+    text("trailing 52 weeks", {
+      x: x + 82,
+      y: y + 56,
       size: 9.5,
-      weight: 600,
+      weight: 400,
       fill: theme.muted,
-      face: "mono",
+      face: "sans",
     }) +
     // Metrics pill badges
-    rect({ x: x + 250, y: y + 40, width: 118, height: 22, fill: theme.ink, rx: 5, opacity: 0.08 }) +
-    text(`▲ ${stats.bestWeek} PEAK/WK`, { x: x + 258, y: y + 54.5, size: 9.5, weight: 700, fill: theme.gold, face: "mono" }) +
-    rect({ x: x + 376, y: y + 40, width: 124, height: 22, fill: theme.ink, rx: 5, opacity: 0.08 }) +
-    text(`● ${stats.activeDays} ACTIVE DAYS`, { x: x + 384, y: y + 54.5, size: 9.5, weight: 700, fill: theme.accent, face: "mono" }) +
-    // Equalizer bars & baseline
+    rect({ x: x + 230, y: y + 38, width: 116, height: 22, fill: theme.ink, rx: 4, opacity: 0.08 }) +
+    text(`▲ ${stats.bestWeek} PEAK/WK`, { x: x + 238, y: y + 52.5, size: 9, weight: 700, fill: theme.gold, face: "mono" }) +
+    rect({ x: x + 354, y: y + 38, width: 122, height: 22, fill: theme.ink, rx: 4, opacity: 0.08 }) +
+    text(`● ${stats.activeDays} ACTIVE DAYS`, { x: x + 362, y: y + 52.5, size: 9, weight: 700, fill: theme.accent, face: "mono" }) +
     gridLine +
     bars +
     `</g>`
@@ -105,46 +103,49 @@ function spectrumEqualizerCard({ x, y, width, height, stats, theme }) {
 }
 
 /**
- * Bento Card B: Academic & Core Benchmarks (Replaces vanity 1-day streak)
+ * Technical Ratings & Benchmarks Card (Clear, unambiguous labeling)
  */
-function benchmarksCard({ x, y, width, height, stats, theme }) {
+function technicalRatingsCard({ x, y, width, height, stats, theme }) {
   return (
     `<g class="rise d37">` +
-    rect({ x, y, width, height, fill: theme.cardBg, rx: 8, stroke: theme.border }) +
-    text("BENCHMARKS & PROFILE OVERVIEW", {
-      x: x + 20,
-      y: y + 24,
-      size: 10,
+    rect({ x, y, width, height, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
+    text("TECHNICAL RATINGS", {
+      x: x + 18,
+      y: y + 22,
+      size: 11,
       weight: 700,
-      spacing: 1.2,
-      fill: theme.muted,
-      face: "mono",
+      fill: theme.text,
+      face: "sans",
     }) +
-    // Benchmark metric rows
-    text("CGPA     :", { x: x + 20, y: y + 52, size: 9.5, weight: 700, fill: theme.muted, face: "mono" }) +
-    text("9.7 / 10.0 (AITD GOA)", { x: x + 92, y: y + 52, size: 10, weight: 800, fill: theme.gold, face: "mono" }) +
+    // Rating rows: Parameter in Sans, Value in Mono
+    text("CGPA", { x: x + 18, y: y + 48, size: 10, weight: 600, fill: theme.muted, face: "sans" }) +
+    text("9.70 / 10.00", { x: x + 72, y: y + 48, size: 10, weight: 700, fill: theme.gold, face: "mono" }) +
+    text("· Agnel Inst. of Tech, Goa", { x: x + 162, y: y + 48, size: 9.5, weight: 400, fill: theme.muted, face: "sans" }) +
 
-    text("ROLE     :", { x: x + 20, y: y + 72, size: 9.5, weight: 700, fill: theme.muted, face: "mono" }) +
-    text("SWE INTERN @ VISTEON", { x: x + 92, y: y + 72, size: 10, weight: 800, fill: theme.accent, face: "mono" }) +
+    text("ROLE", { x: x + 18, y: y + 70, size: 10, weight: 600, fill: theme.muted, face: "sans" }) +
+    text("SWE INTERN", { x: x + 72, y: y + 70, size: 10, weight: 700, fill: theme.accent, face: "mono" }) +
+    text("· Visteon Corporation", { x: x + 162, y: y + 70, size: 9.5, weight: 400, fill: theme.muted, face: "sans" }) +
 
-    text("REPOS    :", { x: x + 20, y: y + 92, size: 9.5, weight: 700, fill: theme.muted, face: "mono" }) +
-    text(`${stats.repoCount} PUBLIC REPOSITORIES`, { x: x + 92, y: y + 92, size: 9.5, weight: 700, fill: theme.text, face: "mono" }) +
+    text("CODE", { x: x + 18, y: y + 92, size: 10, weight: 600, fill: theme.muted, face: "sans" }) +
+    text(`${stats.repoCount} REPOSITORIES`, { x: x + 72, y: y + 92, size: 10, weight: 700, fill: theme.text, face: "mono" }) +
+    text("· Embedded & Systems", { x: x + 182, y: y + 92, size: 9.5, weight: 400, fill: theme.muted, face: "sans" }) +
 
-    text("HORIZON  :", { x: x + 20, y: y + 112, size: 9.5, weight: 700, fill: theme.muted, face: "mono" }) +
-    text("CLASS OF 2027", { x: x + 92, y: y + 112, size: 9.5, weight: 800, fill: theme.text, face: "mono" }) +
-    `<circle cx="${x + width - 22}" cy="${y + 109}" r="3" fill="${theme.accent}" class="blink" />` +
+    text("CLASS", { x: x + 18, y: y + 114, size: 10, weight: 600, fill: theme.muted, face: "sans" }) +
+    text("BATCH OF 2027", { x: x + 72, y: y + 114, size: 10, weight: 700, fill: theme.text, face: "mono" }) +
+    text("· B.E. Electronics & Comp", { x: x + 172, y: y + 114, size: 9.5, weight: 400, fill: theme.muted, face: "sans" }) +
+    `<circle cx="${x + width - 18}" cy="${y + 111}" r="3" fill="${theme.accent}" class="blink" />` +
     `</g>`
   );
 }
 
 /**
- * Segmented Horizon Language Bar & 5 Language Bento Pods
+ * Codebase Language Breakdown (Harmonized, honest roles)
  */
-function languageHorizonSection({ top, stats, theme }) {
+function languageAllocationSection({ top, stats, theme }) {
   const x = PAD;
   const width = USABLE_W;
   const barY = top + 26;
-  const barH = 12;
+  const barH = 10;
 
   const rawBytes = {
     python: 587671,
@@ -155,12 +156,13 @@ function languageHorizonSection({ top, stats, theme }) {
   };
   const total = Object.values(rawBytes).reduce((a, b) => a + b, 0);
 
+  // Harmonized roles: TypeScript explicitly labeled as internal tooling & diagnostic UIs
   const segments = [
-    { key: "python", label: "Python", bytes: 587671, color: LANG_COLORS.python, repos: 6, role: "Systems & AI Tooling" },
-    { key: "typescript", label: "TypeScript", bytes: 529719, color: LANG_COLORS.typescript, repos: 4, role: "Full-Stack Architecture" },
-    { key: "javascript", label: "JavaScript", bytes: 136321, color: LANG_COLORS.javascript, repos: 1, role: "Scripting & Node" },
-    { key: "html", label: "HTML", bytes: 122290, color: LANG_COLORS.html, repos: 1, role: "Semantic UI Structure" },
-    { key: "css", label: "CSS", bytes: 74805, color: LANG_COLORS.css, repos: 1, role: "Styling & Motion Systems" },
+    { key: "python", label: "Python", bytes: 587671, color: LANG_COLORS.python, repos: 6, role: "Systems, Automation & ML" },
+    { key: "typescript", label: "TypeScript", bytes: 529719, color: LANG_COLORS.typescript, repos: 4, role: "Internal Tooling & Systems UI" },
+    { key: "javascript", label: "JavaScript", bytes: 136321, color: LANG_COLORS.javascript, repos: 1, role: "Utilities & Scripts" },
+    { key: "html", label: "HTML", bytes: 122290, color: LANG_COLORS.html, repos: 1, role: "Markup & Structuring" },
+    { key: "css", label: "CSS", bytes: 74805, color: LANG_COLORS.css, repos: 1, role: "Interface Styling" },
   ];
 
   let cursorX = x;
@@ -184,13 +186,11 @@ function languageHorizonSection({ top, stats, theme }) {
     cursorX += segW;
   });
 
-  const gloss = rect({ x, y: barY, width, height: barH / 2, fill: "#fff", opacity: 0.12, rx: 3 });
-
-  // 5 Bento Pods
+  // 5 Modular language info pods
   const podCount = 5;
   const podGap = 10;
   const podY = barY + barH + 12;
-  const podH = 64;
+  const podH = 58;
 
   let pods = "";
   segments.forEach((seg, i) => {
@@ -203,85 +203,82 @@ function languageHorizonSection({ top, stats, theme }) {
 
     pods +=
       `<g class="rise d${delay}">` +
-      rect({ x: px, y: podY, width: thisPodW, height: podH, fill: theme.cardBg, rx: 7, stroke: theme.border }) +
+      rect({ x: px, y: podY, width: thisPodW, height: podH, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
       rect({ x: px + 1, y: podY + 1, width: thisPodW - 2, height: 2, fill: seg.color, rx: 1 }) +
-      `<circle cx="${px + 14}" cy="${podY + 16}" r="3.5" fill="${seg.color}" />` +
-      text(seg.label.toUpperCase(), { x: px + 24, y: podY + 19, size: 10, weight: 800, fill: theme.text, face: "mono" }) +
-      text(`${seg.pct}%`, { x: px + thisPodW - 12, y: podY + 19, size: 10, weight: 800, fill: seg.color, anchor: "end", face: "mono" }) +
-      text(`${kb} KB · ${seg.repos} repos`, { x: px + 14, y: podY + 36, size: 9, weight: 600, fill: theme.muted, face: "mono" }) +
-      text(seg.role, { x: px + 14, y: podY + 50, size: 8.5, fill: theme.accent, weight: 700, face: "mono" }) +
+      `<circle cx="${px + 12}" cy="${podY + 16}" r="3" fill="${seg.color}" />` +
+      text(seg.label, { x: px + 20, y: podY + 18.5, size: 10.5, weight: 700, fill: theme.text, face: "sans" }) +
+      text(`${seg.pct}%`, { x: px + thisPodW - 10, y: podY + 18.5, size: 9.5, weight: 700, fill: seg.color, anchor: "end", face: "mono" }) +
+      text(`${kb} KB · ${seg.repos} repos`, { x: px + 12, y: podY + 34, size: 8.5, weight: 400, fill: theme.muted, face: "mono" }) +
+      text(seg.role, { x: px + 12, y: podY + 47, size: 8, fill: theme.accent, weight: 600, face: "sans" }) +
       `</g>`;
   });
 
   return (
     `<g class="rise d40">` +
-    text("CODEBASE LANGUAGE DISTRIBUTION", {
+    text("CODEBASE ALLOCATION", {
       x,
       y: top + 14,
-      size: 10,
+      size: 11,
       weight: 700,
-      spacing: 1.2,
-      fill: theme.muted,
-      face: "mono",
+      fill: theme.text,
+      face: "sans",
     }) +
-    text("SOURCE REPOSITORY METRICS", {
+    text("LANGUAGE DISTRIBUTION BY VOLUME", {
       x: x + width,
       y: top + 14,
       size: 9.5,
-      fill: theme.accent,
+      fill: theme.muted,
       anchor: "end",
-      weight: 700,
+      weight: 600,
       face: "mono",
     }) +
     horizonBars +
-    gloss +
     pods +
     `</g>`
   );
 }
 
 /**
- * Master GitHub & Language Bento Section
+ * Master Codebase Metrics & Activity Section
  */
 export function bentoGithubSection(top, stats, theme, themeName) {
-  const cardAY = top + 42;
-  const cardAH = 136;
-  const cardAW = 530;
-  const cardBW = USABLE_W - cardAW - 14; // 268px
+  const cardAY = top + 36;
+  const cardAH = 132;
+  const cardAW = 490;
+  const cardBW = USABLE_W - cardAW - 14;
 
-  // Row 1: Spectrum Equalizer + Academic Benchmarks
-  const cardA = spectrumEqualizerCard({ x: PAD, y: cardAY, width: cardAW, height: cardAH, stats, theme });
-  const cardB = benchmarksCard({ x: PAD + cardAW + 14, y: cardAY, width: cardBW, height: cardAH, stats, theme });
+  // Row 1: Commit Cadence + Technical Ratings
+  const cardA = commitCadenceCard({ x: PAD, y: cardAY, width: cardAW, height: cardAH, stats, theme });
+  const cardB = technicalRatingsCard({ x: PAD + cardAW + 14, y: cardAY, width: cardBW, height: cardAH, stats, theme });
 
-  // Row 2: Language Horizon Bar + 5 Language Pods
+  // Row 2: Language Allocation
   const langHorizonTop = cardAY + cardAH + 16;
-  const langHorizon = languageHorizonSection({ top: langHorizonTop, stats, theme });
+  const langHorizon = languageAllocationSection({ top: langHorizonTop, stats, theme });
 
-  // Row 3: Contribution Grid with generous clearance
-  const gridDividerY = langHorizonTop + 124;
-  const gridHeaderY = gridDividerY + 22;
-  const gridCellY = gridHeaderY + 26;
+  // Row 3: Commit History Calendar
+  const gridDividerY = langHorizonTop + 116;
+  const gridHeaderY = gridDividerY + 20;
+  const gridCellY = gridHeaderY + 24;
 
   const grid = contributionGrid({ days: stats.calendar, x: PAD, y: gridCellY, cell: 11, gap: 3, theme, id: themeName });
 
   const contributionBlock =
     rect({ x: PAD, y: gridDividerY, width: USABLE_W, height: 1, fill: theme.border, cls: "fade" }) +
-    text("CONTRIBUTIONS (TRAILING 52 WEEKS)", {
+    text("COMMIT HISTORY (52 WEEKS)", {
       x: PAD,
       y: gridHeaderY,
-      size: 10,
+      size: 11,
       weight: 700,
-      spacing: 1.2,
-      fill: theme.muted,
-      face: "mono",
+      fill: theme.text,
+      face: "sans",
     }) +
-    text("DAILY ACTIVITY MATRIX", {
+    text("ANNUAL REPOSITORY ACTIVITY", {
       x: PAD + USABLE_W,
       y: gridHeaderY,
       size: 9.5,
-      fill: theme.accent,
+      fill: theme.muted,
       anchor: "end",
-      weight: 700,
+      weight: 600,
       face: "mono",
     }) +
     grid.markup +
@@ -290,24 +287,21 @@ export function bentoGithubSection(top, stats, theme, themeName) {
 
   return (
     // Section Header Tag
-    text("GITHUB ACTIVITY & CODEBASE METRICS", {
+    text("3.0 CODEBASE METRICS & ANNUAL COMMIT LOG", {
       x: PAD,
-      y: top + 26,
-      size: 10,
-      spacing: 1.6,
-      fill: theme.muted,
-      cls: "rise d34",
-      face: "mono",
+      y: top + 20,
+      size: 11.5,
       weight: 700,
+      fill: theme.text,
+      face: "sans",
     }) +
-    text(`@${stats.login}`, {
+    text(`@${stats.login} · AUDIT RECORD`, {
       x: PAD + USABLE_W,
-      y: top + 26,
-      size: 10,
+      y: top + 20,
+      size: 9.5,
       fill: theme.accent,
       anchor: "end",
       weight: 700,
-      cls: "rise d34",
       face: "mono",
     }) +
     cardA +

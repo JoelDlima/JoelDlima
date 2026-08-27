@@ -1,8 +1,9 @@
 /**
- * React Bits style Infinite Scrolling Marquee for Tech Stack
- * Dual-lane auto-scrolling horizontal ribbon tracks with edge-fade masks.
- * Lane 1: Embedded Hardware & Core Languages (Scrolls Left)
- * Lane 2: Web Frameworks, AI & Cloud Infrastructure (Scrolls Right)
+ * Register Map & Pinout Configuration for Joel D'Lima.
+ * Authentic Hardware Datasheet Register Specification:
+ * - Bank 0x01: Core Embedded Systems, Microcontrollers & Protocols
+ * - Bank 0x02: Systems Tooling, Diagnostics & Infrastructure
+ * - Crisp static pin chips with official vector marks
  */
 
 import { STACK_GROUPS } from "./stack.mjs";
@@ -12,127 +13,150 @@ const ALL_ITEMS = new Map(
   STACK_GROUPS.flatMap((g) => g.items).map((item) => [item.label, item]),
 );
 
-const CHIP = {
-  height: 30,
-  padX: 12,
-  icon: 14,
-  iconGap: 7,
-  font: 11,
-  gap: 12,
+const PIN_CHIP = {
+  height: 24,
+  padX: 8,
+  icon: 12,
+  iconGap: 5,
+  font: 9.5,
+  gap: 8,
 };
 
-function chipWidth(item) {
-  const glyph = item.path ? CHIP.icon + CHIP.iconGap : 0;
-  return Math.round(CHIP.padX * 2 + glyph + item.label.length * CHIP.font * 0.6);
+function pinChipWidth(item) {
+  const glyph = item.path ? PIN_CHIP.icon + PIN_CHIP.iconGap : 0;
+  return Math.round(PIN_CHIP.padX * 2 + glyph + item.label.length * PIN_CHIP.font * 0.6);
 }
 
-function renderChip(item, x, y, theme) {
-  const width = chipWidth(item);
-  const textX = x + CHIP.padX + (item.path ? CHIP.icon + CHIP.iconGap : 0);
+function renderPinChip(item, x, y, theme, isPrimary = false) {
+  const width = pinChipWidth(item);
+  const textX = x + PIN_CHIP.padX + (item.path ? PIN_CHIP.icon + PIN_CHIP.iconGap : 0);
+  const accentColor = isPrimary ? theme.accent : theme.text;
+
   return (
     `<g>` +
-    rect({ x, y, width, height: CHIP.height, fill: theme.cardBg, rx: 7, stroke: theme.border }) +
-    rect({ x: x + 1, y: y + 1, width: width - 2, height: CHIP.height - 2, fill: theme.ink, rx: 6, opacity: 0.04 }) +
+    rect({
+      x,
+      y,
+      width,
+      height: PIN_CHIP.height,
+      fill: theme.track,
+      rx: 4,
+      stroke: isPrimary ? theme.accent : theme.border,
+      opacity: isPrimary ? 1 : 0.85,
+    }) +
     (item.path
-      ? icon(item.path, { x: x + CHIP.padX, y: y + (CHIP.height - CHIP.icon) / 2, size: CHIP.icon, fill: theme.accent || theme.text, opacity: 0.95 })
+      ? icon(item.path, {
+          x: x + PIN_CHIP.padX,
+          y: y + (PIN_CHIP.height - PIN_CHIP.icon) / 2,
+          size: PIN_CHIP.icon,
+          fill: accentColor,
+          opacity: 0.95,
+        })
       : "") +
-    text(item.label, { x: textX, y: y + CHIP.height / 2 + 3.8, size: CHIP.font, fill: theme.text, weight: 500 }) +
+    text(item.label.toUpperCase(), {
+      x: textX,
+      y: y + PIN_CHIP.height / 2 + 3.2,
+      size: PIN_CHIP.font,
+      fill: isPrimary ? theme.text : theme.muted,
+      weight: isPrimary ? 700 : 600,
+      face: "mono",
+    }) +
     `</g>`
   );
 }
 
-function buildLane(labels, y, theme) {
-  let x = 0;
+function renderRegisterRow(labels, startX, y, theme, isPrimary) {
+  let x = startX;
   const items = labels.map((l) => ALL_ITEMS.get(l) || { label: l, path: null });
   let markup = "";
 
   for (const it of items) {
-    markup += renderChip(it, x, y, theme);
-    x += chipWidth(it) + CHIP.gap;
+    markup += renderPinChip(it, x, y, theme, isPrimary);
+    x += pinChipWidth(it) + PIN_CHIP.gap;
   }
 
-  return { markup, totalWidth: x };
+  return markup;
 }
 
-export function marqueeStack({ top, x = 34, width = 812, theme, id = "dark" }) {
-  // Lane 1: Core Embedded Systems, Hardware & Systems Programming
-  const lane1Labels = [
+export function marqueeStack({ top, x = 34, width = 812, theme }) {
+  // Bank 0x01: Core Embedded & Hardware Systems
+  const bank1Labels = [
     "c++",
     "c",
     "esp32",
     "arduino",
     "linux",
     "python",
-    "sql",
     "git",
   ];
 
-  // Lane 2: Complementary Software & Machine Learning Toolchain
-  const lane2Labels = [
+  // Bank 0x02: Systems Tooling, Diagnostics & Infrastructure
+  const bank2Labels = [
     "typescript",
     "react",
     "next.js",
-    "node",
     "fastapi",
-    "docker",
     "postgres",
-    "supabase",
-    "gemini api",
+    "docker",
     "pytorch",
-    "github",
   ];
 
-  const lane1Y = top + 52;
-  const lane2Y = lane1Y + CHIP.height + 12;
+  const cardH = 96;
+  const cardY = top + 28;
 
-  const l1 = buildLane(lane1Labels, lane1Y, theme);
-  const l2 = buildLane(lane2Labels, lane2Y, theme);
+  const b1Y = cardY + 16;
+  const b2Y = cardY + 54;
+  const pinStartX = x + 218;
 
-  const maskId = `marquee-mask-${id}`;
-  const clipId = `marquee-clip-${id}`;
+  const bank1Markup = renderRegisterRow(bank1Labels, pinStartX, b1Y, theme, true);
+  const bank2Markup = renderRegisterRow(bank2Labels, pinStartX, b2Y, theme, false);
 
   return {
-    height: 140,
+    height: 136,
     markup:
-      `<defs>` +
-      `<clipPath id="${clipId}">` +
-      `<rect x="${x}" y="${top + 40}" width="${width}" height="84" rx="8" />` +
-      `</clipPath>` +
-      `<linearGradient id="fade-grad-${id}" x1="0%" y1="0%" x2="100%" y2="0%">` +
-      `<stop offset="0%" stop-color="#000" stop-opacity="0" />` +
-      `<stop offset="7%" stop-color="#fff" stop-opacity="1" />` +
-      `<stop offset="93%" stop-color="#fff" stop-opacity="1" />` +
-      `<stop offset="100%" stop-color="#000" stop-opacity="0" />` +
-      `</linearGradient>` +
-      `<mask id="${maskId}">` +
-      `<rect x="${x}" y="${top + 40}" width="${width}" height="84" fill="url(#fade-grad-${id})" />` +
-      `</mask>` +
-      `</defs>` +
-      // Header tag row
-      text("TECHNICAL DOMAINS & TOOLCHAIN", { x, y: top + 26, size: 10, spacing: 1.6, fill: theme.muted, cls: "rise d10", face: "mono", weight: 700 }) +
-      text("EMBEDDED SYSTEMS  ·  FIRMWARE  ·  SYSTEMS INFRASTRUCTURE", {
-        x: x + width,
-        y: top + 26,
-        size: 9.5,
-        fill: theme.accent,
-        anchor: "end",
-        cls: "rise d12",
+      // Section Tag Row
+      text("1.0 REGISTER MAP & PINOUT CONFIGURATION", {
+        x,
+        y: top + 18,
+        size: 11.5,
         weight: 700,
+        fill: theme.text,
+        face: "sans",
+      }) +
+      text("PINOUT & ARCHITECTURES", {
+        x: x + width,
+        y: top + 18,
+        size: 9.5,
+        fill: theme.muted,
+        anchor: "end",
+        weight: 600,
         face: "mono",
       }) +
-      // Background track container
-      rect({ x, y: top + 42, width, height: 80, fill: theme.bg, rx: 8, stroke: theme.border, opacity: 0.8 }) +
-      `<g clip-path="url(#${clipId})" mask="url(#${maskId})">` +
-      // Lane 1: Scrolling left
-      `<g class="marquee-track-l1" style="--w1:${l1.totalWidth}px">` +
-      `<g>${l1.markup}</g>` +
-      `<g transform="translate(${l1.totalWidth} 0)">${l1.markup}</g>` +
-      `</g>` +
-      // Lane 2: Scrolling right
-      `<g class="marquee-track-l2" style="--w2:${l2.totalWidth}px">` +
-      `<g transform="translate(-${l2.totalWidth} 0)">${l2.markup}</g>` +
-      `<g>${l2.markup}</g>` +
-      `</g>` +
-      `</g>`,
+      // Register Matrix Shell
+      rect({ x, y: cardY, width, height: cardH, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
+      // Bank 0x01 Label
+      `<circle cx="${x + 16}" cy="${b1Y + 12}" r="3" fill="${theme.accent}" />` +
+      text("BANK 0x01 [EMBEDDED_CORE]", {
+        x: x + 26,
+        y: b1Y + 15.5,
+        size: 9.5,
+        weight: 700,
+        fill: theme.accent,
+        face: "mono",
+      }) +
+      bank1Markup +
+      // Divider
+      rect({ x: x + 16, y: cardY + 47, width: width - 32, height: 1, fill: theme.border, opacity: 0.5 }) +
+      // Bank 0x02 Label
+      `<circle cx="${x + 16}" cy="${b2Y + 12}" r="3" fill="${theme.muted}" />` +
+      text("BANK 0x02 [SYSTEMS_TOOLING]", {
+        x: x + 26,
+        y: b2Y + 15.5,
+        size: 9.5,
+        weight: 700,
+        fill: theme.muted,
+        face: "mono",
+      }) +
+      bank2Markup,
   };
 }

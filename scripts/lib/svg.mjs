@@ -16,8 +16,8 @@
 import { dotGridBackground } from "./dotgrid.mjs";
 
 const MONO = "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
-const DISPLAY = "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
-const FACES = { mono: MONO, display: DISPLAY };
+const SANS = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
+const FACES = { mono: MONO, display: SANS, sans: SANS };
 
 export const THEMES = {
   dark: {

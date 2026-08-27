@@ -1,22 +1,21 @@
 /**
  * Master Profile Poster for Joel D'Lima.
- * Authentic Embedded Systems & Firmware Engineering Specification Poster:
- * - Specification Header with Crisp Name Decrypt & Visteon Engineering Callout
- * - Dual-Lane Technical Toolchain (Embedded Systems First)
- * - Tactile Experience & Honors Bento Modules (Visteon, SIH 3rd, HackIndia Top 25, 9.7 CGPA)
- * - Honest GitHub Activity & Language Distribution Horizon
- * - Clean Hardware Engineering Sign-Off Bar
+ * Hardware Engineering Specification & Technical Datasheet:
+ * - Technical Drawing Title Block with True Dual-Type Hierarchy
+ * - Absolute Maximum Ratings & Parametrics Table
+ * - Structured Register Map & Pinout Configuration (Static Matrix)
+ * - Operational Record & Verified Engineering Milestones
+ * - Codebase Allocation & 52-Week Commit History
+ * - Document Control Footer
  */
 
 import { bentoGithubSection } from "./bento-stats.mjs";
-import { SPACE_ICONS } from "./icons.mjs";
 import { marqueeStack } from "./marquee.mjs";
 import {
   THEMES,
   document_,
   fontFace,
   frame,
-  icon,
   rect,
   text,
 } from "./svg.mjs";
@@ -24,180 +23,228 @@ import {
 const WIDTH = 880;
 const PAD = 34;
 const RIGHT = WIDTH - PAD;
+const USABLE_W = WIDTH - PAD * 2; // 812px
 
 function divider(y, theme) {
-  return rect({ x: PAD, y, width: WIDTH - PAD * 2, height: 1, fill: theme.border, cls: "fade" });
+  return rect({ x: PAD, y, width: USABLE_W, height: 1, fill: theme.border, opacity: 0.6, cls: "fade" });
 }
 
-function label(content, x, y, theme, delay) {
-  return text(content, { x, y, size: 10, fill: theme.muted, spacing: 1.6, cls: `rise d${delay}`, face: "mono", weight: 700 });
-}
-
-function tagRow(left, right, y, theme, delay, mark = null) {
-  return (
-    (mark ? icon(mark, { x: PAD, y: y - 10, size: 12, fill: theme.accent || theme.muted, cls: `rise d${delay}` }) : "") +
-    label(left, mark ? PAD + 18 : PAD, y, theme, delay) +
-    text(right, { x: RIGHT, y, size: 10, fill: theme.muted, anchor: "end", cls: `rise d${delay + 2}`, face: "mono", weight: 700 })
-  );
-}
-
-/* ------------------------------------------------------------- 1. HEADER */
+/* ------------------------------------------------ 1. DATASHEET TITLE BLOCK */
 
 function identitySection(top, theme) {
-  const boxW = WIDTH - PAD * 2;
-  const boxH = 176;
-  const boxY = top + 18;
+  const boxW = USABLE_W;
+  const boxH = 202;
+  const boxY = top + 16;
+
+  // 4-cell Parametric Ratings Geometry
+  const cellY = boxY + 142;
+  const cellH = 46;
+  const cellW = Math.floor((boxW - 20) / 4);
 
   return (
     `<g class="rise d1">` +
-    // Outer hardware module shell
-    rect({ x: PAD, y: boxY, width: boxW, height: boxH, fill: theme.cardBg, rx: 8, stroke: theme.border }) +
-    // Specification top bar
-    rect({ x: PAD, y: boxY, width: boxW, height: 26, fill: theme.track, rx: 8 }) +
+    // Outer specification drawing frame
+    rect({ x: PAD, y: boxY, width: boxW, height: boxH, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
+    // Technical Document Header Strip
+    rect({ x: PAD, y: boxY, width: boxW, height: 26, fill: theme.track, rx: 6 }) +
     rect({ x: PAD, y: boxY + 16, width: boxW, height: 10, fill: theme.track }) +
     rect({ x: PAD, y: boxY + 26, width: boxW, height: 1, fill: theme.border }) +
-    // Spec status indicators
-    `<circle cx="${PAD + 14}" cy="${boxY + 13}" r="3" fill="${theme.accent}" class="blink" />` +
-    text("SPECIFICATION // EMBEDDED SYSTEMS & HARDWARE IDENTITY", {
-      x: PAD + 24,
+    text("TECHNICAL SPECIFICATION // DOC NO. JDL-2027-SPEC", {
+      x: PAD + 14,
       y: boxY + 16.5,
-      size: 9.5,
+      size: 9,
       fill: theme.muted,
       face: "mono",
-      weight: 700,
+      weight: 600,
     }) +
-    text("LOC: GOA, IN (15.59° N, 73.81° E)  ·  CLASS OF '27", {
+    text("CLASSIFICATION: EMBEDDED SYSTEMS & HARDWARE", {
+      x: PAD + boxW / 2,
+      y: boxY + 16.5,
+      size: 9,
+      fill: theme.muted,
+      anchor: "middle",
+      face: "mono",
+      weight: 600,
+    }) +
+    `<circle cx="${RIGHT - 150}" cy="${boxY + 13}" r="3" fill="${theme.accent}" class="blink" />` +
+    text("STATUS: ACTIVE [PRODUCTION]", {
       x: RIGHT - 14,
       y: boxY + 16.5,
-      size: 9.5,
+      size: 9,
       fill: theme.accent,
       anchor: "end",
       face: "mono",
       weight: 700,
     }) +
-    // Authoritative Name with One-Time Hardware Decrypt Effect
-    `<text x="${PAD + 22}" y="${boxY + 62}" font-family="'JetBrains Mono', monospace" font-size="26" font-weight="800" fill="${theme.text}" class="decrypt">` +
+    // Name in Authoritative Bold Technical Type with Decrypt Entrance
+    `<text x="${PAD + 20}" y="${boxY + 62}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="800" fill="${theme.text}" letter-spacing="-0.4px" class="decrypt">` +
     `JOEL D'LIMA` +
     `</text>` +
-    // Primary Specialization Subtitle
-    `<text x="${PAD + 22}" y="${boxY + 84}" font-family="'JetBrains Mono', monospace" font-size="11.5" font-weight="700" fill="${theme.accent}" class="decrypt-sub">` +
-    `EMBEDDED SYSTEMS &amp; FIRMWARE ENGINEER  ·  B.E. ELECTRONICS &amp; COMPUTER ENGINEERING` +
+    // Primary Specialization Title: Technical Sans
+    `<text x="${PAD + 20}" y="${boxY + 84}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" fill="${theme.accent}" letter-spacing="0.3px">` +
+    `EMBEDDED SYSTEMS &amp; FIRMWARE ENGINEER` +
     `</text>` +
-    // Dedicated Visteon & Core Achievement Module
-    `<g class="rise d5">` +
-    rect({ x: PAD + 20, y: boxY + 100, width: boxW - 40, height: 60, fill: theme.track, rx: 6, stroke: theme.border }) +
-    `<circle cx="${PAD + 36}" cy="${boxY + 120}" r="3.5" fill="${theme.accent}" class="blink" />` +
-    text("SOFTWARE ENGINEERING INTERN @ VISTEON CORPORATION", {
-      x: PAD + 48,
-      y: boxY + 124,
-      size: 11.5,
-      fill: theme.text,
-      weight: 800,
-      face: "mono",
-    }) +
-    text("[ CURRENT ]", {
-      x: RIGHT - 32,
-      y: boxY + 124,
-      size: 10,
-      fill: theme.accent,
-      anchor: "end",
-      weight: 800,
-      face: "mono",
-    }) +
-    text("Automotive electronics, embedded firmware & microcontroller software", {
-      x: PAD + 48,
-      y: boxY + 144,
-      size: 10,
-      fill: theme.muted,
-      weight: 500,
-      face: "mono",
-    }) +
-    text("CGPA: 9.7 / 10.0", {
-      x: RIGHT - 32,
-      y: boxY + 144,
+    // Primary Appointments Prose: High Contrast Sans
+    text("Software Engineering Intern at Visteon Corporation · Automotive Electronics & Microcontroller Firmware", {
+      x: PAD + 20,
+      y: boxY + 104,
       size: 10.5,
-      fill: theme.gold,
-      anchor: "end",
-      weight: 800,
-      face: "mono",
+      weight: 400,
+      fill: theme.muted,
+      face: "sans",
     }) +
+    text("B.E. Electronics & Computer Engineering (2023–2027) · Agnel Institute of Technology & Design, Goa", {
+      x: PAD + 20,
+      y: boxY + 122,
+      size: 10.5,
+      weight: 400,
+      fill: theme.muted,
+      face: "sans",
+    }) +
+    // Absolute Maximum Ratings & Key Parametrics Table
+    `<g class="rise d5">` +
+    rect({ x: PAD + 10, y: cellY, width: boxW - 20, height: cellH, fill: theme.track, rx: 4, stroke: theme.border }) +
+    // Cell 1: CGPA
+    text("CUMULATIVE CGPA", { x: PAD + 20, y: cellY + 14, size: 8, weight: 600, fill: theme.muted, face: "sans" }) +
+    text("9.70 / 10.00", { x: PAD + 20, y: cellY + 31, size: 12, weight: 800, fill: theme.gold, face: "mono" }) +
+    text("Top 1% Academic Rank", { x: PAD + 20, y: cellY + 41, size: 8, weight: 400, fill: theme.muted, face: "sans" }) +
+    rect({ x: PAD + 10 + cellW, y: cellY + 6, width: 1, height: cellH - 12, fill: theme.border, opacity: 0.5 }) +
+    // Cell 2: Role
+    text("ACTIVE APPOINTMENT", { x: PAD + 20 + cellW, y: cellY + 14, size: 8, weight: 600, fill: theme.muted, face: "sans" }) +
+    text("SWE INTERN", { x: PAD + 20 + cellW, y: cellY + 31, size: 12, weight: 800, fill: theme.accent, face: "mono" }) +
+    text("Visteon Corporation", { x: PAD + 20 + cellW, y: cellY + 41, size: 8, weight: 400, fill: theme.muted, face: "sans" }) +
+    rect({ x: PAD + 10 + cellW * 2, y: cellY + 6, width: 1, height: cellH - 12, fill: theme.border, opacity: 0.5 }) +
+    // Cell 3: SIH
+    text("COMPETITIVE FINISH", { x: PAD + 20 + cellW * 2, y: cellY + 14, size: 8, weight: 600, fill: theme.muted, face: "sans" }) +
+    text("3RD PLACE", { x: PAD + 20 + cellW * 2, y: cellY + 31, size: 12, weight: 800, fill: theme.text, face: "mono" }) +
+    text("Smart India Hackathon", { x: PAD + 20 + cellW * 2, y: cellY + 41, size: 8, weight: 400, fill: theme.muted, face: "sans" }) +
+    rect({ x: PAD + 10 + cellW * 3, y: cellY + 6, width: 1, height: cellH - 12, fill: theme.border, opacity: 0.5 }) +
+    // Cell 4: HackIndia
+    text("STATEWIDE HONORS", { x: PAD + 20 + cellW * 3, y: cellY + 14, size: 8, weight: 600, fill: theme.muted, face: "sans" }) +
+    text("TOP 25 FINISH", { x: PAD + 20 + cellW * 3, y: cellY + 31, size: 12, weight: 800, fill: theme.text, face: "mono" }) +
+    text("HackIndia State Finalist", { x: PAD + 20 + cellW * 3, y: cellY + 41, size: 8, weight: 400, fill: theme.muted, face: "sans" }) +
     `</g>` +
     `</g>`
   );
 }
 
-/* --------------------------------------------------------- 2. EXPERIENCE */
+/* ------------------------------------------- 2. OPERATIONAL RECORD & HONORS */
 
 function experienceSection(top, theme) {
-  const colW = Math.floor((WIDTH - PAD * 2 - 16) / 2); // 398px
-  const colH = 196;
+  const colW = Math.floor((USABLE_W - 16) / 2); // 398px
+  const colH = 224;
+  const cardY = top + 32;
 
-  let markup =
-    tagRow("experience & honors", "visteon · sih 3rd · hackindia top 25 · aitd", top + 26, theme, 26, SPACE_ICONS.satellite) +
-    // Left column: career & academics module
+  return (
+    // Section Header Tag
+    text("2.0 OPERATIONAL RECORD & ENGINEERING HONORS", {
+      x: PAD,
+      y: top + 18,
+      size: 11.5,
+      weight: 700,
+      fill: theme.text,
+      face: "sans",
+    }) +
+    text("APPOINTMENTS & VERIFIED MILESTONES", {
+      x: RIGHT,
+      y: top + 18,
+      size: 9.5,
+      fill: theme.muted,
+      anchor: "end",
+      weight: 600,
+      face: "mono",
+    }) +
+    // Left Column: 2.1 Appointments & Education
     `<g class="rise d27">` +
-    rect({ x: PAD, y: top + 42, width: colW, height: colH, fill: theme.cardBg, rx: 8, stroke: theme.border }) +
-    // Visteon block
-    text("VISTEON CORPORATION", { x: PAD + 16, y: top + 64, size: 12.5, weight: 800, fill: theme.text, face: "mono" }) +
-    text("SWE Intern  ·  Current (Panjim, Goa)", { x: PAD + 16, y: top + 79, size: 10.5, weight: 700, fill: theme.accent, face: "mono" }) +
-    text("Automotive electronics & embedded systems", { x: PAD + 16, y: top + 93, size: 9.5, weight: 500, fill: theme.muted, face: "mono" }) +
-    // Separator line
-    rect({ x: PAD + 16, y: top + 104, width: colW - 32, height: 1, fill: theme.border, opacity: 0.6 }) +
-    // Academics block
-    text("AGNEL INSTITUTE OF TECH & DESIGN", { x: PAD + 16, y: top + 124, size: 12.5, weight: 800, fill: theme.text, face: "mono" }) +
-    text("B.E. Electronics & Computer Engineering  ·  '27", { x: PAD + 16, y: top + 139, size: 10.5, weight: 700, fill: theme.accent, face: "mono" }) +
-    text("CGPA: 9.7  ·  Sem I–III: 10.0  ·  Sem IV: 9.81", { x: PAD + 16, y: top + 153, size: 9.5, weight: 800, fill: theme.gold, face: "mono" }) +
-    // Separator line
-    rect({ x: PAD + 16, y: top + 164, width: colW - 32, height: 1, fill: theme.border, opacity: 0.6 }) +
+    rect({ x: PAD, y: cardY, width: colW, height: colH, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
+    text("2.1 PROFESSIONAL & ACADEMIC APPOINTMENTS", {
+      x: PAD + 16,
+      y: cardY + 20,
+      size: 9.5,
+      weight: 700,
+      fill: theme.muted,
+      face: "sans",
+    }) +
+    // Visteon
+    text("VISTEON CORPORATION", { x: PAD + 16, y: cardY + 42, size: 12.5, weight: 700, fill: theme.text, face: "sans" }) +
+    text("Software Engineering Intern  ·  Current (Panjim, Goa)", { x: PAD + 16, y: cardY + 57, size: 9.5, weight: 700, fill: theme.accent, face: "mono" }) +
+    text("Automotive electronics, embedded firmware & microcontroller systems.", { x: PAD + 16, y: cardY + 71, size: 9.5, weight: 400, fill: theme.muted, face: "sans" }) +
+    rect({ x: PAD + 16, y: cardY + 81, width: colW - 32, height: 1, fill: theme.border, opacity: 0.5 }) +
+    // Agnel Institute
+    text("AGNEL INSTITUTE OF TECH & DESIGN", { x: PAD + 16, y: cardY + 102, size: 12.5, weight: 700, fill: theme.text, face: "sans" }) +
+    text("B.E. Electronics & Computer Engineering  ·  Class of 2027", { x: PAD + 16, y: cardY + 117, size: 9.5, weight: 700, fill: theme.accent, face: "mono" }) +
+    text("CGPA: 9.70 / 10.00  ·  Semesters I–III: 10.0  ·  Sem IV: 9.81  ·  Sem V: 9.41", { x: PAD + 16, y: cardY + 131, size: 9, weight: 800, fill: theme.gold, face: "mono" }) +
+    rect({ x: PAD + 16, y: cardY + 141, width: colW - 32, height: 1, fill: theme.border, opacity: 0.5 }) +
     // EpicForce
-    text("EPICFORCE — Software Developer (Feb–Jun '26)", { x: PAD + 16, y: top + 182, size: 9.5, weight: 700, fill: theme.text, face: "mono" }) +
-    text("React systems · Scoped Supabase data architecture", { x: PAD + 16, y: top + 196, size: 9, weight: 500, fill: theme.muted, face: "mono" }) +
+    text("EPICFORCE (INNERVERSE)", { x: PAD + 16, y: cardY + 162, size: 11.5, weight: 700, fill: theme.text, face: "sans" }) +
+    text("Software Developer  ·  Feb 2026 – Jun 2026", { x: PAD + 16, y: cardY + 177, size: 9.5, weight: 600, fill: theme.muted, face: "mono" }) +
+    text("Interactive modules in React; designed database schema in Supabase.", { x: PAD + 16, y: cardY + 191, size: 9, weight: 400, fill: theme.muted, face: "sans" }) +
     `</g>` +
 
-    // Right column: honors & hackathons module
+    // Right Column: 2.2 Competitive Engineering & Honors
     `<g class="rise d29">` +
-    rect({ x: PAD + colW + 16, y: top + 42, width: colW, height: colH, fill: theme.cardBg, rx: 8, stroke: theme.border }) +
-    text("HONORS & COMPETITIVE ENGINEERING", { x: PAD + colW + 32, y: top + 64, size: 11, weight: 800, spacing: 1.2, fill: theme.gold, face: "mono" }) +
-
-    text("[3RD PLACE] Smart India Hackathon (SIH)", { x: PAD + colW + 32, y: top + 88, size: 10.5, weight: 700, fill: theme.text, face: "mono" }) +
-    text("3rd place finish in Software & Hardware tracks", { x: PAD + colW + 32, y: top + 101, size: 9.5, weight: 500, fill: theme.muted, face: "mono" }) +
-
-    text("[TOP 25] HackIndia — State Level Finish", { x: PAD + colW + 32, y: top + 123, size: 10.5, weight: 700, fill: theme.text, face: "mono" }) +
-    text("Selected in top 25 teams across state in 2nd year", { x: PAD + colW + 32, y: top + 136, size: 9.5, weight: 500, fill: theme.muted, face: "mono" }) +
-
-    text("[LEAP AI] Lenovo Dual Track Certification", { x: PAD + colW + 32, y: top + 158, size: 10.5, weight: 700, fill: theme.text, face: "mono" }) +
-    text("Dual 8-week completions: AI & Web Technologies", { x: PAD + colW + 32, y: top + 171, size: 9.5, weight: 500, fill: theme.muted, face: "mono" }) +
-
-    text("[FINALIST] GDG Goa 'Build for All'", { x: PAD + colW + 32, y: top + 193, size: 10, weight: 700, fill: theme.muted, face: "mono" }) +
-    text("Built RideScore driving scorer and AccessMate", { x: PAD + colW + 32, y: top + 206, size: 9, weight: 500, fill: theme.muted, face: "mono" }) +
-    `</g>`;
-
-  return markup;
+    rect({ x: PAD + colW + 16, y: cardY, width: colW, height: colH, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
+    text("2.2 COMPETITIVE ENGINEERING & HONORS", {
+      x: PAD + colW + 32,
+      y: cardY + 20,
+      size: 9.5,
+      weight: 700,
+      fill: theme.muted,
+      face: "sans",
+    }) +
+    // SIH
+    text("Smart India Hackathon (SIH)", { x: PAD + colW + 32, y: cardY + 42, size: 12, weight: 700, fill: theme.text, face: "sans" }) +
+    text("[3RD PLACE FINISH] Software & Hardware Tracks (Internal SIH)", { x: PAD + colW + 32, y: cardY + 56, size: 9, weight: 700, fill: theme.gold, face: "mono" }) +
+    text("Built functional hardware prototype integrating sensor ingest & edge compute.", { x: PAD + colW + 32, y: cardY + 69, size: 8.5, weight: 400, fill: theme.muted, face: "sans" }) +
+    rect({ x: PAD + colW + 32, y: cardY + 77, width: colW - 48, height: 1, fill: theme.border, opacity: 0.5 }) +
+    // HackIndia
+    text("HackIndia Hackathon", { x: PAD + colW + 32, y: cardY + 95, size: 12, weight: 700, fill: theme.text, face: "sans" }) +
+    text("[TOP 25 TEAMS] State-Level Finalist Finish", { x: PAD + colW + 32, y: cardY + 109, size: 9, weight: 700, fill: theme.accent, face: "mono" }) +
+    text("Selected in top 25 teams across state in 2nd year of engineering.", { x: PAD + colW + 32, y: cardY + 122, size: 8.5, weight: 400, fill: theme.muted, face: "sans" }) +
+    rect({ x: PAD + colW + 32, y: cardY + 130, width: colW - 48, height: 1, fill: theme.border, opacity: 0.5 }) +
+    // Lenovo LEAP
+    text("Lenovo LEAP AI Program", { x: PAD + colW + 32, y: cardY + 148, size: 11.5, weight: 700, fill: theme.text, face: "sans" }) +
+    text("[DUAL-TRACK CERTIFIED] AI & Web Technologies", { x: PAD + colW + 32, y: cardY + 162, size: 9, weight: 700, fill: theme.text, face: "mono" }) +
+    text("Completed dual 8-week engineering tracks in AI and modern web systems.", { x: PAD + colW + 32, y: cardY + 175, size: 8.5, weight: 400, fill: theme.muted, face: "sans" }) +
+    rect({ x: PAD + colW + 32, y: cardY + 183, width: colW - 48, height: 1, fill: theme.border, opacity: 0.5 }) +
+    // GDG Goa
+    text("GDG Goa 'Build for All'", { x: PAD + colW + 32, y: cardY + 199, size: 11, weight: 700, fill: theme.text, face: "sans" }) +
+    text("[PROJECT FINALIST] Google Developer Groups Participant", { x: PAD + colW + 32, y: cardY + 212, size: 8.5, weight: 600, fill: theme.muted, face: "mono" }) +
+    `</g>`
+  );
 }
 
-/* ----------------------------------------------------- 3. BOTTOM SIGN-OFF */
+/* ---------------------------------------------------- 3. DOCUMENT CONTROL */
 
-function bottomSection(top, theme) {
-  const footY = top + 16;
-  const footW = WIDTH - PAD * 2;
-  const footH = 34;
+function documentControlSection(top, theme) {
+  const footY = top + 14;
+  const footH = 32;
 
   return (
     `<g class="rise d50">` +
-    rect({ x: PAD, y: footY, width: footW, height: footH, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
-    `<circle cx="${PAD + 14}" cy="${footY + footH / 2}" r="3.5" fill="${theme.accent}" class="blink" />` +
-    text("JOEL D'LIMA  ·  ELECTRONICS & COMPUTER ENGINEERING  ·  GOA, INDIA", {
-      x: PAD + 28,
+    rect({ x: PAD, y: footY, width: USABLE_W, height: footH, fill: theme.cardBg, rx: 4, stroke: theme.border }) +
+    text("DOCUMENT CONTROL: JDL-SPEC-2027-REV2.7", {
+      x: PAD + 14,
       y: footY + footH / 2 + 3.5,
-      size: 9.5,
-      fill: theme.text,
+      size: 9,
+      fill: theme.muted,
       face: "mono",
-      weight: 700,
+      weight: 600,
     }) +
-    text("CLASS OF 2027  ·  READY TO SHIP EMBEDDED SYSTEMS & FIRMWARE", {
+    text("ISSUED: GOA, INDIA  ·  BATCH OF 2027", {
+      x: PAD + USABLE_W / 2,
+      y: footY + footH / 2 + 3.5,
+      size: 9,
+      fill: theme.muted,
+      anchor: "middle",
+      face: "mono",
+      weight: 600,
+    }) +
+    `<circle cx="${RIGHT - 130}" cy="${footY + footH / 2}" r="3" fill="${theme.accent}" class="blink" />` +
+    text("STATUS: VERIFIED & ACTIVE", {
       x: RIGHT - 14,
       y: footY + footH / 2 + 3.5,
-      size: 9.5,
+      size: 9,
       fill: theme.accent,
       anchor: "end",
       face: "mono",
@@ -207,14 +254,14 @@ function bottomSection(top, theme) {
   );
 }
 
-/* ---------------------------------------------------------------- POSTER */
+/* --------------------------------------------------------- MASTER POSTER */
 
 const SECTION = {
-  identity: 206,
-  stack: 140,
-  experience: 256,
-  github: 540,
-  bottom: 64,
+  identity: 232,
+  stack: 144,
+  experience: 278,
+  github: 526,
+  bottom: 58,
 };
 
 export function posterCard({ profile, stats, font }, themeName) {
@@ -233,21 +280,21 @@ export function posterCard({ profile, stats, font }, themeName) {
     .map((top) => divider(top, theme))
     .join("");
 
-  const marquee = marqueeStack({ top: tops.stack, x: PAD, width: WIDTH - PAD * 2, theme, id: themeName });
+  const registerMatrix = marqueeStack({ top: tops.stack, x: PAD, width: USABLE_W, theme, id: themeName });
 
   const body =
-    frame({ width: WIDTH, height, theme, seed: `poster-${themeName}` }) +
+    frame({ width: WIDTH, height, theme, seed: `datasheet-${themeName}` }) +
     boundaries +
     identitySection(tops.identity, theme) +
-    marquee.markup +
+    registerMatrix.markup +
     experienceSection(tops.experience, theme) +
     bentoGithubSection(tops.github, stats, theme, themeName) +
-    bottomSection(tops.bottom, theme);
+    documentControlSection(tops.bottom, theme);
 
   return document_({
     width: WIDTH,
     height,
-    title: `${profile.name} — GitHub Profile`,
+    title: `${profile.name} — Technical Specification Datasheet`,
     body,
     face: fontFace(font),
   });
