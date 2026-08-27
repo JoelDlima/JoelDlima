@@ -1,9 +1,10 @@
 /**
- * Register Map & Pinout Configuration for Joel D'Lima.
- * Authentic Hardware Datasheet Register Specification:
- * - Bank 0x01: Core Embedded Systems, Microcontrollers & Protocols
- * - Bank 0x02: Systems Tooling, Diagnostics & Infrastructure
- * - Crisp static pin chips with official vector marks
+ * Hardware IC Pinout Diagram for Joel D'Lima.
+ * Breaks the stacked-box rhythm with a literal microchip pinout schematic:
+ * - Central 32-bit MCU package with pin 1 index notch and internal architectural specs
+ * - Left Pins (P01–P06): Core Embedded Systems, Microcontrollers, and Bus Protocols
+ * - Right Pins (P07–P12): Systems Tooling, Diagnostics, and Software Infrastructure
+ * - Authentic copper solder leads, circuit traces, and pin numbers
  */
 
 import { STACK_GROUPS } from "./stack.mjs";
@@ -13,109 +14,149 @@ const ALL_ITEMS = new Map(
   STACK_GROUPS.flatMap((g) => g.items).map((item) => [item.label, item]),
 );
 
-const PIN_CHIP = {
-  height: 24,
-  padX: 8,
-  icon: 12,
-  iconGap: 5,
-  font: 9.5,
-  gap: 8,
-};
+export function marqueeStack({ top, x = 34, width = 812, theme }) {
+  const cardH = 196;
+  const cardY = top + 26;
+  const chipW = 180;
+  const chipH = 152;
+  const chipX = x + (width - chipW) / 2; // 34 + (812-180)/2 = 350
+  const chipY = cardY + 22;
 
-function pinChipWidth(item) {
-  const glyph = item.path ? PIN_CHIP.icon + PIN_CHIP.iconGap : 0;
-  return Math.round(PIN_CHIP.padX * 2 + glyph + item.label.length * PIN_CHIP.font * 0.6);
-}
+  // Left Pins: Core Embedded & Hardware
+  const leftPins = [
+    { label: "c++", name: "C / C++", role: "Core Firmware", pin: "P01" },
+    { label: "esp32", name: "ESP32", role: "Wireless SoC", pin: "P02" },
+    { label: "arduino", name: "ARDUINO", role: "Microcontrollers", pin: "P03" },
+    { label: "linux", name: "LINUX / RTOS", role: "Kernel & Tasks", pin: "P04" },
+    { label: "python", name: "CAN / SPI", role: "Bus Protocols", pin: "P05" },
+    { label: "python", name: "PYTHON", role: "Hardware Automation", pin: "P06" },
+  ];
 
-function renderPinChip(item, x, y, theme, isPrimary = false) {
-  const width = pinChipWidth(item);
-  const textX = x + PIN_CHIP.padX + (item.path ? PIN_CHIP.icon + PIN_CHIP.iconGap : 0);
-  const accentColor = isPrimary ? theme.accent : theme.text;
+  // Right Pins: Systems Tooling & Infrastructure
+  const rightPins = [
+    { label: "typescript", name: "TYPESCRIPT", role: "Internal Tooling", pin: "P07" },
+    { label: "react", name: "REACT", role: "Diagnostic UIs", pin: "P08" },
+    { label: "fastapi", name: "FASTAPI", role: "Telemetry APIs", pin: "P09" },
+    { label: "postgres", name: "POSTGRES", role: "System Storage", pin: "P10" },
+    { label: "docker", name: "DOCKER", role: "Containerized Builds", pin: "P11" },
+    { label: "git", name: "GIT", role: "Version Control", pin: "P12" },
+  ];
 
-  return (
-    `<g>` +
-    rect({
-      x,
-      y,
-      width,
-      height: PIN_CHIP.height,
-      fill: theme.track,
-      rx: 4,
-      stroke: isPrimary ? theme.accent : theme.border,
-      opacity: isPrimary ? 1 : 0.85,
-    }) +
-    (item.path
-      ? icon(item.path, {
-          x: x + PIN_CHIP.padX,
-          y: y + (PIN_CHIP.height - PIN_CHIP.icon) / 2,
-          size: PIN_CHIP.icon,
-          fill: accentColor,
-          opacity: 0.95,
-        })
-      : "") +
-    text(item.label.toUpperCase(), {
-      x: textX,
-      y: y + PIN_CHIP.height / 2 + 3.2,
-      size: PIN_CHIP.font,
-      fill: isPrimary ? theme.text : theme.muted,
-      weight: isPrimary ? 700 : 600,
+  // Render Central IC Body
+  const notchR = 7;
+  const chipBody =
+    // IC Shadow / Outline
+    rect({ x: chipX, y: chipY, width: chipW, height: chipH, fill: theme.track, rx: 4, stroke: theme.border }) +
+    // Pin 1 Notch Cutout at Top Edge
+    `<path d="M ${chipX + chipW / 2 - notchR} ${chipY} A ${notchR} ${notchR} 0 0 0 ${chipX + chipW / 2 + notchR} ${chipY}" fill="${theme.cardBg}" stroke="${theme.border}" stroke-width="1" />` +
+    // Pin 1 Index Dot
+    `<circle cx="${chipX + 14}" cy="${chipY + 14}" r="3" fill="${theme.accent}" />` +
+    // Central Architectural Spec Text
+    text("JOEL-D'LIMA", {
+      x: chipX + chipW / 2,
+      y: chipY + 44,
+      size: 11,
+      weight: 800,
+      fill: theme.text,
+      anchor: "middle",
       face: "mono",
     }) +
-    `</g>`
-  );
-}
+    text("EMBEDDED MCU // 32-BIT", {
+      x: chipX + chipW / 2,
+      y: chipY + 60,
+      size: 8,
+      weight: 700,
+      fill: theme.accent,
+      anchor: "middle",
+      face: "mono",
+    }) +
+    text("REV 2.7 · QFP-12 PACKAGE", {
+      x: chipX + chipW / 2,
+      y: chipY + 74,
+      size: 7.5,
+      weight: 500,
+      fill: theme.muted,
+      anchor: "middle",
+      face: "mono",
+    }) +
+    `<line x1="${chipX + 20}" y1="${chipY + 84}" x2="${chipX + chipW - 20}" y2="${chipY + 84}" stroke="${theme.border}" stroke-width="0.75" stroke-dasharray="3 3" />` +
+    text("FLASH: 16MB · SRAM: 512KB", {
+      x: chipX + chipW / 2,
+      y: chipY + 99,
+      size: 7.5,
+      weight: 600,
+      fill: theme.muted,
+      anchor: "middle",
+      face: "mono",
+    }) +
+    text("CAN 2.0B · SPI · I2C · UART", {
+      x: chipX + chipW / 2,
+      y: chipY + 114,
+      size: 7.5,
+      weight: 600,
+      fill: theme.muted,
+      anchor: "middle",
+      face: "mono",
+    }) +
+    text("DUAL Xtensa @ 240MHz", {
+      x: chipX + chipW / 2,
+      y: chipY + 129,
+      size: 7.5,
+      weight: 600,
+      fill: theme.accent,
+      anchor: "middle",
+      face: "mono",
+    });
 
-function renderRegisterRow(labels, startX, y, theme, isPrimary) {
-  let x = startX;
-  const items = labels.map((l) => ALL_ITEMS.get(l) || { label: l, path: null });
-  let markup = "";
+  // Render Left Pin Rows
+  let leftMarkup = "";
+  leftPins.forEach((p, i) => {
+    const pinY = chipY + 22 + i * 22;
+    const item = ALL_ITEMS.get(p.label);
 
-  for (const it of items) {
-    markup += renderPinChip(it, x, y, theme, isPrimary);
-    x += pinChipWidth(it) + PIN_CHIP.gap;
-  }
+    leftMarkup +=
+      // Copper solder lead extending from IC
+      `<rect x="${chipX - 16}" y="${pinY - 3.5}" width="16" height="7" fill="${theme.accent}" rx="1" />` +
+      // PCB Trace extending outward
+      `<line x1="220" y1="${pinY}" x2="${chipX - 16}" y2="${pinY}" stroke="${theme.accent}" stroke-width="1.2" opacity="0.45" />` +
+      `<circle cx="220" cy="${pinY}" r="2" fill="${theme.accent}" />` +
+      // Pin Number
+      text(p.pin, { x: chipX - 22, y: pinY - 5, size: 7.5, fill: theme.accent, weight: 700, anchor: "end", face: "mono" }) +
+      // Primary Tool Name
+      text(p.name, { x: 210, y: pinY + 3.5, size: 9.5, fill: theme.text, weight: 700, anchor: "end", face: "mono" }) +
+      // Functional Domain
+      text(p.role, { x: 125, y: pinY + 3.5, size: 8.5, fill: theme.muted, anchor: "end", face: "sans" }) +
+      // Vector Icon
+      (item && item.path ? icon(item.path, { x: 214, y: pinY - 5.5, size: 11, fill: theme.accent }) : "");
+  });
 
-  return markup;
-}
+  // Render Right Pin Rows
+  let rightMarkup = "";
+  rightPins.forEach((p, i) => {
+    const pinY = chipY + 22 + i * 22;
+    const item = ALL_ITEMS.get(p.label);
 
-export function marqueeStack({ top, x = 34, width = 812, theme }) {
-  // Bank 0x01: Core Embedded & Hardware Systems
-  const bank1Labels = [
-    "c++",
-    "c",
-    "esp32",
-    "arduino",
-    "linux",
-    "python",
-    "git",
-  ];
-
-  // Bank 0x02: Systems Tooling, Diagnostics & Infrastructure
-  const bank2Labels = [
-    "typescript",
-    "react",
-    "next.js",
-    "fastapi",
-    "postgres",
-    "docker",
-    "pytorch",
-  ];
-
-  const cardH = 96;
-  const cardY = top + 28;
-
-  const b1Y = cardY + 16;
-  const b2Y = cardY + 54;
-  const pinStartX = x + 218;
-
-  const bank1Markup = renderRegisterRow(bank1Labels, pinStartX, b1Y, theme, true);
-  const bank2Markup = renderRegisterRow(bank2Labels, pinStartX, b2Y, theme, false);
+    rightMarkup +=
+      // Solder lead extending from IC
+      `<rect x="${chipX + chipW}" y="${pinY - 3.5}" width="16" height="7" fill="${theme.border}" rx="1" />` +
+      // PCB Trace extending outward
+      `<line x1="${chipX + chipW + 16}" y1="${pinY}" x2="630" y2="${pinY}" stroke="${theme.border}" stroke-width="1.2" opacity="0.6" />` +
+      `<circle cx="630" cy="${pinY}" r="2" fill="${theme.border}" />` +
+      // Pin Number
+      text(p.pin, { x: chipX + chipW + 22, y: pinY - 5, size: 7.5, fill: theme.muted, weight: 700, anchor: "start", face: "mono" }) +
+      // Primary Tool Name
+      text(p.name, { x: 642, y: pinY + 3.5, size: 9.5, fill: theme.text, weight: 700, anchor: "start", face: "mono" }) +
+      // Functional Domain
+      text(p.role, { x: 728, y: pinY + 3.5, size: 8.5, fill: theme.muted, anchor: "start", face: "sans" }) +
+      // Vector Icon
+      (item && item.path ? icon(item.path, { x: 624, y: pinY - 5.5, size: 11, fill: theme.muted }) : "");
+  });
 
   return {
-    height: 136,
+    height: cardH + 40,
     markup:
       // Section Tag Row
-      text("1.0 REGISTER MAP & PINOUT CONFIGURATION", {
+      text("1.0 PIN CONFIGURATION & SYSTEM ARCHITECTURE", {
         x,
         y: top + 18,
         size: 11.5,
@@ -123,7 +164,7 @@ export function marqueeStack({ top, x = 34, width = 812, theme }) {
         fill: theme.text,
         face: "sans",
       }) +
-      text("PINOUT & ARCHITECTURES", {
+      text("IC PINOUT & PERIPHERAL SPECIFICATION", {
         x: x + width,
         y: top + 18,
         size: 9.5,
@@ -132,31 +173,10 @@ export function marqueeStack({ top, x = 34, width = 812, theme }) {
         weight: 600,
         face: "mono",
       }) +
-      // Register Matrix Shell
+      // Outer Drawing Shell
       rect({ x, y: cardY, width, height: cardH, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
-      // Bank 0x01 Label
-      `<circle cx="${x + 16}" cy="${b1Y + 12}" r="3" fill="${theme.accent}" />` +
-      text("BANK 0x01 [EMBEDDED_CORE]", {
-        x: x + 26,
-        y: b1Y + 15.5,
-        size: 9.5,
-        weight: 700,
-        fill: theme.accent,
-        face: "mono",
-      }) +
-      bank1Markup +
-      // Divider
-      rect({ x: x + 16, y: cardY + 47, width: width - 32, height: 1, fill: theme.border, opacity: 0.5 }) +
-      // Bank 0x02 Label
-      `<circle cx="${x + 16}" cy="${b2Y + 12}" r="3" fill="${theme.muted}" />` +
-      text("BANK 0x02 [SYSTEMS_TOOLING]", {
-        x: x + 26,
-        y: b2Y + 15.5,
-        size: 9.5,
-        weight: 700,
-        fill: theme.muted,
-        face: "mono",
-      }) +
-      bank2Markup,
+      leftMarkup +
+      rightMarkup +
+      chipBody,
   };
 }

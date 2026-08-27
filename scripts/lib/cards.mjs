@@ -1,17 +1,19 @@
 /**
  * Master Profile Poster for Joel D'Lima.
  * Hardware Engineering Specification & Technical Datasheet:
- * - Technical Drawing Title Block with True Dual-Type Hierarchy
+ * - Technical Drawing Title Block with True Title/Serif Hierarchy
  * - Absolute Maximum Ratings & Parametrics Table
- * - Structured Register Map & Pinout Configuration (Static Matrix)
- * - Operational Record & Verified Engineering Milestones
- * - Codebase Allocation & 52-Week Commit History
+ * - Literal Hardware IC Pinout Diagram (Breaks Stacked-Box Rhythm)
+ * - Non-Redundant Operational Record & Verified Milestones
+ * - Non-Redundant System Architecture Specifications
+ * - Compact Repository Activity Chronology
  * - Document Control Footer
  */
 
 import { bentoGithubSection } from "./bento-stats.mjs";
 import { marqueeStack } from "./marquee.mjs";
 import {
+  FACES,
   THEMES,
   document_,
   fontFace,
@@ -76,12 +78,12 @@ function identitySection(top, theme) {
       face: "mono",
       weight: 700,
     }) +
-    // Name in Authoritative Bold Technical Type with Decrypt Entrance
-    `<text x="${PAD + 20}" y="${boxY + 62}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="800" fill="${theme.text}" letter-spacing="-0.4px" class="decrypt">` +
+    // Name in Authoritative Title/Editorial Type: Instant Contrast Against Monospace Data
+    `<text x="${PAD + 20}" y="${boxY + 62}" font-family="${FACES.title}" font-size="31" font-weight="700" fill="${theme.text}" letter-spacing="0.5px" class="decrypt">` +
     `JOEL D'LIMA` +
     `</text>` +
     // Primary Specialization Title: Technical Sans
-    `<text x="${PAD + 20}" y="${boxY + 84}" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" fill="${theme.accent}" letter-spacing="0.3px">` +
+    `<text x="${PAD + 20}" y="${boxY + 84}" font-family="${FACES.sans}" font-size="12" font-weight="700" fill="${theme.accent}" letter-spacing="0.3px">` +
     `EMBEDDED SYSTEMS &amp; FIRMWARE ENGINEER` +
     `</text>` +
     // Primary Appointments Prose: High Contrast Sans
@@ -101,7 +103,7 @@ function identitySection(top, theme) {
       fill: theme.muted,
       face: "sans",
     }) +
-    // Absolute Maximum Ratings & Key Parametrics Table
+    // Absolute Maximum Ratings & Key Parametrics Table (Primary Focus for Numbers)
     `<g class="rise d5">` +
     rect({ x: PAD + 10, y: cellY, width: boxW - 20, height: cellH, fill: theme.track, rx: 4, stroke: theme.border }) +
     // Cell 1: CGPA
@@ -137,7 +139,7 @@ function experienceSection(top, theme) {
 
   return (
     // Section Header Tag
-    text("2.0 OPERATIONAL RECORD & ENGINEERING HONORS", {
+    text("2.0 VERIFIED APPOINTMENTS & COMPETITION MILESTONES", {
       x: PAD,
       y: top + 18,
       size: 11.5,
@@ -145,7 +147,7 @@ function experienceSection(top, theme) {
       fill: theme.text,
       face: "sans",
     }) +
-    text("APPOINTMENTS & VERIFIED MILESTONES", {
+    text("CHRONOLOGY & VERIFIED MILESTONES", {
       x: RIGHT,
       y: top + 18,
       size: 9.5,
@@ -170,10 +172,10 @@ function experienceSection(top, theme) {
     text("Software Engineering Intern  ·  Current (Panjim, Goa)", { x: PAD + 16, y: cardY + 57, size: 9.5, weight: 700, fill: theme.accent, face: "mono" }) +
     text("Automotive electronics, embedded firmware & microcontroller systems.", { x: PAD + 16, y: cardY + 71, size: 9.5, weight: 400, fill: theme.muted, face: "sans" }) +
     rect({ x: PAD + 16, y: cardY + 81, width: colW - 32, height: 1, fill: theme.border, opacity: 0.5 }) +
-    // Agnel Institute
+    // Agnel Institute (NON-REDUNDANT: Focusing on academic coursework & honors!)
     text("AGNEL INSTITUTE OF TECH & DESIGN", { x: PAD + 16, y: cardY + 102, size: 12.5, weight: 700, fill: theme.text, face: "sans" }) +
     text("B.E. Electronics & Computer Engineering  ·  Class of 2027", { x: PAD + 16, y: cardY + 117, size: 9.5, weight: 700, fill: theme.accent, face: "mono" }) +
-    text("CGPA: 9.70 / 10.00  ·  Semesters I–III: 10.0  ·  Sem IV: 9.81  ·  Sem V: 9.41", { x: PAD + 16, y: cardY + 131, size: 9, weight: 800, fill: theme.gold, face: "mono" }) +
+    text("Major: Embedded Systems & Computing · Five Consecutive Dean's Lists", { x: PAD + 16, y: cardY + 131, size: 8.5, weight: 600, fill: theme.gold, face: "sans" }) +
     rect({ x: PAD + 16, y: cardY + 141, width: colW - 32, height: 1, fill: theme.border, opacity: 0.5 }) +
     // EpicForce
     text("EPICFORCE (INNERVERSE)", { x: PAD + 16, y: cardY + 162, size: 11.5, weight: 700, fill: theme.text, face: "sans" }) +
@@ -258,9 +260,9 @@ function documentControlSection(top, theme) {
 
 const SECTION = {
   identity: 232,
-  stack: 144,
+  stack: 238,
   experience: 278,
-  github: 526,
+  github: 512,
   bottom: 58,
 };
 
@@ -280,13 +282,13 @@ export function posterCard({ profile, stats, font }, themeName) {
     .map((top) => divider(top, theme))
     .join("");
 
-  const registerMatrix = marqueeStack({ top: tops.stack, x: PAD, width: USABLE_W, theme, id: themeName });
+  const pinoutDiagram = marqueeStack({ top: tops.stack, x: PAD, width: USABLE_W, theme, id: themeName });
 
   const body =
     frame({ width: WIDTH, height, theme, seed: `datasheet-${themeName}` }) +
     boundaries +
     identitySection(tops.identity, theme) +
-    registerMatrix.markup +
+    pinoutDiagram.markup +
     experienceSection(tops.experience, theme) +
     bentoGithubSection(tops.github, stats, theme, themeName) +
     documentControlSection(tops.bottom, theme);
