@@ -567,13 +567,24 @@ export function contributionGrid({ days, x, y, cell = 11, gap = 3, theme, gutter
       const row = i % 7;
       const cx = gridX + column * pitch;
       const cy = y + row * pitch;
-      const opacity = round(0.22 + (band / LEVELS) * 0.78);
-      // Each lit cell twinkles like a star: opacity oscillates around its own
-      // level via the --o custom property, phase scattered across the grid.
-      // The attribute opacity is the no-CSS fallback; the animation overrides
-      // it while running.
+      // Render each contribution as a small twinkling star: soft halo, bright
+      // core, white sparkle centre. Intensity scales with the commit band.
+      // Phase is scattered across the grid so cells shimmer out of sync; the
+      // --o custom property keeps brighter bands brighter at their dimmest.
+      const mx = cx + cell / 2;
+      const my = cy + cell / 2;
+      const scale = 0.22 + (band / LEVELS) * 0.78;
+      const haloR = round(2.6 + scale * 1.8);
+      const coreR = round(1.2 + scale * 0.9);
       const phase = (column * 7 + row * 3 + 11) % STAGGER_STEPS;
-      return `<rect x="${cx}" y="${cy}" width="${cell}" height="${cell}" rx="2" fill="${theme.ink}" opacity="${opacity}" style="--o:${opacity}" class="celltw d${phase}" />`;
+      const o = round(0.3 + scale * 0.7);
+      return (
+        `<g class="celltw d${phase}" style="--o:${o}">` +
+        circle({ cx: mx, cy: my, r: haloR, fill: theme.ink, opacity: round(o * 0.3) }) +
+        circle({ cx: mx, cy: my, r: coreR, fill: theme.ink, opacity: o }) +
+        circle({ cx: mx, cy: my, r: round(coreR * 0.45), fill: theme.star, opacity: round(o * 0.95) }) +
+        `</g>`
+      );
     })
     .join("");
 

@@ -146,14 +146,20 @@ function bottomSection(top, links, theme) {
 
   links.forEach((link, i) => {
     const cx = PAD + i * (chipW + 12);
+    // Each chip is wrapped in an <a> so the whole card is clickable when the
+    // SVG is served inline (object/iframe/embed). Note: GitHub renders README
+    // SVGs through its camo proxy inside an <img>, where anchors are inert —
+    // the links activate anywhere the SVG is embedded interactively.
     markup +=
+      `<a href="${link.href}" target="_blank" rel="noopener noreferrer">` +
       `<g class="rise d52">` +
       rect({ x: cx, y: connY, width: chipW, height: chipH, fill: theme.cardBg, rx: 8, stroke: theme.border }) +
       rect({ x: cx + 1, y: connY + 1, width: chipW - 2, height: chipH - 2, fill: theme.ink, rx: 7, opacity: 0.04 }) +
       icon(link.path, { x: cx + 14, y: connY + chipH / 2 - 8, size: 16, fill: theme.accent || theme.text }) +
       text(link.label.toUpperCase(), { x: cx + 38, y: connY + 16, size: 10.5, weight: 800, fill: theme.text, face: "mono" }) +
       text(link.handle, { x: cx + 38, y: connY + 29, size: 9, weight: 600, fill: theme.muted, face: "mono" }) +
-      `</g>`;
+      `</g>` +
+      `</a>`;
   });
 
   // Terminal Console Status Line with Radar telemetry

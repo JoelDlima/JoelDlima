@@ -107,7 +107,7 @@ function spectrumEqualizerCard({ x, y, width, height, stats, theme }) {
       fill: theme.accent,
       face: "mono",
     }) +
-    text("trailing 12 months · commits + prs + reviews", {
+    text("commits + prs + reviews", {
       x: x + 92,
       y: y + 58,
       size: 9.5,
