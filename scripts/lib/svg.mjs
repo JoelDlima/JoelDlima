@@ -20,6 +20,11 @@ const FACES = { mono: MONO, display: DISPLAY };
 export const THEMES = {
   dark: {
     bg: "#040711",
+    bgTop: "#010309",
+    bgBottom: "#142952",
+    nebulaA: "#0d9488",
+    nebulaB: "#2563eb",
+    nebulaC: "#6d28d9",
     border: "#152438",
     text: "#f1f5f9",
     muted: "#7c8ba1",
@@ -35,6 +40,11 @@ export const THEMES = {
   },
   light: {
     bg: "#f8fafc",
+    bgTop: "#f6f9fe",
+    bgBottom: "#d9e6f8",
+    nebulaA: "#99f6e4",
+    nebulaB: "#bfdbfe",
+    nebulaC: "#ddd6fe",
     border: "#cbd5e1",
     text: "#0f172a",
     muted: "#64748b",
@@ -153,8 +163,9 @@ function starLayer({ width, height, count, random, theme, layer }) {
 }
 
 /**
- * React Bits Aurora & Tech Coordinate Grid Background
- * Flowing undulating ambient aurora gradient mesh with precision coordinate crosshair grid.
+ * Deep-space nebula wash — teal patch left of centre, blue haze right, faint
+ * violet low-left, drifting on the aurora float loops. Evokes the pixel-art
+ * void reference: mostly darkness, colour pooling in patches.
  */
 export function reactBitsBackground({ width, height, theme, seed }) {
   const blurId = `aurora-blur-${seed}`;
@@ -166,18 +177,18 @@ export function reactBitsBackground({ width, height, theme, seed }) {
     `<feGaussianBlur stdDeviation="80" result="blur" />` +
     `</filter>` +
     `<pattern id="${gridPatternId}" width="96" height="96" patternUnits="userSpaceOnUse">` +
-    `<path d="M 96 0 L 0 0 0 96" fill="none" stroke="${theme.border}" stroke-width="0.75" opacity="0.35" />` +
-    `<circle cx="0" cy="0" r="1.5" fill="${theme.accent}" opacity="0.4" />` +
-    `<path d="M -4 0 L 4 0 M 0 -4 L 0 4" stroke="${theme.accent}" stroke-width="0.8" opacity="0.35" />` +
+    `<path d="M 96 0 L 0 0 0 96" fill="none" stroke="${theme.border}" stroke-width="0.75" opacity="0.22" />` +
+    `<circle cx="0" cy="0" r="1.2" fill="${theme.accent}" opacity="0.22" />` +
+    `<path d="M -4 0 L 4 0 M 0 -4 L 0 4" stroke="${theme.accent}" stroke-width="0.7" opacity="0.2" />` +
     `</pattern>` +
     `</defs>` +
-    // Tech coordinate grid
+    // Faint telemetry grid
     `<rect x="0" y="0" width="${width}" height="${height}" fill="url(#${gridPatternId})" />` +
-    // React Bits Aurora floating luminous gradient mesh
+    // Nebula patches drifting on the aurora loops
     `<g filter="url(#${blurId})">` +
-    `<ellipse class="aurora-orb-1" cx="240" cy="360" rx="300" ry="220" fill="${theme.accent}" opacity="0.22" />` +
-    `<ellipse class="aurora-orb-2" cx="680" cy="800" rx="320" ry="240" fill="${theme.cyan || theme.accent}" opacity="0.18" />` +
-    `<ellipse class="aurora-orb-3" cx="360" cy="1080" rx="280" ry="200" fill="${theme.gold || theme.accent}" opacity="0.12" />` +
+    `<ellipse class="aurora-orb-1" cx="230" cy="${Math.round(height * 0.52)}" rx="290" ry="200" fill="${theme.nebulaA || theme.accent}" opacity="0.26" />` +
+    `<ellipse class="aurora-orb-2" cx="690" cy="${Math.round(height * 0.38)}" rx="320" ry="230" fill="${theme.nebulaB || theme.accent}" opacity="0.2" />` +
+    `<ellipse class="aurora-orb-3" cx="190" cy="${Math.round(height * 0.88)}" rx="270" ry="190" fill="${theme.nebulaC || theme.accent}" opacity="0.13" />` +
     `</g>`
   );
 }
@@ -340,13 +351,20 @@ export function astronaut({ x, y, width, height, base64 }) {
 
 export function frame({ width, height, theme, seed, stars = 120 }) {
   const clipId = `frame-clip-${seed}`;
+  const gradId = `bg-grad-${seed}`;
   return (
     `<defs>` +
+    // Deep-space vertical wash: near-black up top, rich navy toward the bottom
+    `<linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">` +
+    `<stop offset="0%" stop-color="${theme.bgTop || theme.bg}" />` +
+    `<stop offset="55%" stop-color="${theme.bg}" />` +
+    `<stop offset="100%" stop-color="${theme.bgBottom || theme.bg}" />` +
+    `</linearGradient>` +
     `<clipPath id="${clipId}">` +
     `<rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="12" />` +
     `</clipPath>` +
     `</defs>` +
-    rect({ x: 0.5, y: 0.5, width: width - 1, height: height - 1, fill: theme.bg, rx: 12, stroke: theme.border }) +
+    rect({ x: 0.5, y: 0.5, width: width - 1, height: height - 1, fill: `url(#${gradId})`, rx: 12, stroke: theme.border }) +
     `<g clip-path="url(#${clipId})">` +
     reactBitsBackground({ width, height, theme, seed }) +
     twinkleStarfield({ width, height, count: stars, seed, theme }) +

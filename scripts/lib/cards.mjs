@@ -9,7 +9,7 @@
  */
 
 import { bentoGithubSection } from "./bento-stats.mjs";
-import { galaxyCore } from "./galaxy.mjs";
+import { VOID_GIF_BASE64 } from "./void-asset.mjs";
 import { CONTACTS, SPACE_ICONS } from "./icons.mjs";
 import { marqueeStack } from "./marquee.mjs";
 import {
@@ -114,8 +114,23 @@ function identitySection(top, theme, themeName) {
     `</text>` +
     `</g>` +
     `</g>` +
-    // Spinning Galaxy Vortex Core (Astronomical live element)
-    galaxyCore({ cx: 726, cy: termY + 116, theme, id: themeName })
+    // Black-hole void GIF (data URI — survives GitHub sanitisation)
+    voidEmbed({ cx: 726, cy: termY + 116, width: 130 })
+  );
+}
+
+/**
+ * The black-hole void animation, inlined as a base64 GIF data URI (same
+ * pattern as the astronaut/moon sheets). A looping ambient drift keeps it
+ * alive without a second motion system.
+ */
+function voidEmbed({ cx, cy, width }) {
+  const height = Math.round((width * 203) / 360);
+  return (
+    `<g class="float">` +
+    `<image x="${cx - width / 2}" y="${cy - height / 2}" width="${width}" height="${height}" ` +
+    `href="data:image/gif;base64,${VOID_GIF_BASE64}" />` +
+    `</g>`
   );
 }
 
