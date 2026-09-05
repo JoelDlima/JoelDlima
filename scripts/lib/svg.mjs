@@ -569,8 +569,11 @@ export function contributionGrid({ days, x, y, cell = 11, gap = 3, theme, gutter
       const cy = y + row * pitch;
       // Render each contribution as a small twinkling star: soft halo, bright
       // core, white sparkle centre. Intensity scales with the commit band.
-      // Phase is scattered across the grid so cells shimmer out of sync; the
-      // --o custom property keeps brighter bands brighter at their dimmest.
+      // Online best-practice for GitHub <img> SVGs: pure CSS @keyframes on
+      // opacity (no JS, no SMIL), desynced with NEGATIVE animation-delays so
+      // stars start mid-cycle instead of waiting invisible. fill-opacity is
+      // the no-CSS fallback; the animation modulates opacity on top of it.
+      // --o keeps brighter bands brighter at their dimmest.
       const mx = cx + cell / 2;
       const my = cy + cell / 2;
       const scale = 0.22 + (band / LEVELS) * 0.78;
@@ -578,8 +581,11 @@ export function contributionGrid({ days, x, y, cell = 11, gap = 3, theme, gutter
       const coreR = round(1.2 + scale * 0.9);
       const phase = (column * 7 + row * 3 + 11) % STAGGER_STEPS;
       const o = round(0.3 + scale * 0.7);
+      // Negative delay spread across the 6.5s loop: stars twinkle out of sync
+      // immediately on load, no waiting period.
+      const negDelay = round(-((phase * 0.09) % 6.5));
       return (
-        `<g class="celltw d${phase}" style="--o:${o}">` +
+        `<g class="celltw" style="--o:${o};animation-delay:${negDelay}s">` +
         circle({ cx: mx, cy: my, r: haloR, fill: theme.ink, opacity: round(o * 0.3) }) +
         circle({ cx: mx, cy: my, r: coreR, fill: theme.ink, opacity: o }) +
         circle({ cx: mx, cy: my, r: round(coreR * 0.45), fill: theme.star, opacity: round(o * 0.95) }) +
@@ -590,7 +596,12 @@ export function contributionGrid({ days, x, y, cell = 11, gap = 3, theme, gutter
 
   const plotW = columns * pitch - gap;
   const plotH = 7 * pitch - gap;
-  const revealGroup = `<g clip-path="url(#scan-reveal-${id})">${litCells}</g>`;
+  // NOTE: lit cells are deliberately NOT clipped by scan-reveal. The reveal
+  // clip defaults to width=0, so if CSS is stripped (or the animation is at
+  // 0%/100% of its loop) every star would vanish — violating the repo rule
+  // that stripping <style> leaves a correct static card. The oscilloscope
+  // sweep remains as a pure visual overlay in scanner.mjs.
+  const revealGroup = litCells;
 
   return {
     width: gutter + plotW,
