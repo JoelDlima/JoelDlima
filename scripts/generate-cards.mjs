@@ -18,10 +18,10 @@ const THEMES = ["dark", "light"];
 
 const PROFILE = {
   name: "joel d'lima",
-  role: "embedded systems & firmware engineer  ·  electronics & computer engineering",
-  study: "b.e. electronics & computer engineering  ·  agnel institute of technology & design, goa",
+  role: "electronics & computer engineering  ·  embedded & software",
+  study: "b.e. electronics & computer engineering  ·  agnel institute, goa",
   highlight: "swe intern @ visteon (current)  ·  cgpa 9.7  ·  class of 2027",
-  location: "goa, india",
+  location: "mapusa, goa, india",
 };
 
 const FONT_FILE = "jetbrains-mono-bold.woff2";
@@ -119,7 +119,7 @@ async function main() {
   const font = (await readFile(join(ASSETS, FONT_FILE))).toString("base64");
 
   for (const theme of THEMES) {
-    const data = { profile: PROFILE, stats, font };
+    const data = { profile: PROFILE, links: CONTACTS, stats, font, views: 1842 };
     const svg = posterCard(data, theme);
     await writeFile(join(ASSETS, `profile-${theme}.svg`), svg, "utf8");
     console.log(`Generated assets/profile-${theme}.svg (${svg.length} bytes)`);

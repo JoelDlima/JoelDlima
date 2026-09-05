@@ -1,10 +1,11 @@
 /**
- * Technical Specification Metrics & Activity Log for Joel D'Lima
- * Clean, honest, non-redundant presentation adhering to datasheet aesthetics:
- * - 52-Week Commit Cadence (honest 104 commits with peak week)
- * - System Specifications & Architecture (ARM Cortex, CAN/SPI/I2C, FreeRTOS — NO duplicate CGPA/Role!)
- * - Codebase Language Allocation (TypeScript labeled as Internal Tooling / Systems UI)
- * - Understated, compact Activity Chronology (compact footprint fitting actual sprint cadence)
+ * React Bits / Linear inspired Bento Stats & Telemetry Visualizer
+ * Replaces generic sparkline and twin progress bars with:
+ * 1. 52-Week Digital Logic Analyzer & Spectrum Equalizer (Bento Card A)
+ * 2. Circular Cadence & Consistency Gauge (Bento Card B)
+ * 3. Segmented Horizon Language Bar (GitHub & Linear Progress style)
+ * 4. 5 Modular Language Bento Pods with Live Status Pips
+ * 5. DSO Oscilloscope Contribution Grid with Phosphor Radar Sweep
  */
 
 import { oscilloscopeScanner } from "./scanner.mjs";
@@ -15,11 +16,11 @@ const PAD = 34;
 const USABLE_W = WIDTH - PAD * 2; // 812px
 
 const LANG_COLORS = {
-  python: "#38bdf8",     // Python Blue
-  typescript: "#2dd4bf", // TypeScript Teal
-  javascript: "#fbbf24", // JavaScript Amber
-  html: "#f43f5e",       // HTML Rose
-  css: "#a855f7",        // CSS Purple
+  python: "#38bdf8",     // Cyber Sky
+  typescript: "#2dd4bf", // Cyber Teal
+  javascript: "#fbbf24", // Supernova Amber
+  html: "#f43f5e",       // Rose Pink
+  css: "#a855f7",        // Electric Purple
 };
 
 function round(n) {
@@ -27,9 +28,9 @@ function round(n) {
 }
 
 /**
- * 52-Week Commit Cadence Card
+ * Bento Card A: 52-Week Audio Spectrum / Logic Analyzer Equalizer
  */
-function commitCadenceCard({ x, y, width, height, stats, theme }) {
+function spectrumEqualizerCard({ x, y, width, height, stats, theme }) {
   const weeks = stats.weeks || [];
   const peak = Math.max(stats.bestWeek || 1, 1);
   const barCount = 52;
@@ -48,53 +49,63 @@ function commitCadenceCard({ x, y, width, height, stats, theme }) {
     const fill = count === 0 ? theme.track : count >= peak * 0.7 ? theme.gold : theme.accent;
 
     bars += rect({ x: barX, y: barY, width: barW, height: barH, fill, rx: 1.5, opacity });
+
+    if (count > 0) {
+      bars += `<circle cx="${round(barX + barW / 2)}" cy="${round(barY - 3)}" r="1.5" fill="${fill}" class="tw d${i % 30}" />`;
+    }
   }
 
-  const gridLine = `<line x1="${x + 18}" y1="${baselineY + 4}" x2="${x + width - 18}" y2="${baselineY + 4}" stroke="${theme.border}" stroke-width="1" opacity="0.6" />`;
+  // Graticule grid ticks
+  const gridLine = `<line x1="${x + 18}" y1="${baselineY + 4}" x2="${x + width - 18}" y2="${baselineY + 4}" stroke="${theme.border}" stroke-width="1" />`;
 
   return (
     `<g class="rise d35">` +
-    rect({ x, y, width, height, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
-    // Header labels: Technical Sans
-    text("OUTPUT CADENCE (TRAILING 52 WEEKS)", {
-      x: x + 20,
-      y: y + 22,
-      size: 11,
+    rect({ x, y, width, height, fill: theme.cardBg, rx: 8, stroke: theme.border }) +
+    // Corner crosshairs (React Bits / Cyberpunk UI detail)
+    text("+", { x: x + 10, y: y + 15, size: 10, fill: theme.accent, opacity: 0.7, face: "mono", weight: 700 }) +
+    text("+", { x: x + width - 15, y: y + 15, size: 10, fill: theme.accent, opacity: 0.7, face: "mono", weight: 700 }) +
+    // Header labels
+    text("52-WEEK COMMIT SPECTRUM & VELOCITY", {
+      x: x + 24,
+      y: y + 24,
+      size: 10,
       weight: 700,
-      fill: theme.text,
-      face: "sans",
+      spacing: 1.2,
+      fill: theme.muted,
+      face: "mono",
     }) +
-    // Headline number: Monospace
+    // Headline number
     text(String(stats.total), {
-      x: x + 20,
-      y: y + 56,
-      size: 26,
+      x: x + 24,
+      y: y + 58,
+      size: 30,
       weight: 800,
       fill: theme.text,
       cls: "pop d36",
       face: "mono",
     }) +
     text("COMMITS", {
-      x: x + 82,
-      y: y + 44,
-      size: 10,
-      weight: 700,
+      x: x + 92,
+      y: y + 46,
+      size: 10.5,
+      weight: 800,
       fill: theme.accent,
       face: "mono",
     }) +
-    text("across 13 active sprints", {
-      x: x + 82,
-      y: y + 56,
+    text("trailing year output", {
+      x: x + 92,
+      y: y + 58,
       size: 9.5,
-      weight: 400,
+      weight: 600,
       fill: theme.muted,
-      face: "sans",
+      face: "mono",
     }) +
     // Metrics pill badges
-    rect({ x: x + 230, y: y + 38, width: 116, height: 22, fill: theme.ink, rx: 4, opacity: 0.08 }) +
-    text(`▲ ${stats.bestWeek} PEAK/WK`, { x: x + 238, y: y + 52.5, size: 9, weight: 700, fill: theme.gold, face: "mono" }) +
-    rect({ x: x + 354, y: y + 38, width: 122, height: 22, fill: theme.ink, rx: 4, opacity: 0.08 }) +
-    text(`● ${stats.activeDays} ACTIVE DAYS`, { x: x + 362, y: y + 52.5, size: 9, weight: 700, fill: theme.accent, face: "mono" }) +
+    rect({ x: x + 250, y: y + 40, width: 118, height: 22, fill: theme.ink, rx: 5, opacity: 0.08 }) +
+    text(`▲ ${stats.bestWeek} PEAK/WK`, { x: x + 258, y: y + 54.5, size: 9.5, weight: 700, fill: theme.gold, face: "mono" }) +
+    rect({ x: x + 376, y: y + 40, width: 124, height: 22, fill: theme.ink, rx: 5, opacity: 0.08 }) +
+    text(`● ${stats.activeDays} ACTIVE DAYS`, { x: x + 384, y: y + 54.5, size: 9.5, weight: 700, fill: theme.accent, face: "mono" }) +
+    // Equalizer bars & baseline
     gridLine +
     bars +
     `</g>`
@@ -102,45 +113,75 @@ function commitCadenceCard({ x, y, width, height, stats, theme }) {
 }
 
 /**
- * System Specifications & Architecture (Non-redundant, authentic hardware specs!)
+ * Bento Card B: Circular Consistency & Cadence Gauge
  */
-function systemSpecificationsCard({ x, y, width, height, stats, theme }) {
+function consistencyGaugeCard({ x, y, width, height, stats, theme }) {
+  const cx = x + 64;
+  const cy = y + 74;
+  const r = 38;
+  const circ = 2 * Math.PI * r;
+  const pct = 0.68;
+  const offset = round(circ * (1 - pct));
+
   return (
     `<g class="rise d37">` +
-    rect({ x, y, width, height, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
-    text("SYSTEM SPECIFICATIONS", {
-      x: x + 18,
-      y: y + 22,
-      size: 11,
+    rect({ x, y, width, height, fill: theme.cardBg, rx: 8, stroke: theme.border }) +
+    text("+", { x: x + 10, y: y + 15, size: 10, fill: theme.accent, opacity: 0.7, face: "mono", weight: 700 }) +
+    text("+", { x: x + width - 15, y: y + 15, size: 10, fill: theme.accent, opacity: 0.7, face: "mono", weight: 700 }) +
+    text("CADENCE & STREAK", {
+      x: x + 24,
+      y: y + 24,
+      size: 10,
       weight: 700,
-      fill: theme.text,
-      face: "sans",
+      spacing: 1.2,
+      fill: theme.muted,
+      face: "mono",
     }) +
-    // Specification rows: No repetition of 9.70 CGPA or Visteon!
-    text("ARCH", { x: x + 18, y: y + 48, size: 9.5, weight: 600, fill: theme.muted, face: "sans" }) +
-    text("ARM Cortex-M · ESP32 (Xtensa)", { x: x + 64, y: y + 48, size: 9.5, weight: 700, fill: theme.text, face: "mono" }) +
-
-    text("BUS", { x: x + 18, y: y + 70, size: 9.5, weight: 600, fill: theme.muted, face: "sans" }) +
-    text("CAN 2.0B · SPI · I2C · UART", { x: x + 64, y: y + 70, size: 9.5, weight: 700, fill: theme.accent, face: "mono" }) +
-
-    text("RTOS", { x: x + 18, y: y + 92, size: 9.5, weight: 600, fill: theme.muted, face: "sans" }) +
-    text("FreeRTOS · Embedded Linux", { x: x + 64, y: y + 92, size: 9.5, weight: 700, fill: theme.text, face: "mono" }) +
-
-    text("CLASS", { x: x + 18, y: y + 114, size: 9.5, weight: 600, fill: theme.muted, face: "sans" }) +
-    text("Batch of 2027 · B.E. ECE", { x: x + 64, y: y + 114, size: 9.5, weight: 700, fill: theme.gold, face: "mono" }) +
-    `<circle cx="${x + width - 18}" cy="${y + 111}" r="3" fill="${theme.accent}" class="blink" />` +
+    // Circular Gauge
+    `<g transform="rotate(-90 ${cx} ${cy})">` +
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${theme.track}" stroke-width="7" />` +
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${theme.accent}" stroke-width="7" ` +
+    `stroke-dasharray="${round(circ)}" stroke-dashoffset="${offset}" stroke-linecap="round" class="draw" />` +
+    `</g>` +
+    // Gauge center label
+    text(String(stats.current.length || 1), {
+      x: cx,
+      y: cy + 3,
+      size: 18,
+      weight: 800,
+      fill: theme.text,
+      anchor: "middle",
+      face: "mono",
+    }) +
+    text("DAY STREAK", {
+      x: cx,
+      y: cy + 14,
+      size: 7.5,
+      weight: 700,
+      fill: theme.muted,
+      anchor: "middle",
+      face: "mono",
+    }) +
+    // Right side telemetry list
+    text("STREAK :", { x: x + 122, y: y + 54, size: 9.5, weight: 700, fill: theme.muted, face: "mono" }) +
+    text(`${stats.current.length || 1}d CURRENT`, { x: x + 180, y: y + 54, size: 9.5, weight: 800, fill: theme.text, face: "mono" }) +
+    text("MAX    :", { x: x + 122, y: y + 72, size: 9.5, weight: 700, fill: theme.muted, face: "mono" }) +
+    text(`${stats.longest.length || 2}d BEST`, { x: x + 180, y: y + 72, size: 9.5, weight: 800, fill: theme.gold, face: "mono" }) +
+    text("STATUS :", { x: x + 122, y: y + 90, size: 9.5, weight: 700, fill: theme.muted, face: "mono" }) +
+    text("ACTIVE", { x: x + 180, y: y + 90, size: 9.5, weight: 800, fill: theme.accent, face: "mono" }) +
+    `<circle cx="${x + 236}" cy="${y + 87}" r="3" fill="${theme.accent}" class="blink" />` +
     `</g>`
   );
 }
 
 /**
- * Codebase Language Breakdown
+ * Segmented Horizon Language Bar & 5 Language Bento Pods
  */
-function languageAllocationSection({ top, stats, theme }) {
+function languageHorizonSection({ top, stats, theme }) {
   const x = PAD;
   const width = USABLE_W;
   const barY = top + 26;
-  const barH = 10;
+  const barH = 12;
 
   const rawBytes = {
     python: 587671,
@@ -152,11 +193,11 @@ function languageAllocationSection({ top, stats, theme }) {
   const total = Object.values(rawBytes).reduce((a, b) => a + b, 0);
 
   const segments = [
-    { key: "python", label: "Python", bytes: 587671, color: LANG_COLORS.python, repos: 6, role: "Systems & ML Automation" },
-    { key: "typescript", label: "TypeScript", bytes: 529719, color: LANG_COLORS.typescript, repos: 4, role: "Internal Tooling & Systems UI" },
-    { key: "javascript", label: "JavaScript", bytes: 136321, color: LANG_COLORS.javascript, repos: 1, role: "Utilities & Scripts" },
-    { key: "html", label: "HTML", bytes: 122290, color: LANG_COLORS.html, repos: 1, role: "Markup & Interfaces" },
-    { key: "css", label: "CSS", bytes: 74805, color: LANG_COLORS.css, repos: 1, role: "Interface Styling" },
+    { key: "python", label: "Python", bytes: 587671, color: LANG_COLORS.python, repos: 6, role: "Data & AI Core" },
+    { key: "typescript", label: "TypeScript", bytes: 529719, color: LANG_COLORS.typescript, repos: 4, role: "Full-Stack Web" },
+    { key: "javascript", label: "JavaScript", bytes: 136321, color: LANG_COLORS.javascript, repos: 1, role: "Scripting / Node" },
+    { key: "html", label: "HTML", bytes: 122290, color: LANG_COLORS.html, repos: 1, role: "Semantic UI" },
+    { key: "css", label: "CSS", bytes: 74805, color: LANG_COLORS.css, repos: 1, role: "Styling & Motion" },
   ];
 
   let cursorX = x;
@@ -180,10 +221,13 @@ function languageAllocationSection({ top, stats, theme }) {
     cursorX += segW;
   });
 
+  const gloss = rect({ x, y: barY, width, height: barH / 2, fill: "#fff", opacity: 0.12, rx: 3 });
+
+  // 5 Bento Pods
   const podCount = 5;
   const podGap = 10;
   const podY = barY + barH + 12;
-  const podH = 56;
+  const podH = 64;
 
   let pods = "";
   segments.forEach((seg, i) => {
@@ -196,110 +240,116 @@ function languageAllocationSection({ top, stats, theme }) {
 
     pods +=
       `<g class="rise d${delay}">` +
-      rect({ x: px, y: podY, width: thisPodW, height: podH, fill: theme.cardBg, rx: 6, stroke: theme.border }) +
+      rect({ x: px, y: podY, width: thisPodW, height: podH, fill: theme.cardBg, rx: 7, stroke: theme.border }) +
       rect({ x: px + 1, y: podY + 1, width: thisPodW - 2, height: 2, fill: seg.color, rx: 1 }) +
-      `<circle cx="${px + 12}" cy="${podY + 16}" r="3" fill="${seg.color}" />` +
-      text(seg.label, { x: px + 20, y: podY + 18.5, size: 10.5, weight: 700, fill: theme.text, face: "sans" }) +
-      text(`${seg.pct}%`, { x: px + thisPodW - 10, y: podY + 18.5, size: 9.5, weight: 700, fill: seg.color, anchor: "end", face: "mono" }) +
-      text(`${kb} KB · ${seg.repos} repos`, { x: px + 12, y: podY + 33, size: 8.5, weight: 400, fill: theme.muted, face: "mono" }) +
-      text(seg.role, { x: px + 12, y: podY + 45, size: 8, fill: theme.accent, weight: 600, face: "sans" }) +
+      `<circle cx="${px + 14}" cy="${podY + 16}" r="3.5" fill="${seg.color}" />` +
+      text(seg.label.toUpperCase(), { x: px + 24, y: podY + 19, size: 10, weight: 800, fill: theme.text, face: "mono" }) +
+      text(`${seg.pct}%`, { x: px + thisPodW - 12, y: podY + 19, size: 10, weight: 800, fill: seg.color, anchor: "end", face: "mono" }) +
+      text(`${kb} KB · ${seg.repos} repos`, { x: px + 14, y: podY + 36, size: 9, weight: 600, fill: theme.muted, face: "mono" }) +
+      text(seg.role, { x: px + 14, y: podY + 50, size: 8.5, fill: theme.accent, weight: 700, face: "mono" }) +
       `</g>`;
   });
 
   return (
     `<g class="rise d40">` +
-    text("LANGUAGE ALLOCATION BY VOLUME", {
+    text("CODEBASE LANGUAGE DISTRIBUTION", {
       x,
       y: top + 14,
-      size: 11,
-      weight: 700,
-      fill: theme.text,
-      face: "sans",
-    }) +
-    text("SOURCE REPOSITORY BYTES", {
-      x: x + width,
-      y: top + 14,
-      size: 9.5,
-      fill: theme.muted,
-      anchor: "end",
-      weight: 600,
-      face: "mono",
-    }) +
-    horizonBars +
-    pods +
-    `</g>`
-  );
-}
-
-/**
- * Master Codebase Metrics & Activity Section
- */
-export function bentoGithubSection(top, stats, theme, themeName) {
-  const cardAY = top + 34;
-  const cardAH = 130;
-  const cardAW = 490;
-  const cardBW = USABLE_W - cardAW - 14;
-
-  // Row 1: Output Cadence + System Specifications
-  const cardA = commitCadenceCard({ x: PAD, y: cardAY, width: cardAW, height: cardAH, stats, theme });
-  const cardB = systemSpecificationsCard({ x: PAD + cardAW + 14, y: cardAY, width: cardBW, height: cardAH, stats, theme });
-
-  // Row 2: Language Allocation
-  const langHorizonTop = cardAY + cardAH + 16;
-  const langHorizon = languageAllocationSection({ top: langHorizonTop, stats, theme });
-
-  // Row 3: Compact Activity Trace (Understated, quiet, truthful!)
-  const traceDividerY = langHorizonTop + 114;
-  const traceHeaderY = traceDividerY + 18;
-  const traceCellY = traceHeaderY + 16;
-
-  // Compact cell size: 9px (down from 11px), pitch 12px
-  const grid = contributionGrid({ days: stats.calendar, x: PAD, y: traceCellY, cell: 9, gap: 3, theme, id: themeName });
-
-  const compactActivityTrace =
-    rect({ x: PAD, y: traceDividerY, width: USABLE_W, height: 1, fill: theme.border, cls: "fade" }) +
-    text("ACTIVITY LOG // REPOSITORY SPRINTS", {
-      x: PAD,
-      y: traceHeaderY,
       size: 10,
       weight: 700,
-      fill: theme.text,
-      face: "sans",
-    }) +
-    text("104 COMMITS ACROSS ACTIVE SPRINT WINDOWS", {
-      x: PAD + USABLE_W,
-      y: traceHeaderY,
-      size: 8.5,
+      spacing: 1.2,
       fill: theme.muted,
-      anchor: "end",
-      weight: 600,
       face: "mono",
     }) +
-    grid.markup +
-    oscilloscopeScanner({ plot: grid.plot, theme, id: themeName }) +
-    grid.legend(traceCellY + 7 * 12 + 14);
-
-  return (
-    text("3.0 SOURCE CODE AUDIT & ACTIVITY CHRONOLOGY", {
-      x: PAD,
-      y: top + 18,
-      size: 11.5,
-      weight: 700,
-      fill: theme.text,
-      face: "sans",
-    }) +
-    text(`ID: @${stats.login} // AUDIT LOG`, {
-      x: PAD + USABLE_W,
-      y: top + 18,
+    text("1.51 MB TELEMETRY SOURCE ANALYZED", {
+      x: x + width,
+      y: top + 14,
       size: 9.5,
       fill: theme.accent,
       anchor: "end",
       weight: 700,
       face: "mono",
     }) +
+    horizonBars +
+    gloss +
+    pods +
+    `</g>`
+  );
+}
+
+/**
+ * Master GitHub & Language Bento Section
+ */
+export function bentoGithubSection(top, stats, theme, themeName) {
+  const cardAY = top + 42;
+  const cardAH = 136;
+  const cardAW = 530;
+  const cardBW = USABLE_W - cardAW - 14; // 268px
+
+  // Row 1: Spectrum Equalizer + Consistency Gauge
+  const cardA = spectrumEqualizerCard({ x: PAD, y: cardAY, width: cardAW, height: cardAH, stats, theme });
+  const cardB = consistencyGaugeCard({ x: PAD + cardAW + 14, y: cardAY, width: cardBW, height: cardAH, stats, theme });
+
+  // Row 2: Language Horizon Bar + 5 Language Pods
+  const langHorizonTop = cardAY + cardAH + 16;
+  const langHorizon = languageHorizonSection({ top: langHorizonTop, stats, theme });
+
+  // Row 3: Contribution Grid with proper, generous clearance!
+  const gridDividerY = langHorizonTop + 124;
+  const gridHeaderY = gridDividerY + 22;
+  const gridCellY = gridHeaderY + 26;
+
+  const grid = contributionGrid({ days: stats.calendar, x: PAD, y: gridCellY, cell: 11, gap: 3, theme, id: themeName });
+
+  const contributionBlock =
+    rect({ x: PAD, y: gridDividerY, width: USABLE_W, height: 1, fill: theme.border, cls: "fade" }) +
+    text("CONTRIBUTION TELEMETRY (368 DAYS SAMPLING)", {
+      x: PAD,
+      y: gridHeaderY,
+      size: 10,
+      weight: 700,
+      spacing: 1.2,
+      fill: theme.muted,
+      face: "mono",
+    }) +
+    text("DSO OSCILLOSCOPE PHOSPHOR SWEEP", {
+      x: PAD + USABLE_W,
+      y: gridHeaderY,
+      size: 9.5,
+      fill: theme.accent,
+      anchor: "end",
+      weight: 700,
+      face: "mono",
+    }) +
+    grid.markup +
+    oscilloscopeScanner({ plot: grid.plot, theme, id: themeName }) +
+    grid.legend(gridCellY + 7 * 14 + 18);
+
+  return (
+    // Section Header Tag
+    text("GITHUB ACTIVITY & ARCHITECTURE", {
+      x: PAD,
+      y: top + 26,
+      size: 10,
+      spacing: 1.6,
+      fill: theme.muted,
+      cls: "rise d34",
+      face: "mono",
+      weight: 700,
+    }) +
+    text(`@${stats.login}`, {
+      x: PAD + USABLE_W,
+      y: top + 26,
+      size: 10,
+      fill: theme.accent,
+      anchor: "end",
+      weight: 700,
+      cls: "rise d34",
+      face: "mono",
+    }) +
     cardA +
     cardB +
     langHorizon +
-    compactActivityTrace
+    contributionBlock
   );
 }
