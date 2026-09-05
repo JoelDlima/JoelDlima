@@ -19,44 +19,48 @@ const FACES = { mono: MONO, display: DISPLAY };
 
 export const THEMES = {
   dark: {
-    bg: "#040711",
-    bgTop: "#010309",
-    bgBottom: "#142952",
-    nebulaA: "#0d9488",
-    nebulaB: "#2563eb",
-    nebulaC: "#6d28d9",
-    border: "#152438",
-    text: "#f1f5f9",
-    muted: "#7c8ba1",
-    track: "#0c1524",
-    ink: "#2dd4bf",
-    accent: "#2dd4bf",
+    // BLACKHOLE REVAMP v2 PREVIEW (uncommitted): balanced, not full-pink.
+    // GIF core is white-blue, ring is periwinkle + pink + purple on near-black.
+    // So: near-black blue bg, ice-blue accents for text/title, pink kept for
+    // data stars only. Nebula carries all three hues at low opacity.
+    bg: "#04060d",
+    bgTop: "#02040a",
+    bgBottom: "#0b1230",
+    nebulaA: "#bfdbfe",
+    nebulaB: "#818cf8",
+    nebulaC: "#e879f9",
+    border: "#1e2a4a",
+    text: "#eef2ff",
+    muted: "#8e9bb8",
+    track: "#101a33",
+    ink: "#e879f9",
+    accent: "#dbeafe",
     gold: "#fbbf24",
-    cyan: "#38bdf8",
-    cardBg: "#081120",
-    star: "#e2e8f0",
-    haze: "#0ea5e9",
-    hazeOpacity: 0.08,
+    cyan: "#7dd3fc",
+    cardBg: "#0a0f22",
+    star: "#f8fafc",
+    haze: "#818cf8",
+    hazeOpacity: 0.07,
   },
   light: {
-    bg: "#f8fafc",
-    bgTop: "#f6f9fe",
-    bgBottom: "#d9e6f8",
-    nebulaA: "#99f6e4",
-    nebulaB: "#bfdbfe",
-    nebulaC: "#ddd6fe",
-    border: "#cbd5e1",
-    text: "#0f172a",
-    muted: "#64748b",
-    track: "#e2e8f0",
-    ink: "#0d9488",
-    accent: "#0d9488",
-    gold: "#d97706",
+    bg: "#f8faff",
+    bgTop: "#fcfdff",
+    bgBottom: "#dbeafe",
+    nebulaA: "#bfdbfe",
+    nebulaB: "#c7d2fe",
+    nebulaC: "#f5d0fe",
+    border: "#c3cfe6",
+    text: "#0f1e3d",
+    muted: "#5b6b8c",
+    track: "#e2e8f5",
+    ink: "#c026d3",
+    accent: "#1e40af",
+    gold: "#b45309",
     cyan: "#0284c7",
-    cardBg: "#f1f5f9",
-    star: "#0f172a",
-    haze: "#0284c7",
-    hazeOpacity: 0.04,
+    cardBg: "#eef2ff",
+    star: "#1e1b4b",
+    haze: "#6366f1",
+    hazeOpacity: 0.05,
   },
 };
 
@@ -184,11 +188,16 @@ export function reactBitsBackground({ width, height, theme, seed }) {
     `</defs>` +
     // Faint telemetry grid
     `<rect x="0" y="0" width="${width}" height="${height}" fill="url(#${gridPatternId})" />` +
-    // Nebula patches drifting on the aurora loops
-    `<g filter="url(#${blurId})">` +
-    `<ellipse class="aurora-orb-1" cx="230" cy="${Math.round(height * 0.52)}" rx="290" ry="200" fill="${theme.nebulaA || theme.accent}" opacity="0.26" />` +
-    `<ellipse class="aurora-orb-2" cx="690" cy="${Math.round(height * 0.38)}" rx="320" ry="230" fill="${theme.nebulaB || theme.accent}" opacity="0.2" />` +
-    `<ellipse class="aurora-orb-3" cx="190" cy="${Math.round(height * 0.88)}" rx="270" ry="190" fill="${theme.nebulaC || theme.accent}" opacity="0.13" />` +
+    // Nebula patches drifting on the aurora loops — v2: all GIF hues at low
+    // opacity so the page stays deep-space black-blue, not pink-washed.
+    // Ice-blue + periwinkle + pink + a faint white core drift on different
+    // periods (20/26/22/32s) inside a slow-breathing .prism group: the whole
+    // readme glows through every colour in turn.
+    `<g filter="url(#${blurId})" class="prism">` +
+    `<ellipse class="aurora-orb-1" cx="230" cy="${Math.round(height * 0.52)}" rx="290" ry="200" fill="${theme.nebulaA || theme.accent}" opacity="0.16" />` +
+    `<ellipse class="aurora-orb-2" cx="690" cy="${Math.round(height * 0.38)}" rx="320" ry="230" fill="${theme.nebulaB || theme.accent}" opacity="0.13" />` +
+    `<ellipse class="aurora-orb-3" cx="190" cy="${Math.round(height * 0.88)}" rx="270" ry="190" fill="${theme.nebulaC || theme.accent}" opacity="0.1" />` +
+    `<ellipse class="aurora-orb-4" cx="480" cy="${Math.round(height * 0.62)}" rx="340" ry="220" fill="${theme.star}" opacity="0.05" />` +
     `</g>`
   );
 }
@@ -681,6 +690,8 @@ function ambientRules(width) {
     ".aurora-orb-1{animation:aurora-float-1 20s ease-in-out infinite;transform-box:fill-box;transform-origin:center}" +
     ".aurora-orb-2{animation:aurora-float-2 26s ease-in-out infinite;transform-box:fill-box;transform-origin:center}" +
     ".aurora-orb-3{animation:aurora-float-3 22s ease-in-out infinite;transform-box:fill-box;transform-origin:center}" +
+    ".aurora-orb-4{animation:aurora-float-2 32s ease-in-out infinite reverse;transform-box:fill-box;transform-origin:center}" +
+    ".prism{animation:prism 18s ease-in-out infinite}" +
     ".float{animation:float 13s ease-in-out infinite}" +
     ".planet{transform-origin:center;animation:planet 9s ease-in-out infinite}" +
     ".orbit{transform-origin:center;animation:spin 9s linear infinite}" +
@@ -740,7 +751,8 @@ function keyframeRules(width) {
     "@keyframes pulse-slow{0%,100%{opacity:.4}50%{opacity:.95}}" +
     "@keyframes aurora-float-1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(100px,60px) scale(1.22)}}" +
     "@keyframes aurora-float-2{0%,100%{transform:translate(0,0) scale(1.1)}50%{transform:translate(-80px,-70px) scale(.88)}}" +
-    "@keyframes aurora-float-3{0%,100%{transform:translate(0,0) scale(.92)}50%{transform:translate(70px,-50px) scale(1.18)}}"
+    "@keyframes aurora-float-3{0%,100%{transform:translate(0,0) scale(.92)}50%{transform:translate(70px,-50px) scale(1.18)}}" +
+    "@keyframes prism{0%,100%{opacity:.72}30%{opacity:.9}55%{opacity:.8}80%{opacity:.95}}"
   );
 }
 
@@ -764,6 +776,7 @@ function reducedMotionRules() {
     ".tw{animation:tw 8s ease-in-out infinite}" +
     ".breathe{animation:breathe 10s ease-in-out infinite}" +
     ".celltw{animation:celltw 11s ease-in-out infinite}" +
+    ".prism{animation:prism 26s ease-in-out infinite}" +
     ".glowbar{animation:glowbar 9s ease-in-out infinite}" +
     ".marquee-track-l1,.marquee-track-l2,.galaxy-spin,.galaxy-pulse,.oscillo-sweep{animation:none!important}" +
     "}"
