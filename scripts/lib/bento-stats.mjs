@@ -47,7 +47,8 @@ function round(n) {
 function spectrumEqualizerCard({ x, y, width, height, stats, theme }) {
   const weeks = stats.weeks || [];
   const peak = Math.max(stats.bestWeek || 1, 1);
-  const barCount = 52;
+  // Real week count — a trailing-year calendar is 53 columns, not always 52.
+  const barCount = Math.max(2, weeks.length);
   const barW = 5.5;
   const gap = (width - 36 - barW * barCount) / (barCount - 1);
   const maxBarH = 46;
@@ -79,7 +80,7 @@ function spectrumEqualizerCard({ x, y, width, height, stats, theme }) {
     text("+", { x: x + 10, y: y + 15, size: 10, fill: theme.accent, opacity: 0.7, face: "mono", weight: 700 }) +
     text("+", { x: x + width - 15, y: y + 15, size: 10, fill: theme.accent, opacity: 0.7, face: "mono", weight: 700 }) +
     // Header labels
-    text("52-WEEK COMMIT SPECTRUM & VELOCITY", {
+    text("TRAILING-YEAR COMMIT SPECTRUM & VELOCITY", {
       x: x + 24,
       y: y + 24,
       size: 10,
@@ -98,7 +99,7 @@ function spectrumEqualizerCard({ x, y, width, height, stats, theme }) {
       cls: "pop d36",
       face: "mono",
     }) +
-    text("COMMITS", {
+    text("CONTRIBUTIONS", {
       x: x + 92,
       y: y + 46,
       size: 10.5,
@@ -106,7 +107,7 @@ function spectrumEqualizerCard({ x, y, width, height, stats, theme }) {
       fill: theme.accent,
       face: "mono",
     }) +
-    text("trailing year output", {
+    text("trailing 12 months · commits + prs + reviews", {
       x: x + 92,
       y: y + 58,
       size: 9.5,
@@ -136,6 +137,8 @@ function consistencyGaugeCard({ x, y, width, height, stats, theme }) {
   const circ = 2 * Math.PI * r;
   const pct = Math.min(1, Math.max(0.02, (stats.activeDays || 0) / 365));
   const offset = round(circ * (1 - pct));
+  // Live status: ACTIVE only while the streak runs through today/yesterday.
+  const streakStatus = (stats.current.length || 0) > 0 ? "ACTIVE" : "IDLE";
 
   return (
     `<g class="rise d37">` +
@@ -157,8 +160,8 @@ function consistencyGaugeCard({ x, y, width, height, stats, theme }) {
     `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${theme.accent}" stroke-width="7" ` +
     `stroke-dasharray="${round(circ)}" stroke-dashoffset="${offset}" stroke-linecap="round" class="draw" />` +
     `</g>` +
-    // Gauge center label
-    text(String(stats.current.length || 1), {
+    // Gauge center label — show the real 0 rather than a fake 1
+    text(String(stats.current.length || 0), {
       x: cx,
       y: cy + 3,
       size: 18,
@@ -178,12 +181,12 @@ function consistencyGaugeCard({ x, y, width, height, stats, theme }) {
     }) +
     // Right side telemetry list
     text("STREAK :", { x: x + 122, y: y + 54, size: 9.5, weight: 700, fill: theme.muted, face: "mono" }) +
-    text(`${stats.current.length || 1}d CURRENT`, { x: x + 180, y: y + 54, size: 9.5, weight: 800, fill: theme.text, face: "mono" }) +
+    text(`${stats.current.length || 0}d CURRENT`, { x: x + 180, y: y + 54, size: 9.5, weight: 800, fill: theme.text, face: "mono" }) +
     text("MAX    :", { x: x + 122, y: y + 72, size: 9.5, weight: 700, fill: theme.muted, face: "mono" }) +
     text(`${stats.longest.length || 2}d BEST`, { x: x + 180, y: y + 72, size: 9.5, weight: 800, fill: theme.gold, face: "mono" }) +
     text("STATUS :", { x: x + 122, y: y + 90, size: 9.5, weight: 700, fill: theme.muted, face: "mono" }) +
-    text("ACTIVE", { x: x + 180, y: y + 90, size: 9.5, weight: 800, fill: theme.accent, face: "mono" }) +
-    `<circle cx="${x + 236}" cy="${y + 87}" r="3" fill="${theme.accent}" class="blink" />` +
+    text(streakStatus, { x: x + 180, y: y + 90, size: 9.5, weight: 800, fill: streakStatus === "ACTIVE" ? theme.accent : theme.muted, face: "mono" }) +
+    `<circle cx="${x + 236}" cy="${y + 87}" r="3" fill="${streakStatus === "ACTIVE" ? theme.accent : theme.muted}" class="blink" />` +
     `</g>`
   );
 }
@@ -319,7 +322,7 @@ export function bentoGithubSection(top, stats, theme, themeName) {
 
   const contributionBlock =
     rect({ x: PAD, y: gridDividerY, width: USABLE_W, height: 1, fill: theme.border, cls: "fade" }) +
-    text("CONTRIBUTION TELEMETRY (368 DAYS SAMPLING)", {
+    text(`CONTRIBUTION TELEMETRY (${stats.calendar.length} DAYS SAMPLING)`, {
       x: PAD,
       y: gridHeaderY,
       size: 10,

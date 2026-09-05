@@ -102,7 +102,7 @@ export function marqueeStack({ top, x = 34, width = 812, theme, id = "dark" }) {
     markup:
       `<defs>` +
       `<clipPath id="${clipId}">` +
-      `<rect x="${x}" y="${top + 40}" width="${width}" height="84" rx="8" />` +
+      `<rect x="${x}" y="${top + 40}" width="${width}" height="90" rx="8" />` +
       `</clipPath>` +
       `<linearGradient id="fade-grad-${id}" x1="0%" y1="0%" x2="100%" y2="0%">` +
       `<stop offset="0%" stop-color="#000" stop-opacity="0" />` +
@@ -111,7 +111,7 @@ export function marqueeStack({ top, x = 34, width = 812, theme, id = "dark" }) {
       `<stop offset="100%" stop-color="#000" stop-opacity="0" />` +
       `</linearGradient>` +
       `<mask id="${maskId}">` +
-      `<rect x="${x}" y="${top + 40}" width="${width}" height="84" fill="url(#fade-grad-${id})" />` +
+      `<rect x="${x}" y="${top + 40}" width="${width}" height="90" fill="url(#fade-grad-${id})" />` +
       `</mask>` +
       `</defs>` +
       // Header tag row
@@ -125,8 +125,9 @@ export function marqueeStack({ top, x = 34, width = 812, theme, id = "dark" }) {
         cls: "rise d12",
         weight: 600,
       }) +
-      // Background track container
-      rect({ x, y: top + 42, width, height: 80, fill: theme.bg, rx: 8, stroke: theme.border, opacity: 0.8 }) +
+      // Background track container — tall enough that lane 2's chips clear the
+      // bottom edge with their rounded corners intact
+      rect({ x, y: top + 42, width, height: 92, fill: theme.bg, rx: 8, stroke: theme.border, opacity: 0.8 }) +
       `<g clip-path="url(#${clipId})" mask="url(#${maskId})">` +
       // Lane 1: Scrolling left
       `<g class="marquee-track-l1" style="--w1:${l1.totalWidth}px">` +

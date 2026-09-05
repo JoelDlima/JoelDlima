@@ -568,7 +568,12 @@ export function contributionGrid({ days, x, y, cell = 11, gap = 3, theme, gutter
       const cx = gridX + column * pitch;
       const cy = y + row * pitch;
       const opacity = round(0.22 + (band / LEVELS) * 0.78);
-      return rect({ x: cx, y: cy, width: cell, height: cell, fill: theme.ink, rx: 2, opacity });
+      // Each lit cell twinkles like a star: opacity oscillates around its own
+      // level via the --o custom property, phase scattered across the grid.
+      // The attribute opacity is the no-CSS fallback; the animation overrides
+      // it while running.
+      const phase = (column * 7 + row * 3 + 11) % STAGGER_STEPS;
+      return `<rect x="${cx}" y="${cy}" width="${cell}" height="${cell}" rx="2" fill="${theme.ink}" opacity="${opacity}" style="--o:${opacity}" class="celltw d${phase}" />`;
     })
     .join("");
 
@@ -665,6 +670,7 @@ function ambientRules(width) {
     ".chip{animation:chip 5.5s ease-in-out infinite}" +
     ".astro{transform-origin:center;animation:astro 14s ease-in-out infinite}" +
     ".breathe{animation:breathe 7s ease-in-out infinite}" +
+    ".celltw{animation:celltw 6.5s ease-in-out infinite}" +
     ".moon{animation-name:moon;animation-timing-function:steps(60);animation-iteration-count:infinite}" +
     ".thruster{transform-origin:right center;animation:thrust .34s ease-in-out infinite alternate}" +
     ".shoot{animation-name:shoot;animation-timing-function:cubic-bezier(.3,0,.5,1);animation-iteration-count:infinite}" +
@@ -697,6 +703,7 @@ function keyframeRules(width) {
     "@keyframes chip{0%,100%{fill-opacity:.07}50%{fill-opacity:.15}}" +
     "@keyframes astro{0%,100%{transform:translateY(-9px) rotate(-4deg)}35%{transform:translateY(4px) rotate(2deg)}70%{transform:translateY(9px) rotate(5deg)}}" +
     "@keyframes breathe{0%,100%{opacity:1}50%{opacity:.5}}" +
+    "@keyframes celltw{0%,100%{opacity:var(--o,1)}50%{opacity:calc(var(--o,.9)*.35)}}" +
     "@keyframes travel{0%{offset-distance:0%;opacity:0}7%{opacity:.9}88%{opacity:.9}100%{offset-distance:100%;opacity:0}}" +
     "@keyframes thrust{from{transform:scaleX(.5);opacity:.45}to{transform:scaleX(1.2);opacity:1}}" +
     "@keyframes moon{to{transform:translateX(var(--sheet,-2880px))}}" +
@@ -734,6 +741,7 @@ function reducedMotionRules() {
     ".draw{animation:fade .9s ease-out both;stroke-dasharray:none!important;stroke-dashoffset:0!important}" +
     ".tw{animation:tw 8s ease-in-out infinite}" +
     ".breathe{animation:breathe 10s ease-in-out infinite}" +
+    ".celltw{animation:celltw 11s ease-in-out infinite}" +
     ".glowbar{animation:glowbar 9s ease-in-out infinite}" +
     ".marquee-track-l1,.marquee-track-l2,.galaxy-spin,.galaxy-pulse,.oscillo-sweep{animation:none!important}" +
     "}"
