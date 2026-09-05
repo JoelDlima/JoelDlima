@@ -121,11 +121,11 @@ function identitySection(top, theme, themeName) {
 
 /**
  * The black-hole void animation, inlined as a base64 GIF data URI (same
- * pattern as the astronaut/moon sheets). A looping ambient drift keeps it
- * alive without a second motion system.
+ * pattern as the astronaut/moon sheets). The GIF's own background is keyed
+ * transparent, so the nebula backdrop shows through around the ring.
  */
 function voidEmbed({ cx, cy, width }) {
-  const height = Math.round((width * 203) / 360);
+  const height = Math.round((width * 183) / 200);
   return (
     `<g class="float">` +
     `<image x="${cx - width / 2}" y="${cy - height / 2}" width="${width}" height="${height}" ` +
