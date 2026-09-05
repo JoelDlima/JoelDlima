@@ -15,13 +15,27 @@ const WIDTH = 880;
 const PAD = 34;
 const USABLE_W = WIDTH - PAD * 2; // 812px
 
+/** Real GitHub language colors (matching github.com's own palette). */
 const LANG_COLORS = {
-  python: "#38bdf8",     // Cyber Sky
-  typescript: "#2dd4bf", // Cyber Teal
-  javascript: "#fbbf24", // Supernova Amber
-  html: "#f43f5e",       // Rose Pink
-  css: "#a855f7",        // Electric Purple
+  python: "#3572A5",
+  typescript: "#3178c6",
+  javascript: "#f1e05a",
+  html: "#e34c26",
+  css: "#663399",
+  "c++": "#f34b7d",
+  c: "#555555",
+  powershell: "#012456",
+  shell: "#89e051",
+  batchfile: "#C1F12E",
+  makefile: "#427819",
+  nix: "#7e7eff",
 };
+
+const LANG_FALLBACK = ["#58a6ff", "#3fb950", "#d29922", "#bc8cff", "#f778ba", "#39c5cf", "#ff7b72"];
+
+function langColor(name, i) {
+  return LANG_COLORS[name.toLowerCase()] || LANG_FALLBACK[i % LANG_FALLBACK.length];
+}
 
 function round(n) {
   return Math.round(n * 10) / 10;
@@ -120,7 +134,7 @@ function consistencyGaugeCard({ x, y, width, height, stats, theme }) {
   const cy = y + 74;
   const r = 38;
   const circ = 2 * Math.PI * r;
-  const pct = 0.68;
+  const pct = Math.min(1, Math.max(0.02, (stats.activeDays || 0) / 365));
   const offset = round(circ * (1 - pct));
 
   return (
@@ -137,7 +151,7 @@ function consistencyGaugeCard({ x, y, width, height, stats, theme }) {
       fill: theme.muted,
       face: "mono",
     }) +
-    // Circular Gauge
+    // Circular Gauge — real consistency: active days over the trailing year
     `<g transform="rotate(-90 ${cx} ${cy})">` +
     `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${theme.track}" stroke-width="7" />` +
     `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${theme.accent}" stroke-width="7" ` +
@@ -175,7 +189,8 @@ function consistencyGaugeCard({ x, y, width, height, stats, theme }) {
 }
 
 /**
- * Segmented Horizon Language Bar & 5 Language Bento Pods
+ * Segmented Horizon Language Bar & Language Pods — driven by real GitHub API bytes.
+ * No hardcoded byte counts, no invented repo counts, no filler role labels.
  */
 function languageHorizonSection({ top, stats, theme }) {
   const x = PAD;
@@ -183,31 +198,29 @@ function languageHorizonSection({ top, stats, theme }) {
   const barY = top + 26;
   const barH = 12;
 
-  const rawBytes = {
-    python: 587671,
-    typescript: 529719,
-    javascript: 136321,
-    html: 122290,
-    css: 74805,
-  };
-  const total = Object.values(rawBytes).reduce((a, b) => a + b, 0);
+  // Real bytes per language, straight from the GitHub API snapshot.
+  const segments = stats.byBytes.map((lang, i) => ({
+    label: lang.name,
+    bytes: 0, // resolved below from the raw totals carried on stats
+    raw: lang,
+    color: langColor(lang.name, i),
+  }));
 
-  const segments = [
-    { key: "python", label: "Python", bytes: 587671, color: LANG_COLORS.python, repos: 6, role: "Data & AI Core" },
-    { key: "typescript", label: "TypeScript", bytes: 529719, color: LANG_COLORS.typescript, repos: 4, role: "Full-Stack Web" },
-    { key: "javascript", label: "JavaScript", bytes: 136321, color: LANG_COLORS.javascript, repos: 1, role: "Scripting / Node" },
-    { key: "html", label: "HTML", bytes: 122290, color: LANG_COLORS.html, repos: 1, role: "Semantic UI" },
-    { key: "css", label: "CSS", bytes: 74805, color: LANG_COLORS.css, repos: 1, role: "Styling & Motion" },
-  ];
+  const totalBytes = stats.languageBytes || segments.reduce((acc, s) => acc + (s.raw.bytes || 0), 0);
+  segments.forEach((s) => {
+    s.bytes = s.raw.bytes || 0;
+    s.pct = Math.round((s.bytes / (totalBytes || 1)) * 100);
+  });
+
+  // Real repo counts per language (primary language of each public repo).
+  const reposByLang = stats.reposByLang || {};
 
   let cursorX = x;
   let horizonBars = "";
 
   segments.forEach((seg, i) => {
     const isLast = i === segments.length - 1;
-    const segW = isLast ? x + width - cursorX : round((seg.bytes / total) * width);
-    const pct = Math.round((seg.bytes / total) * 100);
-    seg.pct = pct;
+    const segW = isLast ? x + width - cursorX : round((seg.bytes / (totalBytes || 1)) * width);
     seg.w = segW;
 
     horizonBars += rect({
@@ -223,20 +236,22 @@ function languageHorizonSection({ top, stats, theme }) {
 
   const gloss = rect({ x, y: barY, width, height: barH / 2, fill: "#fff", opacity: 0.12, rx: 3 });
 
-  // 5 Bento Pods
-  const podCount = 5;
+  // Language pods — real numbers only: share %, actual byte size, actual repo count
+  const podCount = segments.length;
   const podGap = 10;
   const podY = barY + barH + 12;
-  const podH = 64;
+  const podH = 56;
 
   let pods = "";
   segments.forEach((seg, i) => {
-    const isLast = i === segments.length - 1;
+    const isLast = i === podCount - 1;
     const baseW = Math.floor((width - podGap * (podCount - 1)) / podCount);
     const thisPodW = isLast ? width - (baseW + podGap) * (podCount - 1) : baseW;
     const px = x + i * (baseW + podGap);
     const delay = 42 + i * 2;
     const kb = Math.round(seg.bytes / 1024);
+    const sizeLabel = kb >= 1024 ? `${round(kb / 1024)} MB` : `${kb} KB`;
+    const repoCount = reposByLang[seg.label] || 0;
 
     pods +=
       `<g class="rise d${delay}">` +
@@ -245,10 +260,11 @@ function languageHorizonSection({ top, stats, theme }) {
       `<circle cx="${px + 14}" cy="${podY + 16}" r="3.5" fill="${seg.color}" />` +
       text(seg.label.toUpperCase(), { x: px + 24, y: podY + 19, size: 10, weight: 800, fill: theme.text, face: "mono" }) +
       text(`${seg.pct}%`, { x: px + thisPodW - 12, y: podY + 19, size: 10, weight: 800, fill: seg.color, anchor: "end", face: "mono" }) +
-      text(`${kb} KB · ${seg.repos} repos`, { x: px + 14, y: podY + 36, size: 9, weight: 600, fill: theme.muted, face: "mono" }) +
-      text(seg.role, { x: px + 14, y: podY + 50, size: 8.5, fill: theme.accent, weight: 700, face: "mono" }) +
+      text(`${sizeLabel} · ${repoCount} repo${repoCount === 1 ? "" : "s"}`, { x: px + 14, y: podY + 38, size: 9, weight: 600, fill: theme.muted, face: "mono" }) +
       `</g>`;
   });
+
+  const totalMb = round(totalBytes / (1024 * 1024));
 
   return (
     `<g class="rise d40">` +
@@ -261,7 +277,7 @@ function languageHorizonSection({ top, stats, theme }) {
       fill: theme.muted,
       face: "mono",
     }) +
-    text("1.51 MB TELEMETRY SOURCE ANALYZED", {
+    text(`${totalMb} MB ACROSS PUBLIC REPOS`, {
       x: x + width,
       y: top + 14,
       size: 9.5,

@@ -17,11 +17,7 @@ const DATA = join(ROOT, "data");
 const THEMES = ["dark", "light"];
 
 const PROFILE = {
-  name: "joel d'lima",
-  role: "electronics & computer engineering  ·  embedded & software",
-  study: "b.e. electronics & computer engineering  ·  agnel institute, goa",
-  highlight: "swe intern @ visteon (current)  ·  cgpa 9.7  ·  class of 2027",
-  location: "mapusa, goa, india",
+  name: "Joel Dlima",
 };
 
 const FONT_FILE = "jetbrains-mono-bold.woff2";
@@ -63,32 +59,21 @@ function buildStats(githubData) {
     weeks.push(lastYear.slice(i, i + 7).reduce((sum, d) => sum + d.count, 0));
   }
 
-  // Calculate languages breakdown
+  // Real language breakdown: raw bytes per language from the GitHub API.
   const rawBytes = githubData.languages || {};
   const totalBytes = Object.values(rawBytes).reduce((a, b) => a + b, 0) || 1;
   const byBytes = Object.entries(rawBytes)
-    .map(([name, bytes]) => ({
-      name,
-      value: Math.round((bytes / totalBytes) * 100),
-      label: `${Math.round((bytes / totalBytes) * 100)}%`,
-    }))
-    .sort((a, b) => b.value - a.value)
+    .map(([name, bytes]) => ({ name, bytes }))
+    .sort((a, b) => b.bytes - a.bytes)
     .slice(0, 5);
 
-  const repoCounts = {};
+  // Real repo counts per primary language.
+  const reposByLang = {};
   for (const repo of githubData.repos || []) {
     if (repo.language) {
-      repoCounts[repo.language] = (repoCounts[repo.language] || 0) + 1;
+      reposByLang[repo.language] = (reposByLang[repo.language] || 0) + 1;
     }
   }
-  const byRepos = Object.entries(repoCounts)
-    .map(([name, count]) => ({
-      name,
-      value: count,
-      label: String(count),
-    }))
-    .sort((a, b) => b.value - a.value)
-    .slice(0, 5);
 
   return {
     login: githubData.user.login,
@@ -100,7 +85,8 @@ function buildStats(githubData) {
     repoCount: (githubData.repos || []).length,
     ...computeStreaks(allDays),
     byBytes,
-    byRepos,
+    reposByLang,
+    languageBytes: totalBytes,
   };
 }
 
@@ -119,7 +105,7 @@ async function main() {
   const font = (await readFile(join(ASSETS, FONT_FILE))).toString("base64");
 
   for (const theme of THEMES) {
-    const data = { profile: PROFILE, links: CONTACTS, stats, font, views: 1842 };
+    const data = { profile: PROFILE, links: CONTACTS, stats, font };
     const svg = posterCard(data, theme);
     await writeFile(join(ASSETS, `profile-${theme}.svg`), svg, "utf8");
     console.log(`Generated assets/profile-${theme}.svg (${svg.length} bytes)`);

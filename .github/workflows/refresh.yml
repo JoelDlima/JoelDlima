@@ -9,7 +9,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'src/**'
+      - 'scripts/**'
+      - 'data/**'
       - 'build/fonts/**'
       - 'package.json'
       - '.github/workflows/refresh.yml'
@@ -29,6 +30,11 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      - name: Refresh data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run data
 
       - name: Render
         # `gh api` reads GH_TOKEN. The default token is enough for the public
