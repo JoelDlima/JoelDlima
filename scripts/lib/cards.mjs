@@ -136,34 +136,17 @@ function voidEmbed({ cx, cy, width }) {
 
 /* ----------------------------------------------------- 3. BOTTOM CONNECT */
 
-function bottomSection(top, links, theme) {
-  let markup = tagRow("channels & transmission", "ground station telemetry", top + 24, theme, 50, SPACE_ICONS.orbit);
-
-  // Connect Channels
-  const chipH = 38;
-  const chipW = Math.floor((WIDTH - PAD * 2 - 12 * (links.length - 1)) / links.length);
-  const connY = top + 42;
-
-  links.forEach((link, i) => {
-    const cx = PAD + i * (chipW + 12);
-    // Each chip is wrapped in an <a> so the whole card is clickable when the
-    // SVG is served inline (object/iframe/embed). Note: GitHub renders README
-    // SVGs through its camo proxy inside an <img>, where anchors are inert —
-    // the links activate anywhere the SVG is embedded interactively.
-    markup +=
-      `<a href="${link.href}" target="_blank" rel="noopener noreferrer">` +
-      `<g class="rise d52">` +
-      rect({ x: cx, y: connY, width: chipW, height: chipH, fill: theme.cardBg, rx: 8, stroke: theme.border }) +
-      rect({ x: cx + 1, y: connY + 1, width: chipW - 2, height: chipH - 2, fill: theme.ink, rx: 7, opacity: 0.04 }) +
-      icon(link.path, { x: cx + 14, y: connY + chipH / 2 - 8, size: 16, fill: theme.accent || theme.text }) +
-      text(link.label.toUpperCase(), { x: cx + 38, y: connY + 16, size: 10.5, weight: 800, fill: theme.text, face: "mono" }) +
-      text(link.handle, { x: cx + 38, y: connY + 29, size: 9, weight: 600, fill: theme.muted, face: "mono" }) +
-      `</g>` +
-      `</a>`;
-  });
+/**
+ * Bottom status strip. The channel chips used to live here, but they now
+ * live in README as standalone clickable cards (assets/cards/* wrapped in
+ * markdown-level <a> — anchors inside the poster SVG are inert under
+ * GitHub's <img> proxy, so rendering them twice was pure duplication).
+ */
+function bottomSection(top, theme) {
+  let markup = "";
 
   // Terminal Console Status Line with Radar telemetry
-  const footY = top + 92;
+  const footY = top + 28;
   markup +=
     rect({ x: PAD, y: footY, width: WIDTH - PAD * 2, height: 26, fill: theme.track, rx: 6, stroke: theme.border }) +
     `<circle cx="${PAD + 14}" cy="${footY + 13}" r="3.5" fill="${theme.accent}" class="blink" />` +
@@ -195,7 +178,7 @@ const SECTION = {
   identity: 236,
   stack: 140,
   github: 540,
-  bottom: 128,
+  bottom: 68,
 };
 
 export function posterCard({ profile, links, stats, font }, themeName) {
@@ -222,7 +205,7 @@ export function posterCard({ profile, links, stats, font }, themeName) {
     identitySection(tops.identity, theme, themeName) +
     marquee.markup +
     bentoGithubSection(tops.github, stats, theme, themeName) +
-    bottomSection(tops.bottom, links, theme);
+    bottomSection(tops.bottom, theme);
 
   return document_({
     width: WIDTH,
