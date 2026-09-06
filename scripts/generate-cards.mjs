@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 
 import { posterCard } from "./lib/cards.mjs";
 import { CONTACTS } from "./lib/icons.mjs";
+import { contactCard } from "./lib/contact-cards.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const ASSETS = join(ROOT, "assets");
@@ -109,6 +110,18 @@ async function main() {
     const svg = posterCard(data, theme);
     await writeFile(join(ASSETS, `profile-${theme}.svg`), svg, "utf8");
     console.log(`Generated assets/profile-${theme}.svg (${svg.length} bytes)`);
+  }
+
+  // Standalone clickable contact cards (README wraps each in <a href> —
+  // anchors inside the poster SVG are inert under GitHub's <img> proxy).
+  await mkdir(join(ASSETS, "cards"), { recursive: true });
+  for (const theme of THEMES) {
+    for (const link of CONTACTS) {
+      const svg = contactCard(link, theme);
+      const file = join("cards", `${link.key}-${theme}.svg`);
+      await writeFile(join(ASSETS, file), svg, "utf8");
+      console.log(`Generated assets/${file} (${svg.length} bytes)`);
+    }
   }
 }
 
