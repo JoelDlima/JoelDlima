@@ -15,3 +15,13 @@
   &nbsp;&nbsp;
   <a href="https://joel-portfolio-eight.vercel.app/work"><img src="https://img.shields.io/badge/Portfolio-Live_Site-2DD4BF?style=flat-square&logo=vercel&logoColor=black" alt="Portfolio"/></a>
 </p>
+
+<p align="center">
+  <a href="https://github.com/JoelDlima">GitHub @JoelDlima</a>
+  &nbsp;·&nbsp;
+  <a href="https://www.linkedin.com/in/joel-dlima/">LinkedIn joel-dlima</a>
+  &nbsp;·&nbsp;
+  <a href="mailto:joeldlima123@gmail.com">joeldlima123@gmail.com</a>
+  &nbsp;·&nbsp;
+  <a href="https://joel-portfolio-eight.vercel.app/work">Portfolio</a>
+</p>
