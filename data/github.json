@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T06:54:34.065Z",
+  "generatedAt": "2026-11-15T06:59:46.321Z",
   "user": {
     "name": "Joel Dlima",
     "login": "JoelDlima",
@@ -20,28 +20,59 @@
     "longestStreak": 6
   },
   "languages": {
-    "JavaScript": 383128,
     "TypeScript": 2332783,
-    "Python": 47759846,
+    "PLpgSQL": 82675,
+    "HTML": 234475,
     "CSS": 97308,
+    "Java": 2987,
     "PowerShell": 34588,
+    "JavaScript": 383128,
+    "Python": 47759846,
     "Shell": 9966,
     "Batchfile": 19546,
     "Makefile": 247,
-    "HTML": 234475,
     "C++": 392521,
     "Cython": 1316172,
     "C": 476168,
     "Fortran": 28756,
     "Go Template": 8715,
     "Assembly": 3086,
-    "PLpgSQL": 82675,
     "XSLT": 1196,
     "Smarty": 127,
-    "Nix": 413,
-    "Java": 2987
+    "Nix": 413
   },
   "repos": [
+    {
+      "name": "AGRO-PROFIT",
+      "description": "🌾 AI-Powered Agmarknet Mandi Intelligence & Profit Optimization Platform for Indian Farmers",
+      "language": "TypeScript",
+      "stars": 3,
+      "forks": 0,
+      "homepage": "https://agro-profit-pro.vercel.app",
+      "pushedAt": "2026-11-14T07:14:14Z",
+      "isFork": false,
+      "topics": [
+        "agmarknet",
+        "agriculture",
+        "agritech",
+        "farmer-app",
+        "groq-ai",
+        "mandi-prices",
+        "react",
+        "supabase",
+        "vernacular",
+        "vite"
+      ],
+      "languages": {
+        "TypeScript": 758685,
+        "PLpgSQL": 30067,
+        "HTML": 14801,
+        "CSS": 5347,
+        "Java": 2987,
+        "PowerShell": 1453,
+        "JavaScript": 846
+      }
+    },
     {
       "name": "JoelDlima",
       "description": "My GitHub profile README",
@@ -49,7 +80,7 @@
       "stars": 1,
       "forks": 0,
       "homepage": null,
-      "pushedAt": "2026-11-13T07:05:16Z",
+      "pushedAt": "2026-11-14T06:54:35Z",
       "isFork": false,
       "topics": [],
       "languages": {
@@ -203,37 +234,6 @@
       }
     },
     {
-      "name": "AGRO-PROFIT",
-      "description": "🌾 AI-Powered Agmarknet Mandi Intelligence & Profit Optimization Platform for Indian Farmers",
-      "language": "TypeScript",
-      "stars": 3,
-      "forks": 0,
-      "homepage": "https://agro-profit-pro.vercel.app",
-      "pushedAt": "2026-09-13T05:55:53Z",
-      "isFork": false,
-      "topics": [
-        "agmarknet",
-        "agriculture",
-        "agritech",
-        "farmer-app",
-        "groq-ai",
-        "mandi-prices",
-        "react",
-        "supabase",
-        "vernacular",
-        "vite"
-      ],
-      "languages": {
-        "TypeScript": 758685,
-        "PLpgSQL": 30067,
-        "HTML": 14801,
-        "CSS": 5347,
-        "Java": 2987,
-        "PowerShell": 1453,
-        "JavaScript": 846
-      }
-    },
-    {
       "name": "OdooHackathon",
       "description": null,
       "language": null,
@@ -375,34 +375,6 @@
     }
   ],
   "calendar": [
-    {
-      "date": "2025-11-09",
-      "count": 0
-    },
-    {
-      "date": "2025-11-10",
-      "count": 0
-    },
-    {
-      "date": "2025-11-11",
-      "count": 0
-    },
-    {
-      "date": "2025-11-12",
-      "count": 0
-    },
-    {
-      "date": "2025-11-13",
-      "count": 0
-    },
-    {
-      "date": "2025-11-14",
-      "count": 0
-    },
-    {
-      "date": "2025-11-15",
-      "count": 0
-    },
     {
       "date": "2025-11-16",
       "count": 0
@@ -1857,6 +1829,10 @@
     },
     {
       "date": "2026-11-14",
+      "count": 0
+    },
+    {
+      "date": "2026-11-15",
       "count": 0
     }
   ]
